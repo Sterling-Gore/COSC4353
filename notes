@@ -1,0 +1,10 @@
+in git-bash:
+
+(to install yarn)
+run "npm install -g yarn"
+
+(you dont need to run this, it's for creating the next.js files)
+<not needed> run "yarn create next-app ftgoo"
+
+(to add vercel/postgres)
+<in directory ftgoo> run "yarn add @vercel/postgress"
