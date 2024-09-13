@@ -7,7 +7,7 @@ run "npm install -g yarn"
 <not needed> run "yarn create next-app ftgoo"
 
 (to add vercel/postgres)
-<in directory ftgoo> run "yarn add @vercel/postgress"
+<in directory ftgoo> run "yarn add @vercel/postgres"
 
 (to run the website)
-<in drectory ftgoo> run "yarn dev"
+<in directory ftgoo> run "yarn dev"
