@@ -8,3 +8,6 @@ run "npm install -g yarn"
 
 (to add vercel/postgres)
 <in directory ftgoo> run "yarn add @vercel/postgress"
+
+(to run the website)
+<in drectory ftgoo> run "yarn dev"
