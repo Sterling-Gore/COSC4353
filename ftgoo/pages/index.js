@@ -25,7 +25,9 @@ export default function Home() {
 
           {/* Centered "Hello" */}
           <div style={styles.center}>
-          <h2>For the <span style={styles.good}>good</span> of others.</h2>
+            <div style={styles.centerLogo}>
+            <p>For the <span style={styles.good}>good</span> of others.</p>
+            </div>
           <p><span style = {styles.simpleText}>Find opportunities near you for volunteering</span></p>
           <a href="./registration">
             <span style = {styles.button}>Get Involved</span>
@@ -88,12 +90,10 @@ const styles = {
   },
   navButton: {
     backgroundColor: "#f4f4f4",
-    display: "flex",
-    justifyContent: "center",
+    textAlign: "center",
     color: "#007BFF",
     border: "none",
-    maxWidth: "8vw",
-    padding: "6px",
+    padding: "6px 12px",
     borderRadius: "10px",
     width: "15vw",
   },
@@ -103,20 +103,21 @@ const styles = {
     //fontFamily: "Georgia",
     color: "#ffffff",
     fontSize: "48px",
-    //gap: "100px",
+    gap: "30px",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
   },
   centerLogo: {
-    fontSize: "100px",
+    fontSize: 120,
+    fontWeight: "bolder",
   },
   good: {
     color: "#007BFF",
   },
   simpleText: {
-    fontSize: "24px",
+    fontSize: "50px",
     fontWeight: "lighter",
   },
   button: {
@@ -124,10 +125,10 @@ const styles = {
     width: "15vw",
     color: "#fff",
     border: "none",
-    padding: "10px",
+    padding: "10px 18px",
     borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "20px",
+    fontSize: "30px",
     marginTop: "20px",
   },
 };

@@ -61,7 +61,7 @@ export default function Login() {
             Login
           </button>
           <div style={styles.links}>
-            <a href="/register" style={styles.link}>
+            <a href="/registration" style={styles.link}>
               Don't have an account? Register here
             </a>
           </div>
@@ -78,15 +78,19 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    backgroundColor: "#f0f2f5",
+    backgroundColor: "#007BFF",
   },
   loginBox: {
     backgroundColor: "#ffffff",
     padding: "40px",
+    width: "52.5vw",
+    minHeight: "40vh",
+    maxHeight: "90vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    width: "100%",
     textAlign: "center",
   },
   title: {
@@ -132,7 +136,7 @@ const styles = {
   links: {
     marginTop: "15px",
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   link: {
     color: "#0070f3", // Blue color for links

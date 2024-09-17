@@ -369,6 +369,11 @@ export default function Registration() {
           <button type="submit" style={styles.button}>
             {step === 1 ? "Next" : "Create Account"}
           </button>
+          <div style={styles.links}>
+            <a href="/login" style={styles.link}>
+              Already have an account? Login here
+            </a>
+          </div>
         </form>
       </div>
     </div>
@@ -381,12 +386,16 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100vh",
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#007BFF",
     padding: "20px",
   },
   registrationBox: {
-    width: "100%",
-    maxWidth: "800px",
+    width: "52.5vw",
+    minHeight: "40vh",
+    maxHeight: "90vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     backgroundColor: "#fff",
     padding: "20px",
     borderRadius: "8px",
@@ -471,6 +480,7 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     gap: "5px",
+    color: "#808080",
     marginBottom: "5px",
   },
   skillTag: {
@@ -517,5 +527,14 @@ const styles = {
     display: "flex",
     alignItems: "center",
     marginBottom: "5px",
+  },
+  links: {
+    marginTop: "15px",
+    display: "flex",
+    justifyContent: "center",
+  },
+  link: {
+    color: "#0070f3", // Blue color for links
+    textDecoration: "none",
   },
 };
