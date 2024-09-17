@@ -392,7 +392,6 @@ const styles = {
   registrationBox: {
     width: "52.5vw",
     minHeight: "40vh",
-    maxHeight: "90vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
