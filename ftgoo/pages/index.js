@@ -17,7 +17,9 @@ export default function Home() {
               <a href="./login">History</a>
               <a href="./login">Notification</a>
               <a href="./login">Login</a>
-              <a href="./registration">Create Account</a>
+              <a href="./registration">
+                <span style = {styles.navButton}>Create Account</span>
+              </a>
             </div>
           </nav>
 
@@ -25,7 +27,9 @@ export default function Home() {
           <div style={styles.center}>
           <h2>For the <span style={styles.good}>good</span> of others.</h2>
           <p><span style = {styles.simpleText}>Find opportunities near you for volunteering</span></p>
-          <a href="./registration">Get Involved</a>
+          <a href="./registration">
+            <span style = {styles.button}>Get Involved</span>
+          </a> 
           </div>
         </div>
         
@@ -65,7 +69,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "20px",
-    backgroundColor: "#279CB7", // Transparent black background for the navbar
+    backgroundColor: "#007BFF", // Transparent black background for the navbar
     color: "#f4f4f4",
     zIndex: 2, // Ensures the navbar is on top of the background
   },
@@ -75,11 +79,23 @@ const styles = {
   },
   navLinks: {
     display: "flex",
+    alignItems: "center",
     gap: "24px",
   },
   navLinksA: {
     color: "#f4f4f4",
     textDecoration: "none",
+  },
+  navButton: {
+    backgroundColor: "#f4f4f4",
+    display: "flex",
+    justifyContent: "center",
+    color: "#007BFF",
+    border: "none",
+    maxWidth: "8vw",
+    padding: "6px",
+    borderRadius: "10px",
+    width: "15vw",
   },
   center: {
     zIndex: 1, // Ensures the "Hello" is on top of the background
@@ -87,13 +103,17 @@ const styles = {
     //fontFamily: "Georgia",
     color: "#ffffff",
     fontSize: "48px",
-    gap: "100px",
+    //gap: "100px",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
   },
   centerLogo: {
     fontSize: "100px",
   },
   good: {
-    color: "#279CB7",
+    color: "#007BFF",
   },
   simpleText: {
     fontSize: "24px",
@@ -101,12 +121,13 @@ const styles = {
   },
   button: {
     backgroundColor: "#007BFF",
+    width: "15vw",
     color: "#fff",
     border: "none",
-    padding: "10px 20px",
-    borderRadius: "4px",
+    padding: "10px",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "16px",
+    fontSize: "20px",
     marginTop: "20px",
   },
 };
