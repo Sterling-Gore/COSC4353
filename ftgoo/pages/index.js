@@ -11,11 +11,6 @@ export default function Home() {
           <nav style={styles.navbar}>
             <div style={styles.logo}>FTGOO</div>
             <div style={styles.navLinks}>
-              <a href="./login">Account</a>
-              <a href="./login">Events</a>
-              <a href="./login">Dashboard</a>
-              <a href="./login">History</a>
-              <a href="./login">Notification</a>
               <a href="./login">Login</a>
               <a href="./registration">
                 <span style = {styles.navButton}>Create Account</span>
