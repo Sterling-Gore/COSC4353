@@ -94,6 +94,12 @@ export default function profile_management() {
           {error && <p style={styles.error}>{error}</p>}
           {step === 1 && (
           <>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Email</label>
+                <div style = {styles.dataBox}>
+                    <p>sterlinggore2025@gmail.com</p>
+                </div>
+            </div>
             <div style={styles.row}>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>First Name</label>
