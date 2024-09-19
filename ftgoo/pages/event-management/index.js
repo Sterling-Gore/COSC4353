@@ -4,33 +4,13 @@ import { useState } from "react";
 export default function PageHandler() {
   const [currentPage, setCurrentPage] = useState('eventManagement'); // State to manage current page
   const [skills, setSkills] = useState([]);
-  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [availability, setAvailability] = useState([]);
-  const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
-
-  const handleSkillSelect = (skill) => {
-    if (!skills.includes(skill)) {
-      setSkills([...skills, skill]);
-    }
-  };
-
-  const handleSkillClear = (skill) => {
-    setSkills(skills.filter((s) => s !== skill));
-  };
-
-  const handleAvailabilitySelect = (day) => {
-    if (!availability.includes(day)) {
-      setAvailability([...availability, day]);
-    }
-  };
-
-  const handleAvailabilityClear = (day) => {
-    setAvailability(availability.filter((d) => d !== day));
-  };
+  const [events, setEvents] = useState([]); // State to store the list of events
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Event Created:", {
+
+    const newEvent = {
       eventName,
       eventDescription,
       addressLine1,
@@ -41,8 +21,23 @@ export default function PageHandler() {
       requiredSkills: skills,
       urgency,
       eventDate,
-    });
+    };
+
+    setEvents(prevEvents => [...prevEvents, newEvent].slice(0, 15)); // Add the new event to the events list, limit to 15
+    setCurrentPage('eventManagement'); // Switch back to Event Management page
     alert("Event created successfully!");
+
+    // Reset form fields
+    setEventName("");
+    setEventDescription("");
+    setAddressLine1("");
+    setAddressLine2("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setUrgency("");
+    setEventDate("");
+    setSkills([]);
   };
 
   const [eventName, setEventName] = useState("");
@@ -52,19 +47,8 @@ export default function PageHandler() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [urgency, setUrgency] = useState("");
+  const [urgency, setUrgency] = useState("Medium"); // Default urgency to "Medium"
   const [eventDate, setEventDate] = useState("");
-
-  const handleSkillsChange = (e) => {
-    const { options } = e.target;
-    const selected = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selected.push(options[i].value);
-      }
-    }
-    setSkills(selected);
-  };
 
   const handleCreateEventClick = () => {
     setCurrentPage('createEvent'); // Switch to the Create Event page
@@ -74,14 +58,25 @@ export default function PageHandler() {
     setCurrentPage('eventManagement'); // Switch back to Event Management page
   };
 
+  const states = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
+    "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", 
+    "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", 
+    "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", 
+    "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", 
+    "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+    "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
+    "Wisconsin", "Wyoming"
+  ];
+
   return (
     <div style={styles.container}>
       {currentPage === 'eventManagement' && (
         <>
           {/* Navigation bar */}
           <div style={styles.navBar}>
+            <div style={styles.logo}>FTGOO</div>
             <div style={styles.navButtons}>
-              <div style={styles.logo}>FTGOO</div>
               <button style={styles.navButton}>Login</button>
               <button style={styles.navButton}>Register</button>
             </div>
@@ -91,6 +86,20 @@ export default function PageHandler() {
           <div style={styles.mainContainer}>
             <div style={styles.contentBox}>
               <h1 style={styles.title}>Event Management</h1>
+
+              {/* Render list of events */}
+              <div style={styles.eventsContainer}>
+                {events.slice(0, 15).map((event, index) => (
+                  <div key={index} style={styles.eventBox}>
+                    <h2>{event.eventName}</h2>
+                    <p>{event.eventDescription}</p>
+                    <p>{event.addressLine1}, {event.city}, {event.state} - {event.zipCode}</p>
+                    <p>Urgency: {event.urgency}</p>
+                    <p>Date: {event.eventDate}</p>
+                  </div>
+                ))}
+              </div>
+
               <button style={styles.createEventButton} onClick={handleCreateEventClick}>
                 Create New Event
               </button>
@@ -100,188 +109,116 @@ export default function PageHandler() {
       )}
 
       {currentPage === 'createEvent' && (
-        <div style={styles.createEventContainer}>
+        <>
           {/* Navigation Bar */}
           <div style={styles.navBar}>
+            <div style={styles.logo}>FTGOO</div>
             <div style={styles.navButtons}>
-              <div style={styles.logo}>FTGOO</div>
-              <button style={styles.navButton} onClick={handleBackClick}>Back</button>
               <button style={styles.navButton}>Login</button>
               <button style={styles.navButton}>Register</button>
             </div>
           </div>
 
           {/* Main Content Area */}
-          <div style={styles.createEventContentBox}>
-            <h1 style={styles.title}>Create New Event</h1>
-            <form onSubmit={handleSubmit} style={styles.createEventForm}>
-              <label>
-                Event Name:
+          <div style={styles.mainContainer}>
+            <div style={styles.createEventContentBox}>
+              <h1 style={styles.title}>Create New Event</h1>
+              <form onSubmit={handleSubmit} style={styles.createEventForm}>
                 <input
                   type="text"
+                  placeholder="Event Name"
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
                   required
                   style={styles.inputBox}
                 />
-              </label>
-              
-              <label>
-                Event Description:
                 <textarea
+                  placeholder="Event Description"
                   value={eventDescription}
                   onChange={(e) => setEventDescription(e.target.value)}
                   required
-                  style={styles.inputBox}
+                  style={styles.textArea}
                 />
-              </label>
-
-              <label>
-                Address Line 1:
                 <input
                   type="text"
+                  placeholder="Address Line 1"
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   required
                   style={styles.inputBox}
                 />
-              </label>
-
-              <label>
-                Address Line 2:
                 <input
                   type="text"
+                  placeholder="Address Line 2"
                   value={addressLine2}
                   onChange={(e) => setAddressLine2(e.target.value)}
                   style={styles.inputBox}
                 />
-              </label>
-
-              <label>
-                City:
                 <input
                   type="text"
+                  placeholder="City"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   required
                   style={styles.inputBox}
                 />
-              </label>
 
-              <label>
-                State:
-                <input
-                  type="text"
+                {/* State Dropdown */}
+                <select
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                   required
                   style={styles.inputBox}
-                />
-              </label>
+                >
+                  <option value="" disabled>Select State</option>
+                  {states.map((stateOption) => (
+                    <option key={stateOption} value={stateOption}>
+                      {stateOption}
+                    </option>
+                  ))}
+                </select>
 
-              <label>
-                Zip Code:
                 <input
                   type="text"
+                  placeholder="Zip Code"
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
                   required
                   style={styles.inputBox}
                 />
-              </label>
 
-              <div style={styles.row}>
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Skills</label>
-                  <div
-                    style={styles.multiSelectContainer}
-                    onClick={() => setShowSkillDropdown(!showSkillDropdown)}
-                  >
-                    <div style={styles.multiSelect}>
-                      <div style={styles.selectedSkills}>
-                        {skills.length
-                          ? skills.map((skill) => (
-                              <div key={skill} style={styles.skillTag}>
-                                {skill}
-                                <span
-                                  style={styles.clearTag}
-                                  onClick={() => handleSkillClear(skill)}
-                                >
-                                  &times;
-                                </span>
-                              </div>
-                            ))
-                          : "Select your skills..."}
-                      </div>
-                      {showSkillDropdown && (
-                        <div style={styles.dropdown}>
-                          {[
-                            "Health",
-                            "Education",
-                            "Environment",
-                            "Arts",
-                            "Animal Care",
-                          ].map((skill) => (
-                            <div
-                              key={skill}
-                              onClick={() => handleSkillSelect(skill)}
-                              style={{
-                                ...styles.dropdownItem,
-                                ...(skills.includes(skill) &&
-                                  styles.dropdownItemSelected),
-                              }}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={skills.includes(skill)}
-                                readOnly
-                                style={styles.availabilityCheckbox}
-                              />
-                              {skill}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                {/* Urgency Radio Buttons */}
+                <div style={styles.urgencyContainer}>
+                  <label>Urgency:</label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="High"
+                      checked={urgency === "High"}
+                      onChange={(e) => setUrgency(e.target.value)}
+                    />
+                    High
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="Medium"
+                      checked={urgency === "Medium"}
+                      onChange={(e) => setUrgency(e.target.value)}
+                    />
+                    Medium
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="Low"
+                      checked={urgency === "Low"}
+                      onChange={(e) => setUrgency(e.target.value)}
+                    />
+                    Low
+                  </label>
                 </div>
 
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Urgency</label>
-                  <div style={styles.radioGroup}>
-                    <label>
-                      <input
-                        type="radio"
-                        value="Low"
-                        checked={urgency === "Low"}
-                        onChange={(e) => setUrgency(e.target.value)}
-                      />
-                      Low
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="Medium"
-                        checked={urgency === "Medium"}
-                        onChange={(e) => setUrgency(e.target.value)}
-                      />
-                      Medium
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="High"
-                        checked={urgency === "High"}
-                        onChange={(e) => setUrgency(e.target.value)}
-                      />
-                      High
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <label>
-                Event Date:
                 <input
                   type="date"
                   value={eventDate}
@@ -289,20 +226,20 @@ export default function PageHandler() {
                   required
                   style={styles.inputBox}
                 />
-              </label>
 
-              <button type="submit" style={styles.createEventSubmit}>
-                Create Event
-              </button>
-            </form>
+                <button type="submit" style={styles.createEventSubmit}>
+                  Create Event
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
 }
 
-// Inline styles for both pages
+// Combined inline styles
 const styles = {
   container: {
     display: 'flex',
@@ -315,172 +252,134 @@ const styles = {
     top: 0,
     left: 0,
     width: '100%',
-    backgroundColor: 'red',
-    color: 'white',
+    backgroundColor: '#FF3030',
+    color: '#FFFFFF',
     padding: '10px 20px',
     display: 'flex',
     alignItems: 'center',
-    zIndex: 1000,
     boxSizing: 'border-box',
   },
   logo: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    marginRight: 'auto', // Pushes the logo to the left and aligns buttons to the right
+    fontSize: '24px',
+    fontWeight: 'bold',
+    marginRight: 'auto', // Ensures the logo stays on the left
   },
   navButtons: {
     display: 'flex',
-    gap: '10px',
-    marginLeft: 'auto', // Pushes buttons to the right
+    gap: '16px',
   },
   navButton: {
-    backgroundColor: 'white',
-    color: 'red',
+    backgroundColor: '#FFFFFF',
+    color: '#FF3030',
     border: 'none',
     padding: '8px 16px',
-    borderRadius: '4px',
+    borderRadius: '8px',
     cursor: 'pointer',
-    fontWeight: 'bold',
+    fontSize: '16px',
   },
   mainContainer: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
-    width: '100%',
-    height: 'calc(100vh - 50px)', // Adjust for fixed nav bar height
-    paddingTop: '50px', // Ensure content is below the fixed nav bar
-    boxSizing: 'border-box',
+    marginTop: '80px', // Added margin to prevent content from hiding under the navbar
+    padding: '20px',
   },
   contentBox: {
-    backgroundColor: 'white',
-    borderRadius: '10px',
-    padding: '40px',
     width: '100%',
-    maxWidth: '800px',
+    maxWidth: '1200px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '12px',
+    padding: '20px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    margin: '0 0 20px 0',
-    fontSize: '24px',
+    fontSize: '36px',
+    fontWeight: 'bold',
+    marginBottom: '20px',
+    textAlign: 'center', // Centers the title 
   },
   createEventButton: {
-    backgroundColor: 'red',
-    color: 'white',
+    backgroundColor: '#FF3030',
+    color: '#FFFFFF',
     border: 'none',
     padding: '10px 20px',
-    borderRadius: '5px',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '18px',
-    fontWeight: 'bold',
+    marginTop: '20px', // Add margin to space out from the events
+  },
+  eventsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap', // Allows multiple rows
+    gap: '20px', // Space between boxes
+    justifyContent: 'center', // Centers the boxes
+    width: '100%',
+    maxHeight: 'calc(100vh - 180px)', // Adjust height to fit in view with the button
+    overflowY: 'auto', // Allows scrolling if needed
+  },
+  eventBox: {
+    backgroundColor: '#F1F1F1',
+    width: '200px', // Width for the square box
+    height: '200px', // Height for the square box
+    padding: '10px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between', // Space out the content
+    boxSizing: 'border-box',
   },
   createEventContainer: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: '60px', // Ensure space for fixed nav bar
+    minHeight: '100vh',
     backgroundColor: '#D9D9D9',
   },
   createEventContentBox: {
-    backgroundColor: 'white',
-    borderRadius: '10px',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '800px',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: '20px',
   },
   createEventForm: {
     width: '100%',
     maxWidth: '600px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '12px',
+    padding: '20px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   },
   inputBox: {
     width: '100%',
     padding: '10px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-    boxSizing: 'border-box',
-  },
-  row: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '20px',
-  },
-  inputGroup: {
-    flex: 1,
-  },
-  label: {
-    fontWeight: 'bold',
-    display: 'block',
+    borderRadius: '8px',
+    border: '1px solid #CCCCCC',
     marginBottom: '10px',
   },
-  multiSelectContainer: {
-    position: 'relative',
-    cursor: 'pointer',
-  },
-  multiSelect: {
-    position: 'relative',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    padding: '10px',
-    boxSizing: 'border-box',
-  },
-  selectedSkills: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '5px',
-  },
-  skillTag: {
-    backgroundColor: '#e0e0e0',
-    borderRadius: '4px',
-    padding: '5px 10px',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  clearTag: {
-    marginLeft: '10px',
-    cursor: 'pointer',
-  },
-  dropdown: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    backgroundColor: 'white',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    zIndex: 1000,
+  textArea: {
     width: '100%',
-    boxSizing: 'border-box',
-  },
-  dropdownItem: {
     padding: '10px',
-    cursor: 'pointer',
-  },
-  dropdownItemSelected: {
-    backgroundColor: '#f0f0f0',
-  },
-  availabilityCheckbox: {
-    marginRight: '10px',
+    borderRadius: '8px',
+    border: '1px solid #CCCCCC',
+    marginBottom: '10px',
+    resize: 'vertical',
   },
   createEventSubmit: {
-    backgroundColor: 'red',
-    color: 'white',
+    backgroundColor: '#FF3030',
+    color: '#FFFFFF',
     border: 'none',
-    padding: '10px 20px',
-    borderRadius: '5px',
+    padding: '10px',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '18px',
-    fontWeight: 'bold',
   },
-  radioGroup: {
-    display: 'flex',
-    gap: '10px',
+  urgencyContainer: {
+    marginBottom: '10px',
+    
   },
 };
+
