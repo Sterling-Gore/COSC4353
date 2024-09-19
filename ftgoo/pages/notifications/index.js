@@ -1,6 +1,12 @@
 import React from "react";
 
 export default function Notifications() {
+  const notificationsArray = [
+    { eventNum: 1, time: "1:22 PM", eventStatus: "This event is now coming up, please show up quickly, it starts soon." },
+    { eventNum: 2, time: "1:01 PM", eventStatus: "This event was now cancelled. No need to come and visit." },
+    { eventNum: 3, time: "1:00 PM", eventStatus: "New events that match your profile, please check them out in the events page." },
+  ];
+
   return (
     <div style={styles.container}>
       <div style={styles.containerCover}>
@@ -19,41 +25,19 @@ export default function Notifications() {
             Notifications
           </p>
 
-          <div style={styles.eventContainer}> 
-            <div style={styles.topLeftEventText}>   
-                Event 1 - Reminder
+          {notificationsArray.map((notification) => (
+            <div style={styles.eventContainer} key={notification.eventNum}>
+              <div style={styles.topLeftEventText}>
+                Event {notification.eventNum} - Reminder
+              </div>
+              <div style={styles.bottomLeftEventText}>
+                {notification.time}
+              </div>
+              <div style={styles.rightEventText}>
+                {notification.eventStatus}
+              </div>
             </div>
-            <div style={styles.bottomLeftEventText}>
-                1:22 PM
-            </div>
-            <div style={styles.rightEventText}>
-                This event is now coming up, please show up quickly, it starts soon.
-            </div>
-          </div>
-          
-          <div style={styles.eventContainer}> 
-            <div style={styles.topLeftEventText}>   
-                Event 2 - Update
-            </div>
-            <div style={styles.bottomLeftEventText}>
-                1:01 PM
-            </div>
-            <div style={styles.rightEventText}>
-                This even was now cancelled. No need to come and visit.
-            </div>
-          </div>
-
-          <div style={styles.eventContainer}> 
-            <div style={styles.topLeftEventText}>   
-                Event 3 - Match
-            </div>
-            <div style={styles.bottomLeftEventText}>
-                1:00 PM
-            </div>
-            <div style={styles.rightEventText}>
-                New events that match your profile, please check them out in events page.
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
