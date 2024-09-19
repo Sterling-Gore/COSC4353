@@ -19,24 +19,25 @@ export default function Notifications() {
             </a>
           </div>
         </nav>
+
         <div style={styles.notificationsContainer}>
-          <div style={styles.notificationsText}>
+          <p style={styles.notificationsText}>
             Notifications
-          </div>
+          </p>
 
           {notificationsArray.map((notification) => (
-              <div style={styles.eventContainer} key={notification.eventNum}>
-                <div style={styles.topLeftEventText}>
-                  Event {notification.eventNum} - Reminder
-                </div>
-                <div style={styles.bottomLeftEventText}>
-                  {notification.time}
-                </div>
-                <div style={styles.rightEventText}>
-                  {notification.eventStatus}
-                </div>
+            <div style={styles.eventContainer} key={notification.eventNum}>
+              <div style={styles.topLeftEventText}>
+                Event {notification.eventNum} - Reminder
               </div>
-            ))}
+              <div style={styles.bottomLeftEventText}>
+                {notification.time}
+              </div>
+              <div style={styles.rightEventText}>
+                {notification.eventStatus}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -115,10 +116,10 @@ const styles = {
       marginBottom: "5vh",
       width: "80%",
       height: "12vh",
-      border: "1px solid black", 
+      border: "1px solid black",  // Ensure the border is black and solid
       display: "flex",
-      alignItems: "flex-start", 
-      position: "relative", 
+      alignItems: "flex-start", // Align items to the top
+      position: "relative", // For absolute positioning of child elements
     },
     topLeftEventText: {
       textAlign: "left",
@@ -147,4 +148,3 @@ const styles = {
       lineHeight: "1.5",
     },
   };
-  
