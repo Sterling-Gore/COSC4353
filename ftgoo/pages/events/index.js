@@ -1,7 +1,40 @@
 import React, { useState } from "react";
 
-export default function Notifications() {
-  const [selectedButton, setSelectedButton] = useState("myEvents");
+export default function Events() {
+  const [currentPage, setCurrentPage] = useState("myEvents");
+
+  const handleClick = () => {
+    if (currentPage === "myEvents"){
+      setCurrentPage("allEvents");
+    }
+    else{
+      setCurrentPage("myEvents");
+    }
+  };
+
+  const myEventsArray = [
+    { eventNum: 1, rsvp: false },
+    { eventNum: 2, rsvp: false },
+    { eventNum: 3, rsvp: false },
+    { eventNum: 4, rsvp: false },
+    { eventNum: 5, rsvp: false },
+    { eventNum: 6, rsvp: false },
+    { eventNum: 7, rsvp: false },
+    { eventNum: 8, rsvp: false },
+    { eventNum: 9, rsvp: false },
+  ];
+
+  const allEventsArray = [
+    { eventNum: 1, rsvp: false },
+    { eventNum: 2, rsvp: false },
+    { eventNum: 3, rsvp: false },
+    { eventNum: 4, rsvp: false },
+    { eventNum: 5, rsvp: false },
+    { eventNum: 6, rsvp: false },
+    { eventNum: 7, rsvp: false },
+    { eventNum: 8, rsvp: false },
+    { eventNum: 9, rsvp: false },
+  ];
 
   return (
     <div style={styles.container}>
@@ -15,22 +48,6 @@ export default function Notifications() {
             </a>
           </div>
         </nav>
-
-        <div style={styles.notificationsContainer}>
-          <p style={styles.eventsText}>
-            Events
-          </p>
-
-          <div style={styles.eventsButtonsContainer}>
-            <button style={styles.eventsButtons}>
-              My events
-            </button>
-            
-            <button style={styles.eventsButtons}>
-              All events
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -42,7 +59,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "gray",
-    height: "100vh",
+    height: "100vh",  
   },
   containerCover: {
     height: "100vh",
@@ -86,7 +103,7 @@ const styles = {
     borderRadius: "10px",
     width: "15vw",
   },
-  notificationsContainer: {
+  eventsContainer: {
     marginTop: "10vh",
     width: "60%",
     backgroundColor: "white",
@@ -94,7 +111,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    textAlign: "center",
     borderRadius: "10px",
   },
   eventsText: {
@@ -103,22 +119,14 @@ const styles = {
     marginTop: "7vh",
     fontWeight: 500,
     marginBottom: "2vh",
-  },
-  eventContainer: {
-    marginBottom: "5vh",
-    width: "80%",
-    height: "12vh",
-    border: "1px solid black",  
-    display: "flex",
-    alignItems: "flex-start", 
-    position: "relative", 
+    textAlign: "center",
   },
   eventsButtonsContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
-  eventsButtons: {
+  blackEventButton: {
     display: "flex",
     marginRight: "30px",
     marginLeft: "30px",
@@ -127,5 +135,28 @@ const styles = {
     color: "black",
     border: "none",
     cursor: "pointer",
+  },
+  grayEventButton: {
+    display: "flex",
+    marginRight: "30px",
+    marginLeft: "30px",
+    fontSize: "25px",
+    backgroundColor: "white",
+    color: "gray",
+    border: "none",
+    cursor: "pointer",
+  },
+  gridContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "10vh", 
+    marginTop: "20px",
+    justifyItems: "center", // Center items horizontally in each grid cell
+    alignItems: "center", // Center items vertically in each grid cell
+    border: "solid",
+    borderColor: "black",
+  },
+  eachGridContainer: {
+
   },
 };
