@@ -1,36 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function Notifications() {
-  const [selectedButton, setSelectedButton] = useState("myEvents");
+export default function Events() {
+  const eventsArray = [
+    { eventNum: 1, rsvp: false },
+    { eventNum: 2, rsvp: false },
+    { eventNum: 3, rsvp: false },
+  ];
 
   return (
     <div style={styles.container}>
-      <div style={styles.containerCover}>
-        <nav style={styles.navbar}>
-          <div style={styles.logo}>FTGOO</div>
-          <div style={styles.navLinks}>
-            <a href="./login" style={styles.navLink}>Login</a>
-            <a href="./registration">
-              <span style={styles.navButton}>Create Account</span>
-            </a>
-          </div>
-        </nav>
-
-        <div style={styles.notificationsContainer}>
-          <p style={styles.eventsText}>
-            Events
-          </p>
-
-          <div style={styles.eventsButtonsContainer}>
-            <button style={styles.eventsButtons}>
-              My events
-            </button>
-            
-            <button style={styles.eventsButtons}>
-              All events
-            </button>
-          </div>
+      <nav style={styles.navbar}>
+        <div style={styles.logo}>FTGOO</div>
+        <div style={styles.navLinks}>
+          <a href="./login" style={styles.navLink}>Login</a>
+          <a href="./registration">
+            <span style={styles.navButton}>Create Account</span>
+          </a>
         </div>
+      </nav>
+
+      <div style={styles.eventsContainer}>
+        <p style={styles.eventsText}>
+          Events
+        </p>
+        {eventsArray.map((event) => (
+          <div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -38,23 +34,13 @@ export default function Notifications() {
 
 const styles = {
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "gray",
-    height: "100vh",
-  },
-  containerCover: {
-    height: "100vh",
+    minHeight: "100vh",
     width: "100vw",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
   },
   navbar: {
-    position: "absolute",
-    top: 0,
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
@@ -62,7 +48,6 @@ const styles = {
     padding: "20px",
     backgroundColor: "#007BFF",
     color: "#f4f4f4",
-    zIndex: 2,
   },
   logo: {
     fontSize: "24px",
@@ -86,47 +71,59 @@ const styles = {
     borderRadius: "10px",
     width: "15vw",
   },
-  notificationsContainer: {
-    marginTop: "10vh",
+  eventsContainer: {
+    marginTop: "40px", 
     width: "60%",
     backgroundColor: "white",
-    height: "80vh",
+    minHeight: "60vh", 
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     textAlign: "center",
     borderRadius: "10px",
+    padding: "20px", 
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   eventsText: {
     fontSize: "37px",
     color: "black",
-    marginTop: "7vh",
     fontWeight: 500,
-    marginBottom: "2vh",
+    marginBottom: "10vh",
   },
   eventContainer: {
     marginBottom: "5vh",
     width: "80%",
     height: "12vh",
-    border: "1px solid black",  
+    border: "1px solid black",
     display: "flex",
-    alignItems: "flex-start", 
-    position: "relative", 
+    alignItems: "flex-start",
+    position: "relative",
   },
-  eventsButtonsContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  eventsButtons: {
-    display: "flex",
-    marginRight: "30px",
-    marginLeft: "30px",
-    fontSize: "25px",
-    backgroundColor: "white",
+  topLeftEventText: {
+    textAlign: "left",
     color: "black",
-    border: "none",
-    cursor: "pointer",
+    fontSize: "22px",
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  bottomLeftEventText: {
+    textAlign: "left",
+    color: "black",
+    fontSize: "22px",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+  },
+  rightEventText: {
+    textAlign: "right",
+    color: "black",
+    fontSize: "22px",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    maxWidth: "415px",
+    lineHeight: "1.5",
   },
 };
-  
