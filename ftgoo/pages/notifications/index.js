@@ -144,7 +144,7 @@ const styles = {
       position: "absolute",
       top: 0,
       right: 0,
-      maxWidth: "400px",
+      maxWidth: "415px",
       lineHeight: "1.5",
     },
   };

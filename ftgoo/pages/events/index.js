@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Notifications() {
+  const [selectedButton, setSelectedButton] = useState("myEvents");
 
   return (
     <div style={styles.container}>
@@ -16,9 +17,19 @@ export default function Notifications() {
         </nav>
 
         <div style={styles.notificationsContainer}>
-          <p style={styles.notificationsText}>
+          <p style={styles.eventsText}>
             Events
           </p>
+
+          <div style={styles.eventsButtonsContainer}>
+            <button style={styles.eventsButtons}>
+              My events
+            </button>
+            
+            <button style={styles.eventsButtons}>
+              All events
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -86,21 +97,36 @@ const styles = {
     textAlign: "center",
     borderRadius: "10px",
   },
-  notificationsText: {
+  eventsText: {
     fontSize: "37px",
     color: "black",
     marginTop: "7vh",
     fontWeight: 500,
-    marginBottom: "10vh",
+    marginBottom: "2vh",
   },
   eventContainer: {
     marginBottom: "5vh",
     width: "80%",
     height: "12vh",
-    border: "1px solid black",  // Ensure the border is black and solid
+    border: "1px solid black",  
     display: "flex",
-    alignItems: "flex-start", // Align items to the top
-    position: "relative", // For absolute positioning of child elements
+    alignItems: "flex-start", 
+    position: "relative", 
+  },
+  eventsButtonsContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  eventsButtons: {
+    display: "flex",
+    marginRight: "30px",
+    marginLeft: "30px",
+    fontSize: "25px",
+    backgroundColor: "white",
+    color: "black",
+    border: "none",
+    cursor: "pointer",
   },
 };
   
