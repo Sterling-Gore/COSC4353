@@ -4,12 +4,13 @@ import { useState } from "react";
 export default function PageHandler() {
   const [currentPage, setCurrentPage] = useState('eventManagement'); // State to manage current page
   const [skills, setSkills] = useState([]);
+  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [availability, setAvailability] = useState([]);
   const [events, setEvents] = useState([]); // State to store the list of events
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newEvent = {
       eventName,
       eventDescription,
@@ -22,11 +23,22 @@ export default function PageHandler() {
       urgency,
       eventDate,
     };
-
-    setEvents(prevEvents => [...prevEvents, newEvent].slice(0, 15)); // Add the new event to the events list, limit to 15
+  
+    if (editingEventIndex !== null) {
+      // Update existing event
+      setEvents((prevEvents) => {
+        const updatedEvents = [...prevEvents];
+        updatedEvents[editingEventIndex] = newEvent; // Update the specific event
+        return updatedEvents;
+      });
+    } else {
+      // Add new event
+      setEvents(prevEvents => [...prevEvents, newEvent].slice(0, 15)); // Limit to 15
+    }
+  
     setCurrentPage('eventManagement'); // Switch back to Event Management page
-    alert("Event created successfully!");
-
+    alert("Event saved successfully!");
+  
     // Reset form fields
     setEventName("");
     setEventDescription("");
@@ -35,9 +47,10 @@ export default function PageHandler() {
     setCity("");
     setState("");
     setZipCode("");
-    setUrgency("");
+    setUrgency("Medium");
     setEventDate("");
     setSkills([]);
+    setEditingEventIndex(null); // Reset editing index
   };
 
   const [eventName, setEventName] = useState("");
@@ -69,6 +82,49 @@ export default function PageHandler() {
     "Wisconsin", "Wyoming"
   ];
 
+  const availableSkills = [
+    "Health", "Education", "Environment", "Arts", "Animal Care"
+  ];
+
+  const handleSkillSelect = (skill) => {
+    setSkills((prevSkills) =>
+      prevSkills.includes(skill) ? prevSkills.filter(s => s !== skill) : [...prevSkills, skill]
+    );
+  };
+
+  const handleSkillClear = (skill) => {
+    setSkills(skills.filter(s => s !== skill));
+  };
+
+  const [editingEventIndex, setEditingEventIndex] = useState(null);
+
+  const handleEditEvent = (index) => {
+    const eventToEdit = events[index];
+    setEventName(eventToEdit.eventName);
+    setEventDescription(eventToEdit.eventDescription);
+    setAddressLine1(eventToEdit.addressLine1);
+    setAddressLine2(eventToEdit.addressLine2);
+    setCity(eventToEdit.city);
+    setState(eventToEdit.state);
+    setZipCode(eventToEdit.zipCode);
+    setUrgency(eventToEdit.urgency);
+    setEventDate(eventToEdit.eventDate);
+    setEditingEventIndex(index);
+    setCurrentPage('createEvent'); // Switch to the Create Event page
+  };
+
+  const isFormFilled = () => {
+    return (
+      eventName &&
+      eventDescription &&
+      addressLine1 &&
+      city &&
+      state &&
+      zipCode &&
+      eventDate
+    );
+  };
+
   return (
     <div style={styles.container}>
       {currentPage === 'eventManagement' && (
@@ -96,6 +152,7 @@ export default function PageHandler() {
                     <p>{event.addressLine1}, {event.city}, {event.state} - {event.zipCode}</p>
                     <p>Urgency: {event.urgency}</p>
                     <p>Date: {event.eventDate}</p>
+                    <button onClick={() => handleEditEvent(index)} style={styles.editButton}>Edit</button>
                   </div>
                 ))}
               </div>
@@ -120,7 +177,7 @@ export default function PageHandler() {
           </div>
 
           {/* Main Content Area */}
-          <div style={styles.mainContainer}>
+          <div style={styles.createEventContainer}>
             <div style={styles.createEventContentBox}>
               <h1 style={styles.title}>Create New Event</h1>
               <form onSubmit={handleSubmit} style={styles.createEventForm}>
@@ -187,10 +244,62 @@ export default function PageHandler() {
                   style={styles.inputBox}
                 />
 
+                {/* Skills Dropdown */}
+                <div style={styles.row}>
+                  <div style={styles.inputBox}>
+                    <label style={styles.label}>Skills</label>
+                    <div
+                      style={styles.multiSelectContainer}
+                      onClick={() => setShowSkillDropdown(!showSkillDropdown)}
+                    >
+                      <div style={styles.multiSelect}>
+                        <div style={styles.selectedSkills}>
+                          {skills.length
+                            ? skills.map((skill) => (
+                                <div key={skill} style={styles.skillTag}>
+                                  {skill}
+                                  <span
+                                    style={styles.clearTag}
+                                    onClick={() => handleSkillClear(skill)}
+                                  >
+                                    &times;
+                                  </span>
+                                </div>
+                              ))
+                            : "Select your skills..."}
+                        </div>
+                        {showSkillDropdown && (
+                          <div style={styles.dropdown}>
+                            {availableSkills.map((skill) => (
+                              <div
+                                key={skill}
+                                onClick={() => handleSkillSelect(skill)}
+                                style={{
+                                  ...styles.dropdownItem,
+                                  ...(skills.includes(skill) &&
+                                    styles.dropdownItemSelected),
+                                }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={skills.includes(skill)}
+                                  readOnly
+                                  style={styles.availabilityCheckbox}
+                                />
+                                {skill}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Urgency Radio Buttons */}
                 <div style={styles.urgencyContainer}>
                   <label>Urgency:</label>
-                  <label>
+                  <label style={styles.urgencyLabel}>
                     <input
                       type="radio"
                       value="High"
@@ -199,7 +308,7 @@ export default function PageHandler() {
                     />
                     High
                   </label>
-                  <label>
+                  <label style={styles.urgencyLabel}>
                     <input
                       type="radio"
                       value="Medium"
@@ -208,7 +317,7 @@ export default function PageHandler() {
                     />
                     Medium
                   </label>
-                  <label>
+                  <label style={styles.urgencyLabel}>
                     <input
                       type="radio"
                       value="Low"
@@ -219,17 +328,27 @@ export default function PageHandler() {
                   </label>
                 </div>
 
-                <input
-                  type="date"
-                  value={eventDate}
-                  onChange={(e) => setEventDate(e.target.value)}
-                  required
-                  style={styles.inputBox}
-                />
+                <div style={styles.urgencyContainer}>
+                  <label style={styles.label}>Date:</label> {/* Add this line */}
+                  <input
+                    type="date"
+                    placeholder="Event Date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    required
+                    style={styles.inputBox}
+                  />
+                </div>
 
-                <button type="submit" style={styles.createEventSubmit}>
-                  Create Event
-                </button>
+                <div style={styles.createEventActions}>
+                  <button 
+                    type={isFormFilled() ? "submit" : "button"}
+                    style={styles.createEventButton}
+                    onClick={isFormFilled() ? undefined : handleBackClick}
+                  >
+                    {isFormFilled() ? "Create Event" : "Cancel"}
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -239,7 +358,7 @@ export default function PageHandler() {
   );
 }
 
-// Combined inline styles
+// CSS styling in JavaScript
 const styles = {
   container: {
     display: 'flex',
@@ -248,25 +367,20 @@ const styles = {
     backgroundColor: '#D9D9D9',
   },
   navBar: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    backgroundColor: '#FF3030',
-    color: '#FFFFFF',
-    padding: '10px 20px',
     display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    boxSizing: 'border-box',
+    backgroundColor: '#FF3030', // Red navbar
+    padding: '10px 20px',
+    color: 'white',
   },
   logo: {
     fontSize: '24px',
     fontWeight: 'bold',
-    marginRight: 'auto', // Ensures the logo stays on the left
   },
   navButtons: {
     display: 'flex',
-    gap: '16px',
+    gap: '10px',
   },
   navButton: {
     backgroundColor: '#FFFFFF',
@@ -278,108 +392,139 @@ const styles = {
     fontSize: '16px',
   },
   mainContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '80px', // Added margin to prevent content from hiding under the navbar
+    backgroundColor: '#d0d0d0', // Grey background
     padding: '20px',
   },
   contentBox: {
-    width: '100%',
-    maxWidth: '1200px',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '12px',
+    backgroundColor: '#ffffff', // White content box
     padding: '20px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    borderRadius: '8px',
   },
   title: {
-    fontSize: '36px',
-    fontWeight: 'bold',
+    fontSize: '30px',
     marginBottom: '20px',
-    textAlign: 'center', // Centers the title 
+    textAlign: 'center', // Center the title
+  },
+  eventsContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)', // Display events in 3 columns
+    gap: '20px',
+  },
+  eventBox: {
+    backgroundColor: '#d0d0d0', // Grey event boxes
+    padding: '10px',
+    borderRadius: '8px',
   },
   createEventButton: {
     backgroundColor: '#FF3030',
-    color: '#FFFFFF',
+    color: 'white',
+    padding: '15px', // Increase padding for a taller button
     border: 'none',
-    padding: '10px 20px',
-    borderRadius: '12px',
     cursor: 'pointer',
-    fontSize: '18px',
-    marginTop: '20px', // Add margin to space out from the events
-  },
-  eventsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap', // Allows multiple rows
-    gap: '20px', // Space between boxes
-    justifyContent: 'center', // Centers the boxes
-    width: '100%',
-    maxHeight: 'calc(100vh - 180px)', // Adjust height to fit in view with the button
-    overflowY: 'auto', // Allows scrolling if needed
-  },
-  eventBox: {
-    backgroundColor: '#F1F1F1',
-    width: '200px', // Width for the square box
-    height: '200px', // Height for the square box
-    padding: '10px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between', // Space out the content
-    boxSizing: 'border-box',
+    marginTop: '20px',
+    width: '100%', // Make the button full width
+    fontSize: '18px', // Increase font size
+    borderRadius: '8px', // Optional: round the corners
   },
   createEventContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#d0d0d0',
+    padding: '20px',
   },
   createEventContentBox: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
     padding: '20px',
+    borderRadius: '8px',
   },
   createEventForm: {
-    width: '100%',
-    maxWidth: '600px',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '12px',
-    padding: '20px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    flexDirection: 'column',
   },
   inputBox: {
-    width: '100%',
     padding: '10px',
+    marginBottom: '20px',
     borderRadius: '8px',
-    border: '1px solid #CCCCCC',
-    marginBottom: '10px',
+    border: '1px solid #cccccc',
   },
   textArea: {
-    width: '100%',
+    padding: '10px',
+    marginBottom: '20px',
+    borderRadius: '8px',
+    border: '1px solid #cccccc',
+    height: '100px',
+  },
+  multiSelectContainer: {
+    position: 'relative',
+  },
+  multiSelect: {
     padding: '10px',
     borderRadius: '8px',
-    border: '1px solid #CCCCCC',
-    marginBottom: '10px',
-    resize: 'vertical',
-  },
-  createEventSubmit: {
-    backgroundColor: '#FF3030',
-    color: '#FFFFFF',
-    border: 'none',
-    padding: '10px',
-    borderRadius: '12px',
+    border: '1px solid #cccccc',
     cursor: 'pointer',
-    fontSize: '18px',
+    backgroundColor: '#f9f9f9',
+  },
+  selectedSkills: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+  },
+  skillTag: {
+    backgroundColor: '#f9f9f9',
+    border: '1px solid #cccccc',
+    borderRadius: '8px',
+    padding: '4px 8px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  clearTag: {
+    color: 'red',
+    cursor: 'pointer',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: '0',
+    right: '0',
+    backgroundColor: 'white',
+    borderRadius: '8px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    zIndex: '1000',
+    maxHeight: '200px',
+    overflowY: 'auto',
+  },
+  dropdownItem: {
+    padding: '10px',
+    cursor: 'pointer',
+    borderBottom: '1px solid #f0f0f0',
+  },
+  dropdownItemSelected: {
+    backgroundColor: '#f9f9f9',
+  },
+  availabilityCheckbox: {
+    marginRight: '8px',
+  },
+  createEventActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '20px',
   },
   urgencyContainer: {
-    marginBottom: '10px',
-    
+    display: 'flex',
+    alignItems: 'center', // Align items vertically in the center
+    gap: '20px', // Space between the buttons
+    marginBottom: '20px',
   },
+  urgencyLabel: {
+    marginRight: '10px',
+  },
+  editButton: {
+  backgroundColor: '#FF3030', // Red color
+  color: 'white',
+  padding: '8px 16px',
+  border: 'none',
+  cursor: 'pointer',
+  borderRadius: '4px',
+  marginTop: '10px', // Add some spacing
+  width: '100%', // Make it a full-width button
+},
 };
-
