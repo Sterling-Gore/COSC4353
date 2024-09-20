@@ -176,7 +176,7 @@ export default function profile_management() {
             <div style={styles.inputGroup}>
               <label style={styles.label}>Preferences</label>
                 <div style = {styles.dataBox}>
-                    <p>I'd prefer John to start working on game dev ASAP {'>:)'}</p>
+                    <p>I'd prefer John to give me a hug</p>
                 </div>
             </div>
           </>
