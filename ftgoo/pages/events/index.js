@@ -127,10 +127,17 @@ export default function Events() {
               </div>
             </div>
             <p style={styles.addressText}>
-              Address
+              Address 1
             </p>
             <input style={styles.address} type="text">
             </input>
+            
+            <p style={styles.addressText}>
+              Description
+            </p>
+            <input style={styles.address} type="text">
+            </input>
+            
           </div>
         )}
       </div>
@@ -303,12 +310,89 @@ const styles = {
     display: "flex",
     fontSize: "20px",
     color: "black",
+    marginBottom: "10px",
   },
   address: {
     width: "100vh",
     height: "5vh",
     backgroundColor: "gray",
     color: "black",
+    fontSize: "25px",
     border: "none",
+    paddingLeft: "10px",
+    marginBottom: "10px",
+  },
+  cityStateZip: {
+    display: "flex",
+    width: "100vh", // Matches the width of the other input fields
+    gap: "20px", // Space between columns
+    marginBottom: "10px",
+  },
+  cityContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "45vh", // Adjust widths to fill the container properly
+    color: "black",
+    fontSize: "20px",
+  },
+  stateContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "25vh", // Adjust width to match the available space
+    color: "black",
+    fontSize: "20px",
+  },
+  zipContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "25vh", // Adjust width to match the available space
+    color: "black",
+    fontSize: "20px",
+  },
+  cityStateZipInput: {
+    height: "5vh",
+    backgroundColor: "gray",
+    fontSize: "25px",
+    border: "none",
+    paddingLeft: "10px",
+    color: "black",
+  },
+  description: {
+    width: "100vh",
+    height: "5vh",
+    backgroundColor: "gray",
+    color: "black",
+    fontSize: "25px",
+    border: "none",
+    paddingLeft: "10px",
+    marginBottom: "10px",
+  },
+  prefAvail: {
+    display: "flex",
+    width: "100%",
+    gap: "20px", // Space between columns
+    marginBottom: "10px",
+  },
+  preferencesContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "55%",
+    color: "black",
+    fontSize: "20px",
+  },
+  availabilityContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "45%",
+    color: "black",
+    fontSize: "20px",
+  },
+  prefAvailInput: {
+    height: "5vh",
+    backgroundColor: "gray",
+    fontSize: "25px",
+    border: "none",
+    paddingLeft: "10px",
+    color: "black",
   },
 };  
