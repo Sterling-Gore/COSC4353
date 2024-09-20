@@ -86,6 +86,7 @@ const styles = {
       border: "2px solid black",  // Ensure the border is black and solid
       borderRadius: "8px",
       display: "flex",
+      backgroundColor: "#E6E1D3",
       alignItems: "flex-start", // Align items to the top
       position: "relative", // For absolute positioning of child elements
     },
