@@ -1,4 +1,3 @@
-import { pages } from "next/dist/build/templates/app-page";
 import React, { useState } from "react";
 
 export default function Events() {
@@ -114,15 +113,24 @@ export default function Events() {
           <div style={styles.rsvpContainer}>
             <div style={styles.rsvpBox}></div>
             <div style={styles.eventInfoContainer}>
-              <p style={styles.eventNameText}>
-                Event {selectedEventNum} 
-              </p>
+              <div>
+                <p style={styles.eventNameText}>
+                  Event {selectedEventNum} 
+                </p>
+              </div>
               <div style={styles.urgencyContainer}>
-                <p style={styles.eventNameText}>Urgency</p>
-                <img src="/Ellipse1.png"></img>
-                <p style={styles.urgencyText}>Low</p>
+                <p style={styles.urgencyText}>Urgency</p>
+                <div style={styles.imageUrgencyContainer}>
+                  <img src="/Ellipse.png" style={styles.blueDot}></img>
+                  <p style={styles.urgencyText}>Low</p>
+                </div>
               </div>
             </div>
+            <p style={styles.addressText}>
+              Address
+            </p>
+            <input style={styles.address} type="text">
+            </input>
           </div>
         )}
       </div>
@@ -250,7 +258,6 @@ const styles = {
   rsvpContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
   },
   rsvpBox: {
     backgroundColor: "gray",
@@ -265,23 +272,43 @@ const styles = {
     gap: "10px", // Space between grid items
     width: "100%", // Take full width
     marginTop: "20px", // Space above the info
+    marginBottom: "50px",
   },
   eventNameText: {
     gridColumn: "1 / span 2", // Event name takes full width
-    fontSize: "20px",
+    fontSize: "25px",
     color: "black",
     textAlign: "left",
     marginBottom: "15px",
   },
   urgencyContainer: {
-    display: "grid",
-    gridTemplateColumns: "auto 1fr", // Grid with two columns: image and text
     gap: "10px", // Space between icon and text
     alignItems: "center",
   },
   urgencyText: {
-    fontSize: "15px",
+    fontSize: "18px",
     color: "black",
-    textAlign: "left",
   },
-};
+  blueDot: {
+    width: "4vh",
+  },
+  imageUrgencyContainer: {
+    marginTop: "15px",  
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "20px",
+  },
+  addressText: {
+    display: "flex",
+    fontSize: "20px",
+    color: "black",
+  },
+  address: {
+    width: "100vh",
+    height: "5vh",
+    backgroundColor: "gray",
+    color: "black",
+    border: "none",
+  },
+};  
