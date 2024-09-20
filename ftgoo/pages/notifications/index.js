@@ -9,18 +9,23 @@ export default function Notifications() {
 
   return (
     <div style={styles.container}>
+      {/* Navbar */}
       <nav style={styles.navbar}>
-        <div style={styles.logo}>FTGOO</div>
-        <div style={styles.navLinks}>
-          <a href="./login" style={styles.navLink}>Login</a>
-          <a href="./registration">
-            <span style={styles.navButton}>Create Account</span>
-          </a>
-        </div>
-      </nav>
+            <div style={styles.logo}>FTGOO</div>
+            <div style={styles.navLinks}>
+              <a href="./profile-management">Account</a>
+              <a href="./events">Events</a>
+              <a href="./dashboard">Dashboard</a>
+              <a href="./volunteer-history">History</a>
+              <span style = {styles.navOnPage}>notifications</span>
+              <a href="./">
+                <span style = {styles.navButton}>Log out</span>
+              </a>
+            </div>
+          </nav>
 
       <div style={styles.notificationsContainer}>
-        <p style={styles.notificationsText}>Notifications</p>
+        <h1 style={styles.title}>Notifications</h1>
         {notificationsArray.map((notification) => (
           <div style={styles.eventContainer} key={notification.eventNum}>
             <div style={styles.topLeftEventText}>Event {notification.eventNum} - Reminder</div>
@@ -38,7 +43,7 @@ const styles = {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "gray",
+      backgroundColor: "#E6E1D3",
       height: "100vh",
     },
     containerCover: {
@@ -49,40 +54,6 @@ const styles = {
       justifyContent: "center",
       alignItems: "center",
     },
-    navbar: {
-      position: "absolute",
-      top: 0,
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "20px",
-      backgroundColor: "#007BFF",
-      color: "#f4f4f4",
-      zIndex: 2,
-    },
-    logo: {
-      fontSize: "24px",
-      fontWeight: "bold",
-    },
-    navLinks: {
-      display: "flex",
-      alignItems: "center",
-      gap: "24px",
-    },
-    navLink: {
-      color: "#f4f4f4",
-      textDecoration: "none",
-    },
-    navButton: {
-      backgroundColor: "#f4f4f4",
-      textAlign: "center",
-      color: "#007BFF",
-      border: "none",
-      padding: "6px 12px",
-      borderRadius: "10px",
-      width: "15vw",
-    },
     notificationsContainer: {
       marginTop: "10vh",
       width: "60%",
@@ -90,9 +61,15 @@ const styles = {
       height: "80vh",
       display: "flex",
       flexDirection: "column",
+      justifyContent: "Center",
       alignItems: "center",
       textAlign: "center",
       borderRadius: "10px",
+    },
+    title: {
+      textAlign: "center",
+      marginBottom: "20px",
+      color: "#333",
     },
     notificationsText: {
       fontSize: "37px",
@@ -103,10 +80,13 @@ const styles = {
     },
     eventContainer: {
       marginBottom: "5vh",
+      //padding: "20px 20px",
       width: "80%",
       height: "12vh",
-      border: "1px solid black",  // Ensure the border is black and solid
+      border: "2px solid black",  // Ensure the border is black and solid
+      borderRadius: "8px",
       display: "flex",
+      backgroundColor: "#E6E1D3",
       alignItems: "flex-start", // Align items to the top
       position: "relative", // For absolute positioning of child elements
     },
@@ -135,5 +115,44 @@ const styles = {
     right: 0,
     maxWidth: "415px",
     lineHeight: "1.5",
+  },
+
+//NAVBAR
+  navbar: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "20px",
+    backgroundColor: "#007BFF",
+    color: "#f4f4f4",
+    zIndex: 2,
+  },
+  logo: {
+    fontSize: "24px",
+    fontWeight: "bold",
+  },
+  navLinks: {
+    display: "flex",
+    alignItems: "center",
+    gap: "24px",
+  },
+  navLink: {
+    color: "#f4f4f4",
+    textDecoration: "none",
+  },
+  navButton: {
+    backgroundColor: "#f4f4f4",
+    textAlign: "center",
+    color: "#007BFF",
+    border: "none",
+    padding: "6px 12px",
+    borderRadius: "10px",
+    width: "15vw",
+  },
+  navOnPage: {
+    fontWeight: "bolder",
   },
 };
