@@ -1,9 +1,10 @@
-import { pages } from "next/dist/build/templates/app-page";
 import React, { useState } from "react";
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState("myEvents");
   const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
+  const [isClicked, setIsClicked] = useState(false);
+  const [isRSVPChecked, setIsRSVPChecked] = useState(null);
 
   const handleEventsChangeOnClick = () => {
     if (currentPage === "myEvents") {
@@ -16,6 +17,17 @@ export default function Events() {
   const handleRSVPOnClick = (eventNum) => {
     setSelectedEventNum(eventNum); // Set the selected event number
     setCurrentPage("RSVP");
+  };
+
+  const handleGoBackOnClick = () => {
+    setCurrentPage("myEvents");
+  };
+
+  const handleSaveClick = () => {
+    setIsClicked(true);
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 1000);
   };
 
   const myEventsArray = [
@@ -114,15 +126,78 @@ export default function Events() {
           <div style={styles.rsvpContainer}>
             <div style={styles.rsvpBox}></div>
             <div style={styles.eventInfoContainer}>
-              <p style={styles.eventNameText}>
-                Event {selectedEventNum} 
-              </p>
+              <div>
+                <p style={styles.eventNameText}>
+                  Event {selectedEventNum} 
+                </p>
+              </div>
               <div style={styles.urgencyContainer}>
-                <p style={styles.eventNameText}>Urgency</p>
-                <img src="/Ellipse1.png"></img>
-                <p style={styles.urgencyText}>Low</p>
+                <p style={styles.urgencyText}>Urgency</p>
+                <div style={styles.imageUrgencyContainer}>
+                  <img src="/Ellipse.png" style={styles.blueDot}></img>
+                  <p style={styles.urgencyText}>Low</p>
+                </div>
               </div>
             </div>
+            <p style={styles.infoText}>
+              Address 1
+            </p>
+            <input style={styles.addressInput} type="text" readOnly>
+            </input>
+            
+            <div style={styles.cityStateZip}>
+              <div style={styles.cityContainer}>
+                <p style={styles.infoText}>
+                  City
+                </p>
+                <input style={styles.cityInput} type="text" readOnly></input>
+              </div>
+              <div style={styles.stateContainer}>
+                <p style={styles.infoText}>
+                  State
+                </p>
+                <input style={styles.stateInput} type="text" readOnly></input>
+              </div>
+              <div style={styles.zipContainer}>
+                <p style={styles.infoText}>
+                  Zip Code
+                </p>
+                <input style={styles.zipInput} type="text" readOnly></input>
+              </div>
+            </div>
+
+            <p style={styles.infoText}>
+              Description
+            </p>
+            <input style={styles.descriptionInput} type="text" readOnly>
+            </input>
+            
+            <div style={styles.prefAvail}>
+              <div style={styles.preferenceContainer}>
+                <p style={styles.infoText}>
+                  Preferences
+                </p>
+                <input style={styles.preferenceInput} type="text" readOnly></input>
+              </div>
+              <div style={styles.availabilityContainer}>
+                <p style={styles.infoText}>
+                  Availability
+                </p>
+                <input style={styles.availabilityInput} type="text" readOnly></input>
+              </div>
+            </div>
+
+            <div style={styles.rsvpSaveContainer}>
+              <div style={styles.rsvpCheckContainer}>
+                <label htmlFor="rsvpCheckbox" style={styles.clickHereRSVPText}>Click here to RSVP</label>
+                <input type="checkbox" id="rsvpCheckbox" style={styles.rsvpCheckBoxStyle}></input>
+              </div>
+              <button style={isClicked ? styles.saveButtonClicked : styles.saveButton} onClick={handleSaveClick}>Save Changes</button>
+            </div>
+
+            <button style={styles.goBack} onClick={handleGoBackOnClick}>
+              Go Back
+            </button>
           </div>
         )}
       </div>
@@ -240,7 +315,7 @@ const styles = {
     marginBottom: "25px",
   },
   rsvpButton: {
-    color: "blue",
+    color: "#309CFF",
     marginTop: "5px",
     cursor: "pointer",
     backgroundColor: "white",
@@ -250,7 +325,6 @@ const styles = {
   rsvpContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
   },
   rsvpBox: {
     backgroundColor: "gray",
@@ -265,23 +339,212 @@ const styles = {
     gap: "10px", // Space between grid items
     width: "100%", // Take full width
     marginTop: "20px", // Space above the info
+    marginBottom: "50px",
   },
   eventNameText: {
     gridColumn: "1 / span 2", // Event name takes full width
-    fontSize: "20px",
+    fontSize: "25px",
     color: "black",
     textAlign: "left",
     marginBottom: "15px",
   },
   urgencyContainer: {
-    display: "grid",
-    gridTemplateColumns: "auto 1fr", // Grid with two columns: image and text
     gap: "10px", // Space between icon and text
     alignItems: "center",
   },
   urgencyText: {
-    fontSize: "15px",
+    fontSize: "18px",
     color: "black",
-    textAlign: "left",
   },
-};
+  blueDot: {
+    width: "4vh",
+  },
+  imageUrgencyContainer: {
+    marginTop: "15px",  
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "20px",
+  },
+
+  infoText: {
+    display: "flex",
+    fontSize: "20px",
+    color: "black",
+    marginBottom: "10px",
+  },
+  addressInput: {
+    width: "100vh",
+    height: "5vh",
+    backgroundColor: "gray",
+    color: "black",
+    fontSize: "25px",
+    border: "none",
+    paddingLeft: "10px",
+    marginBottom: "10px",
+    borderRadius: "3px",
+  },
+  cityStateZip: {
+    display: "flex",
+    width: "100vh",
+    gap: "10px",
+    marginBottom: "10px",
+  },
+  cityContainer: {
+    display: "flex",
+    flexBasis: "50%",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  cityInput: {
+    width: "100%", // Full width of the parent container
+    height: "5vh", // Adjust height to something more reasonable
+    backgroundColor: "gray",
+    border: "none",
+    paddingLeft: "10px",
+    fontSize: "25px", // Adjust font size if needed
+    color: "black",
+    boxSizing: "border-box",
+    borderRadius: "3px",
+  },
+  stateContainer: {
+    display: "flex",
+    flexDirection: "column",
+    flexBasis: "25%",
+    flexGrow: 1,
+  },
+  stateInput: {
+    width: "100%", // Full width of the parent container
+    height: "5vh", // Adjust height to something more reasonable
+    backgroundColor: "gray",
+    border: "none",
+    paddingLeft: "10px",
+    fontSize: "25px", // Adjust font size if needed
+    color: "black",
+    boxSizing: "border-box",
+    borderRadius: "3px",
+  },
+  zipContainer: {
+    display: "flex",
+    flexBasis: "25%",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  zipInput: {
+    width: "100%", // Full width of the parent container
+    height: "5vh", // Adjust height to something more reasonable
+    backgroundColor: "gray",
+    border: "none",
+    paddingLeft: "10px",
+    fontSize: "25px", // Adjust font size if needed
+    color: "black",
+    boxSizing: "border-box",
+    borderRadius: "3px",
+  },
+  descriptionInput: {
+    width: "100vh",
+    height: "5vh",
+    backgroundColor: "gray",
+    color: "black",
+    fontSize: "25px",
+    border: "none",
+    paddingLeft: "10px",
+    marginBottom: "10px",
+    borderRadius: "3px",
+  },
+  prefAvail: {
+    display: "flex",
+    width: "100vh",
+    gap: "10px",
+    marginBottom: "10px",
+  },
+  preferenceContainer: {
+    display: "flex",
+    flexBasis: "55%",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  preferenceInput: {
+    width: "100%", // Full width of the parent container
+    height: "5vh", // Adjust height to something more reasonable
+    backgroundColor: "gray",
+    border: "none",
+    paddingLeft: "10px",
+    fontSize: "25px", // Adjust font size if needed
+    color: "black",
+    boxSizing: "border-box",
+    borderRadius: "3px",
+  },
+  availabilityContainer: {
+    display: "flex",
+    flexBasis: "45%",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  availabilityInput: {
+    width: "100%", // Full width of the parent container
+    height: "5vh", // Adjust height to something more reasonable
+    backgroundColor: "gray",
+    border: "none",
+    paddingLeft: "10px",
+    fontSize: "25px", // Adjust font size if needed
+    color: "black",
+    boxSizing: "border-box",
+    borderRadius: "3px",
+  },
+  
+  rsvpSaveContainer: { 
+    display: "flex",
+    justifyContent: "space-between", // Space out RSVP and Save Changes
+    alignItems: "center", // Vertically align them
+    marginTop: "20px", // Adjust the spacing as needed
+    marginBottom: "40px",
+  },
+  rsvpCheckContainer: {
+    display: "flex",
+    alignItems: "center", // Align checkbox and label vertically
+    gap: "10px", // Space between checkbox and label
+  },
+  clickHereRSVPText: {
+    fontSize: "15px",
+    color: "#309CFF",
+    fontWeight: "300",
+    lineHeight: "20px", // Set the same line height as the checkbox height for better alignment
+  },  
+  rsvpCheckBoxStyle: {
+    width: "30px", // Set the width of the checkbox
+    height: "30px", // Set the height of the checkbox
+    margin: "0", // Remove default margin
+    borderRadius: "3px",
+  },
+  saveButton: {
+    transition: "0.15s",
+    padding: "10px 20px", // Adjust padding for button
+    backgroundColor: "#007BFF", // Button color
+    color: "white", // Text color
+    border: "none",
+    borderRadius: "5px", // Rounded corners
+    cursor: "pointer",
+  },
+  saveButtonClicked: {
+    transition: "0.15s",
+    padding: "10px 20px", // Adjust padding for button
+    backgroundColor: "#309CFF", // Button color
+    color: "white", // Text color
+    border: "none",
+    borderRadius: "5px", // Rounded corners
+    cursor: "pointer",
+  },
+  goBack: {
+    display: "flex",           // Enable flexbox for centering
+    justifyContent: "center",   // Center text horizontally
+    alignItems: "center",       // Center text vertically
+    width: "100vh",
+    height: "5vh",
+    backgroundColor: "#309CFF",
+    color: "white",             // Optional: Add color for contrast
+    border: "none",             // Optional: Remove default border
+    borderRadius: "3px",
+    cursor: "pointer",          // Optional: Change cursor to pointer on hover
+  },
+};  
