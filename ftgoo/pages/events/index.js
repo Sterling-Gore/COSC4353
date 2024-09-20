@@ -1,10 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Events() {
-  const eventsArray = [
+  const [currentPage, setCurrentPage] = useState("myEvents");
+  const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
+
+  const handleEventsChangeOnClick = () => {
+    if (currentPage === "myEvents") {
+      setCurrentPage("allEvents");
+    } else if (currentPage === "allEvents") {
+      setCurrentPage("myEvents");
+    }
+  };
+
+  const handleRSVPOnClick = (eventNum) => {
+    setSelectedEventNum(eventNum); // Set the selected event number
+    setCurrentPage("RSVP");
+  };
+
+  const myEventsArray = [
+    { eventNum: 1, rsvp: true },
+    { eventNum: 2, rsvp: false },
+    { eventNum: 3, rsvp: false },
+    { eventNum: 4, rsvp: false },
+    { eventNum: 5, rsvp: false },
+    { eventNum: 6, rsvp: false },
+    { eventNum: 7, rsvp: false },
+    { eventNum: 8, rsvp: false },
+    { eventNum: 9, rsvp: false },
+  ];
+
+  const allEventsArray = [
     { eventNum: 1, rsvp: false },
     { eventNum: 2, rsvp: false },
     { eventNum: 3, rsvp: false },
+    { eventNum: 4, rsvp: false },
+    { eventNum: 5, rsvp: false },
+    { eventNum: 6, rsvp: false },
+    { eventNum: 7, rsvp: false },
+    { eventNum: 8, rsvp: false },
+    { eventNum: 9, rsvp: false },
   ];
 
   return (
@@ -20,17 +54,73 @@ export default function Events() {
       </nav>
 
       <div style={styles.eventsContainer}>
-        <p style={styles.eventsText}>
-          Events
-        </p>
-        {eventsArray.map((event) => (
-          <div>
+        <p style={styles.eventsText}>Events</p>
+        {currentPage === "myEvents" && (
+          <div style={styles.eventsButtonsContainer}>
+            <button style={styles.blackEventsButtons}>My events</button>
+            <button style={styles.grayEventsButtons} onClick={handleEventsChangeOnClick}>
+              All events
+            </button>
           </div>
-        ))}
+        )}
+        {currentPage === "myEvents" && (
+          <div style={styles.eventsGrid}>
+            {myEventsArray.map((event) => (
+              <div style={styles.eventWrapper} key={event.eventNum}>
+                <div style={styles.eventBox}></div>
+                <div style={styles.eventInfo}>
+                  <p>Event {event.eventNum}</p>
+                  {event.rsvp ? (
+                    <button style={styles.rsvpButton}>RSVP'd</button>
+                  ) : (
+                    <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event.eventNum)}>
+                      Click here to RSVP
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {currentPage === "allEvents" && (
+          <div style={styles.eventsButtonsContainer}>
+            <button style={styles.grayEventsButtons} onClick={handleEventsChangeOnClick}>
+              My events
+            </button>
+            <button style={styles.blackEventsButtons}>All events</button>
+          </div>
+        )}
+        {currentPage === "allEvents" && (
+          <div style={styles.eventsGrid}>
+            {allEventsArray.map((event) => (
+              <div style={styles.eventWrapper} key={event.eventNum}>
+                <div style={styles.eventBox}></div>
+                <div style={styles.eventInfo}>
+                  <p>Event {event.eventNum}</p>
+                  {event.rsvp ? (
+                    <button style={styles.rsvpButton}>RSVP'd</button>
+                  ) : (
+                    <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event.eventNum)}>
+                      Click here to RSVP
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {currentPage === "RSVP" && (
+          <div style={styles.rsvpContainer}>
+            <div style={styles.rsvpBox}>
+            </div>
+            
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
 
 const styles = {
   container: {
@@ -39,6 +129,7 @@ const styles = {
     width: "100vw",
     display: "flex",
     flexDirection: "column",
+    paddingBottom: "40px",
   },
   navbar: {
     width: "100%",
@@ -71,59 +162,91 @@ const styles = {
     borderRadius: "10px",
     width: "15vw",
   },
-  eventsContainer: {
-    marginTop: "40px", 
-    width: "60%",
-    backgroundColor: "white",
-    minHeight: "60vh", 
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
-    borderRadius: "10px",
-    padding: "20px", 
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
   eventsText: {
     fontSize: "37px",
     color: "black",
     fontWeight: 500,
+    marginBottom: "5vh",
+  },
+  eventsButtonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "20vh",
     marginBottom: "10vh",
   },
-  eventContainer: {
-    marginBottom: "5vh",
-    width: "80%",
-    height: "12vh",
-    border: "1px solid black",
+  blackEventsButtons: {
     display: "flex",
-    alignItems: "flex-start",
-    position: "relative",
+    backgroundColor: "white",
+    border: "none",
+    color: "black",
+    fontSize: "30px",
+    cursor: "pointer",
   },
-  topLeftEventText: {
+  grayEventsButtons: {
+    display: "flex",
+    backgroundColor: "white",
+    border: "none",
+    color: "gray",
+    fontSize: "30px",
+    cursor: "pointer",
+  },
+  eventsContainer: {
+    marginTop: "40px",
+    width: "90%",
+    backgroundColor: "white",
+    minHeight: "60vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     textAlign: "left",
-    color: "black",
-    fontSize: "22px",
-    position: "absolute",
-    top: 0,
-    left: 0,
+    borderRadius: "10px",
+    padding: "20px",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
-  bottomLeftEventText: {
-    textAlign: "left",
-    color: "black",
-    fontSize: "22px",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
+  eventsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)", // Fixed to 3 columns
+    gap: "20px",
+    width: "100%",
   },
-  rightEventText: {
-    textAlign: "right",
+  eventWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  eventBox: {
+    backgroundColor: "gray",
+    width: "90%",
+    height: "60vh", // Adjust the height if needed
+    borderRadius: "10px",
+  },
+  eventInfo: {
+    marginTop: "10px",
     color: "black",
-    fontSize: "22px",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    maxWidth: "415px",
-    lineHeight: "1.5",
+    textAlign: "left", // Align text to the left
+    width: "90%", // Ensure it takes the full width of the container
+    fontSize: "20px",
+    marginTop: "20px",
+    marginBottom: "25px",
+  },
+  rsvpButton: {
+    color: "blue",
+    marginTop: "5px",
+    cursor: "pointer",
+    backgroundColor: "white",
+    border: "none",
+    fontSize: "15px",
+  },
+  rsvpContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  rsvpBox: {
+    backgroundColor: "gray",
+    width: "90%",
+    height: "50vh", // Adjust the height if needed
+    borderRadius: "10px",
   },
 };
