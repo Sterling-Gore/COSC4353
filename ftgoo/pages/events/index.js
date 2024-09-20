@@ -1,3 +1,4 @@
+import { pages } from "next/dist/build/templates/app-page";
 import React, { useState } from "react";
 
 export default function Events() {
@@ -111,7 +112,16 @@ export default function Events() {
         )}
         {currentPage === "RSVP" && (
           <div style={styles.rsvpContainer}>
-            <div style={styles.rsvpBox}>
+            <div style={styles.rsvpBox}></div>
+            <div style={styles.eventInfoContainer}>
+              <p style={styles.eventNameText}>
+                Event {selectedEventNum} 
+              </p>
+              <div style={styles.urgencyContainer}>
+                <p style={styles.eventNameText}>Urgency</p>
+                <img src="/Ellipse1.png"></img>
+                <p style={styles.urgencyText}>Low</p>
+              </div>
             </div>
           </div>
         )}
@@ -244,8 +254,34 @@ const styles = {
   },
   rsvpBox: {
     backgroundColor: "gray",
-    width: "90%",
-    height: "50vh", // Adjust the height if needed
+    width: "100vh",
+    height: "40vh", // Adjust the height if needed
     borderRadius: "10px",
+    overflow: "hidden",
+  },
+  eventInfoContainer: {
+    display: "grid",
+    gridTemplateColumns: "auto auto", // Two columns: one for labels, one for details
+    gap: "10px", // Space between grid items
+    width: "100%", // Take full width
+    marginTop: "20px", // Space above the info
+  },
+  eventNameText: {
+    gridColumn: "1 / span 2", // Event name takes full width
+    fontSize: "20px",
+    color: "black",
+    textAlign: "left",
+    marginBottom: "15px",
+  },
+  urgencyContainer: {
+    display: "grid",
+    gridTemplateColumns: "auto 1fr", // Grid with two columns: image and text
+    gap: "10px", // Space between icon and text
+    alignItems: "center",
+  },
+  urgencyText: {
+    fontSize: "15px",
+    color: "black",
+    textAlign: "left",
   },
 };
