@@ -112,6 +112,7 @@ export default function Events() {
         {currentPage === "RSVP" && (
           <div style={styles.rsvpContainer}>
             <div style={styles.rsvpBox}>
+              SOMETHING
             </div>
           </div>
         )}
