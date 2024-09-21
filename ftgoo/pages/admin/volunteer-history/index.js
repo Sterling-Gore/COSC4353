@@ -39,12 +39,14 @@ export default function VolunteerHistory() {
       <nav style={styles.navbar}>
         <div style={styles.logo}>FTGOO</div>
         <div style={styles.navLinks}>
-          <a href="./profile-management">Account</a>
-          <a href="./events">Events</a>
-          <a href="./dashboard">Dashboard</a>
-          <a href="./volunteer-history">History</a>
-          <span style={styles.navOnPage}>notifications</span>
-          <a href="./">
+          <a href="./account">Account</a>
+          <a href="./event-management">Event Management</a>
+          <span style={styles.navOnPage}>History</span>
+          <a href = "./matching">Matching</a>
+          <a href= "../user/events">
+                <span style = {styles.navSwitchButton}>User-Mode</span>
+              </a>
+          <a href="../">
             <span style={styles.navButton}>Log out</span>
           </a>
         </div>
@@ -180,7 +182,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "20px",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#FF3030",
     color: "#f4f4f4",
     zIndex: 2,
   },
@@ -193,10 +195,21 @@ const styles = {
     alignItems: "center",
     gap: "24px",
   },
-  navButton: {
+  navSwitchButton: {
     backgroundColor: "#f4f4f4",
     textAlign: "center",
     color: "#007BFF",
+    border: "none",
+    fontWeight: "bold",
+    padding: "6px 12px",
+    borderRadius: "10px",
+    width: "15vw",
+  },
+  navButton: {
+    backgroundColor: "#f4f4f4",
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#FF3030",
     border: "none",
     padding: "6px 12px",
     borderRadius: "10px",

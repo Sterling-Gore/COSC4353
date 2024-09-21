@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 export default function profile_management() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  //const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address1, setAddress1] = useState("");
@@ -79,10 +79,8 @@ export default function profile_management() {
             <div style={styles.navLinks}>
               <span style = {styles.navOnPage}>Account</span>
               <a href="./events">Events</a>
-              <a href="./dashboard">Dashboard</a>
-              <a href="./volunteer-history">History</a>
               <a href="./notifications">Notification</a>
-              <a href="./">
+              <a href="../">
                 <span style = {styles.navButton}>Log out</span>
               </a>
             </div>
@@ -642,6 +640,7 @@ const styles = {
     textAlign: "center",
     color: "#007BFF",
     border: "none",
+    fontWeight: "bold",
     padding: "6px 12px",
     borderRadius: "10px",
     width: "15vw",

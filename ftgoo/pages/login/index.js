@@ -21,8 +21,8 @@ export default function Login() {
 
     try {
       // Add authentication logic here, such as calling an API
-      // If successful, redirect to the dashboard or home
-      router.push("/dashboard"); // Example redirect after login
+      // If successful, redirect to the events or home
+      router.push("/user/events"); // Example redirect after login
     } catch (err) {
       // Handle login errors (e.g., wrong credentials)
       setError("Login failed. Please check your credentials and try again.");

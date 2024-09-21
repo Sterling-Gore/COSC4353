@@ -129,14 +129,22 @@ export default function PageHandler() {
     <div style={styles.container}>
       {currentPage === 'eventManagement' && (
         <>
-          {/* Navigation bar */}
-          <div style={styles.navBar}>
+          {/* Navbar */}
+        <nav style={styles.navbar}>
             <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navButtons}>
-              <button style={styles.navButton}>Login</button>
-              <button style={styles.navButton}>Register</button>
+            <div style={styles.navLinks}>
+              <a href= "./admin-account">Account</a>
+              <a href="./events">Event Management</a>
+              <a href="./volunteer-history">History</a>
+              <span style = {styles.navOnPage}>Matching</span>
+              <a href= "./events">
+                <span style = {styles.navSwitchButton}>User-Mode</span>
+              </a>
+              <a href="./">
+                <span style = {styles.navButton}>Log out</span>
+              </a>
             </div>
-          </div>
+          </nav>
 
           {/* Main content */}
           <div style={styles.mainContainer}>
@@ -361,35 +369,57 @@ export default function PageHandler() {
 // CSS styling in JavaScript
 const styles = {
   container: {
-    display: 'flex',
+    display: "flex",
+    justifyContent: "center",
+    //alignItems: "center",
+
     flexDirection: 'column',
     minHeight: '100vh',
     backgroundColor: '#D9D9D9',
   },
-  navBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#FF3030', // Red navbar
-    padding: '10px 20px',
-    color: 'white',
+  navbar: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "20px",
+    backgroundColor: "#FF3030", // Transparent black background for the navbar
+    color: "#f4f4f4",
+    zIndex: 2, // Ensures the navbar is on top of the background
   },
   logo: {
-    fontSize: '24px',
-    fontWeight: 'bold',
+    fontSize: "24px",
+    fontWeight: "bold",
   },
-  navButtons: {
-    display: 'flex',
-    gap: '10px',
+  navLinks: {
+    display: "flex",
+    alignItems: "center",
+    gap: "24px",
+  },
+  navOnPage: {
+    fontWeight: "bolder",
+  },
+  navSwitchButton: {
+    backgroundColor: "#f4f4f4",
+    textAlign: "center",
+    color: "#007BFF",
+    border: "none",
+    padding: "6px 12px",
+    fontWeight: "bold",
+    borderRadius: "10px",
+    width: "15vw",
   },
   navButton: {
-    backgroundColor: '#FFFFFF',
-    color: '#FF3030',
-    border: 'none',
-    padding: '8px 16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '16px',
+    backgroundColor: "#f4f4f4",
+    textAlign: "center",
+    color: "#FF3030",
+    border: "none",
+    fontWeight: "bold",
+    padding: "6px 12px",
+    borderRadius: "10px",
+    width: "15vw",
   },
   mainContainer: {
     backgroundColor: '#d0d0d0', // Grey background
@@ -398,7 +428,11 @@ const styles = {
   contentBox: {
     backgroundColor: '#ffffff', // White content box
     padding: '20px',
+    minHeight: "50vh",
     borderRadius: '8px',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   title: {
     fontSize: '30px',

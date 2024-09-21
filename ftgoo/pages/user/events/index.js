@@ -32,14 +32,14 @@ export default function Events() {
 
   const myEventsArray = [
     { eventNum: 1, rsvp: true },
-    { eventNum: 2, rsvp: false },
-    { eventNum: 3, rsvp: false },
-    { eventNum: 4, rsvp: false },
-    { eventNum: 5, rsvp: false },
-    { eventNum: 6, rsvp: false },
-    { eventNum: 7, rsvp: false },
-    { eventNum: 8, rsvp: false },
-    { eventNum: 9, rsvp: false },
+    { eventNum: 2, rsvp: true },
+    { eventNum: 3, rsvp: true },
+    { eventNum: 4, rsvp: true },
+    { eventNum: 5, rsvp: true },
+    { eventNum: 6, rsvp: true },
+    { eventNum: 7, rsvp: true },
+    { eventNum: 8, rsvp: true },
+    { eventNum: 9, rsvp: true },
   ];
 
   const allEventsArray = [
@@ -56,18 +56,21 @@ export default function Events() {
 
   return (
     <div style={styles.container}>
+      {/* Navbar */}
       <nav style={styles.navbar}>
-        <div style={styles.logo}>FTGOO</div>
-        <div style={styles.navLinks}>
-          <a href="./login" style={styles.navLink}>Login</a>
-          <a href="./registration">
-            <span style={styles.navButton}>Create Account</span>
-          </a>
-        </div>
-      </nav>
+            <div style={styles.logo}>FTGOO</div>
+            <div style={styles.navLinks}>
+              <a href = "./account">Account</a>
+              <span style = {styles.navOnPage}>Events</span>
+              <a href="./notifications">Notification</a>
+              <a href="../">
+                <span style = {styles.navButton}>Log out</span>
+              </a>
+            </div>
+          </nav>
 
       <div style={styles.eventsContainer}>
-        <p style={styles.eventsText}>Events</p>
+      <h1 style={styles.title}>Events</h1>
         {currentPage === "myEvents" && (
           <div style={styles.eventsButtonsContainer}>
             <button style={styles.blackEventsButtons}>My events</button>
@@ -175,13 +178,13 @@ export default function Events() {
             <div style={styles.prefAvail}>
               <div style={styles.preferenceContainer}>
                 <p style={styles.infoText}>
-                  Preferences
+                  Required Skills
                 </p>
                 <input style={styles.preferenceInput} type="text" readOnly></input>
               </div>
               <div style={styles.availabilityContainer}>
                 <p style={styles.infoText}>
-                  Availability
+                  Event Date
                 </p>
                 <input style={styles.availabilityInput} type="text" readOnly></input>
               </div>
@@ -208,21 +211,24 @@ export default function Events() {
 
 const styles = {
   container: {
-    backgroundColor: "gray",
-    minHeight: "100vh",
-    width: "100vw",
     display: "flex",
-    flexDirection: "column",
-    paddingBottom: "40px",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    backgroundColor: "#E6E1D3",
+    padding: "20px",
   },
   navbar: {
+    position: "absolute",
+    top: 0,
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     padding: "20px",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#007BFF", // Transparent black background for the navbar
     color: "#f4f4f4",
+    zIndex: 2, // Ensures the navbar is on top of the background
   },
   logo: {
     fontSize: "24px",
@@ -233,15 +239,15 @@ const styles = {
     alignItems: "center",
     gap: "24px",
   },
-  navLink: {
-    color: "#f4f4f4",
-    textDecoration: "none",
+  navOnPage: {
+    fontWeight: "bolder",
   },
   navButton: {
     backgroundColor: "#f4f4f4",
     textAlign: "center",
     color: "#007BFF",
     border: "none",
+    fontWeight: "bold",
     padding: "6px 12px",
     borderRadius: "10px",
     width: "15vw",
@@ -275,18 +281,23 @@ const styles = {
     cursor: "pointer",
   },
   eventsContainer: {
-    marginTop: "40px",
-    width: "90%",
-    backgroundColor: "white",
-    minHeight: "60vh",
+    marginTop: "10vh",
+    width: "52.5vw",
+    minHeight: "40vh",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
-    textAlign: "left",
-    borderRadius: "10px",
+    backgroundColor: "#fff",
     padding: "20px",
-    marginLeft: "auto",
-    marginRight: "auto",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    overflow: "hidden",
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+    color: "#333",
   },
   eventsGrid: {
     display: "grid",
@@ -300,11 +311,12 @@ const styles = {
     alignItems: "center",
   },
   eventBox: {
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     width: "90%",
     height: "60vh", // Adjust the height if needed
     borderRadius: "10px",
   },
+  
   eventInfo: {
     marginTop: "10px",
     color: "black",
@@ -327,7 +339,7 @@ const styles = {
     flexDirection: "column",
   },
   rsvpBox: {
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     width: "100vh",
     height: "40vh", // Adjust the height if needed
     borderRadius: "10px",
@@ -366,6 +378,25 @@ const styles = {
     alignItems: "center",
     gap: "20px",
   },
+  inputGroup: {
+    flex: "1 1 calc(50% - 10px)",
+    minWidth: "300px",
+    marginBottom: "10px",
+  },
+  label: {
+    display: "block",
+    marginBottom: "5px",
+    color: "#555",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    color: "#333",
+    boxSizing: "border-box",
+  },
 
   infoText: {
     display: "flex",
@@ -376,7 +407,7 @@ const styles = {
   addressInput: {
     width: "100vh",
     height: "5vh",
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     color: "black",
     fontSize: "25px",
     border: "none",
@@ -399,7 +430,7 @@ const styles = {
   cityInput: {
     width: "100%", // Full width of the parent container
     height: "5vh", // Adjust height to something more reasonable
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",
     fontSize: "25px", // Adjust font size if needed
@@ -416,7 +447,7 @@ const styles = {
   stateInput: {
     width: "100%", // Full width of the parent container
     height: "5vh", // Adjust height to something more reasonable
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",
     fontSize: "25px", // Adjust font size if needed
@@ -433,7 +464,7 @@ const styles = {
   zipInput: {
     width: "100%", // Full width of the parent container
     height: "5vh", // Adjust height to something more reasonable
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",
     fontSize: "25px", // Adjust font size if needed
@@ -444,7 +475,7 @@ const styles = {
   descriptionInput: {
     width: "100vh",
     height: "5vh",
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     color: "black",
     fontSize: "25px",
     border: "none",
@@ -467,7 +498,7 @@ const styles = {
   preferenceInput: {
     width: "100%", // Full width of the parent container
     height: "5vh", // Adjust height to something more reasonable
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",
     fontSize: "25px", // Adjust font size if needed
@@ -484,7 +515,7 @@ const styles = {
   availabilityInput: {
     width: "100%", // Full width of the parent container
     height: "5vh", // Adjust height to something more reasonable
-    backgroundColor: "gray",
+    backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",
     fontSize: "25px", // Adjust font size if needed

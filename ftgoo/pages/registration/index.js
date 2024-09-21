@@ -46,7 +46,7 @@ export default function Registration() {
         return;
       }
       // Handle form submission
-      router.push("/dashboard"); // Example redirect after registration
+      router.push("/user/events"); // Example redirect after registration
     }
   };
 

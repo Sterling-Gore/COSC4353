@@ -13,12 +13,10 @@ export default function Notifications() {
       <nav style={styles.navbar}>
             <div style={styles.logo}>FTGOO</div>
             <div style={styles.navLinks}>
-              <a href="./profile-management">Account</a>
+              <a href="./account">Account</a>
               <a href="./events">Events</a>
-              <a href="./dashboard">Dashboard</a>
-              <a href="./volunteer-history">History</a>
               <span style = {styles.navOnPage}>notifications</span>
-              <a href="./">
+              <a href="../">
                 <span style = {styles.navButton}>Log out</span>
               </a>
             </div>
@@ -148,6 +146,7 @@ const styles = {
     textAlign: "center",
     color: "#007BFF",
     border: "none",
+    fontWeight: "bold",
     padding: "6px 12px",
     borderRadius: "10px",
     width: "15vw",
