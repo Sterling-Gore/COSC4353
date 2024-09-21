@@ -102,6 +102,9 @@ export default function Events() {
               </div>
             ))}
           </div>
+          <div>
+            <button style = {styles.createButton} onClick={() => handlePageChangeOnClick("CreateEvent", numEvents+1)}>Create Event</button>
+          </div>
           </>
         )}
         {currentPage === "EditEvent" && (
@@ -171,7 +174,109 @@ export default function Events() {
               </div>
 
 
+              
+
               <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>City</label>
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="Enter the city"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>State</label>
+                  <select
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    required
+                    style={styles.input}
+                  >
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Zip Code</label>
+                  <input
+                    type="text"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    placeholder="Enter the zip code"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Description</label>
+                  <input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter a description for the event"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+            <div style={styles.row}>
               <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
@@ -192,7 +297,7 @@ export default function Events() {
                                 </span>
                               </div>
                             ))
-                          : "Select your skills..."}
+                          : "Select required skills..."}
                       </div>
                       {showSkillDropdown && (
                         <div style={styles.dropdown}>
@@ -226,9 +331,9 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
-                <div style={styles.inputGroup}>
+              <div style={styles.inputGroup}>
               <label style={styles.label}>Date:</label> {/* Add this line */}
-              <div style={styles.dataContainer}>
+              <div style={styles.dateContainer}>
                   <input
                     type="date"
                     placeholder="Event Date"
@@ -237,69 +342,269 @@ export default function Events() {
                     required
                     style={styles.dateBox}
                   />
+                </div>
                   </div>
-                  </div>
               </div>
-
-            <p style={styles.infoText}>
-              Address 1
-            </p>
-            <input style={styles.addressInput} type="text" readOnly>
-            </input>
             
-            <div style={styles.cityStateZip}>
-              <div style={styles.cityContainer}>
-                <p style={styles.infoText}>
-                  City
-                </p>
-                <input style={styles.cityInput} type="text" readOnly></input>
-              </div>
-              <div style={styles.stateContainer}>
-                <p style={styles.infoText}>
-                  State
-                </p>
-                <input style={styles.stateInput} type="text" readOnly></input>
-              </div>
-              <div style={styles.zipContainer}>
-                <p style={styles.infoText}>
-                  Zip Code
-                </p>
-                <input style={styles.zipInput} type="text" readOnly></input>
-              </div>
-            </div>
-
-            <p style={styles.infoText}>
-              Description
-            </p>
-            <input style={styles.descriptionInput} type="text" readOnly>
-            </input>
-            
-            <div style={styles.prefAvail}>
-              <div style={styles.preferenceContainer}>
-                <p style={styles.infoText}>
-                  Required Skills
-                </p>
-                <input style={styles.preferenceInput} type="text" readOnly></input>
-              </div>
-              <div style={styles.availabilityContainer}>
-                <p style={styles.infoText}>
-                  Event Date
-                </p>
-                <input style={styles.availabilityInput} type="text" readOnly></input>
-              </div>
-            </div>
-
-            <div style={styles.rsvpSaveContainer}>
-              <div style={styles.rsvpCheckContainer}>
-                <label htmlFor="rsvpCheckbox" style={styles.clickHereRSVPText}>Click here to RSVP</label>
-                <input type="checkbox" id="rsvpCheckbox" style={styles.rsvpCheckBoxStyle}></input>
-              </div>
-              <button style={isClicked ? styles.saveButtonClicked : styles.saveButton} onClick={handleSaveClick}>Save Changes</button>
-            </div>
-
+            <div style = {styles.rowButtons}>
             <button style={styles.goBack} onClick={handleGoBackOnClick}>
-              Go Back
+              Cancel
             </button>
+            <button style={styles.goBack} onClick={handleGoBackOnClick}>
+              Save Changes
+            </button>
+            </div>
+          </div>
+          </>
+        )}
+
+{currentPage === "CreateEvent" && (
+          <>
+          <h1 style={styles.title}>Create Event {selectedEventNum}</h1>
+          <div style={styles.rsvpContainer}>
+            <div style={styles.rsvpBox}></div>
+            <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Event Name</label>
+                  <input
+                    type="text"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
+                    placeholder="Enter the event name"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Urgency</label>
+                  <div style = {styles.urgencyContainer}>
+                    <label style={styles.urgencyText}>
+                      <input
+                        type="radio"
+                        value="High"
+                        checked={urgency === "High"}
+                        onChange={(e) => setUrgency(e.target.value)}
+                      />
+                      High
+                    </label>
+                    <label style={styles.urgencyText}>
+                      <input
+                        type="radio"
+                        value="Medium"
+                        checked={urgency === "Medium"}
+                        onChange={(e) => setUrgency(e.target.value)}
+                      />
+                      Medium
+                    </label>
+                    <label style={styles.urgencyText}>
+                      <input
+                        type="radio"
+                        value="Low"
+                        checked={urgency === "Low"}
+                        onChange={(e) => setUrgency(e.target.value)}
+                      />
+                      Low
+                    </label>
+                  </div>
+              
+                </div>
+              </div>
+
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Address</label>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Enter the address"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+
+              
+
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>City</label>
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="Enter the city"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>State</label>
+                  <select
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    required
+                    style={styles.input}
+                  >
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Zip Code</label>
+                  <input
+                    type="text"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    placeholder="Enter the zip code"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Description</label>
+                  <input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter a description for the event"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+            <div style={styles.row}>
+              <div style={styles.inputGroup}>
+                  <label style={styles.label}>Required Skills</label>
+                  <div
+                    style={styles.multiSelectContainer}
+                    onClick={() => setShowSkillDropdown(!showSkillDropdown)}
+                  >
+                    <div style={styles.multiSelect}>
+                      <div style={styles.selectedSkills}>
+                        {skills.length
+                          ? skills.map((skill) => (
+                              <div key={skill} style={styles.skillTag}>
+                                {skill}
+                                <span
+                                  style={styles.clearTag}
+                                  onClick={() => handleSkillClear(skill)}
+                                >
+                                  &times;
+                                </span>
+                              </div>
+                            ))
+                          : "Select required skills..."}
+                      </div>
+                      {showSkillDropdown && (
+                        <div style={styles.dropdown}>
+                          {[
+                            "Health",
+                            "Education",
+                            "Environment",
+                            "Arts",
+                            "Animal Care",
+                          ].map((skill) => (
+                            <div
+                              key={skill}
+                              onClick={() => handleSkillSelect(skill)}
+                              style={{
+                                ...styles.dropdownItem,
+                                ...(skills.includes(skill) &&
+                                  styles.dropdownItemSelected),
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={skills.includes(skill)}
+                                readOnly
+                                style={styles.availabilityCheckbox}
+                              />
+                              {skill}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              <div style={styles.inputGroup}>
+              <label style={styles.label}>Date:</label> {/* Add this line */}
+              <div style={styles.dateContainer}>
+                  <input
+                    type="date"
+                    placeholder="Event Date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    required
+                    style={styles.dateBox}
+                  />
+                </div>
+                  </div>
+              </div>
+            
+            <div style = {styles.rowButtons}>
+            <button style={styles.goBack} onClick={handleGoBackOnClick}>
+              Cancel
+            </button>
+            <button style={styles.goBack} onClick={handleGoBackOnClick}>
+              Create Event
+            </button>
+            </div>
           </div>
           </>
         )}
@@ -396,6 +701,7 @@ const styles = {
   multiSelectContainer: {
     position: "relative",
     cursor: "pointer",
+    fontSize: 20,
   },
   multiSelect: {
     border: "1px solid #ccc",
@@ -452,6 +758,10 @@ const styles = {
     backgroundColor: "#007BFF",
     color: "#fff",
   },
+  rowButtons: {
+    display: "flex",
+    justifyContent: "space-around",
+  },
   row: {
     display: "flex",
     flexWrap: "wrap",
@@ -460,6 +770,7 @@ const styles = {
   },
   dateBox: {
     padding: '10px',
+    minWidth: "20vw",
     marginBottom: '20px',
     borderRadius: '8px',
     border: '1px solid #cccccc',
@@ -568,6 +879,10 @@ const styles = {
     color: "black",
     textAlign: "left",
     marginBottom: "15px",
+  },
+  dateContainer: {
+    display: "flex",
+    justifyContent: "center",
   },
   urgencyContainer: {
     display: "flex",
@@ -761,12 +1076,29 @@ const styles = {
     display: "flex",           // Enable flexbox for centering
     justifyContent: "center",   // Center text horizontally
     alignItems: "center",       // Center text vertically
+    minWidth: "45vh",
+    maxWidth: "100vh",
+    height: "5vh",
+    backgroundColor: "#FF3030",
+    color: "white", 
+    fontSize: 20,
+    fontWeight: "bold",            // Optional: Add color for contrast
+    border: "none",             // Optional: Remove default border
+    borderRadius: "8px",
+    cursor: "pointer",          // Optional: Change cursor to pointer on hover
+  },
+  createButton: {
+    display: "flex",           // Enable flexbox for centering
+    justifyContent: "center",   // Center text horizontally
+    alignItems: "center",       // Center text vertically
     width: "100vh",
     height: "5vh",
-    backgroundColor: "#309CFF",
-    color: "white",             // Optional: Add color for contrast
+    backgroundColor: "#FF3030",
+    color: "white", 
+    fontSize: 20,
+    fontWeight: "bold",            // Optional: Add color for contrast
     border: "none",             // Optional: Remove default border
-    borderRadius: "3px",
+    borderRadius: "8px",
     cursor: "pointer",          // Optional: Change cursor to pointer on hover
   },
 };  
