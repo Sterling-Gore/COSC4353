@@ -180,7 +180,7 @@ export default function matching() {
                                     </span>
                                 </div>
                                 ))
-                            : "Select your availability..."}
+                            : "Select volunteers here..."}
                         </div>
                         {showAvailabilityDropdown[i] && (
                             <div style={styles.dropdown}>
