@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { personObject } from "@/pages/api/server";
 
 export default function profile_management() {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
+  //const [email, setEmail] = useState("");
   //const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [skills, setSkills] = useState([]);
-  const [preferences, setPreferences] = useState("");
-  const [availability, setAvailability] = useState([]);
+  const [firstName, setFirstName] = useState(personObject.firstName);
+  const [lastName, setLastName] = useState(personObject.lastName);
+  const [address1, setAddress1] = useState(personObject.Address1);
+  const [address2, setAddress2] = useState(personObject.Address2);
+  const [city, setCity] = useState(personObject.city);
+  const [state, setState] = useState(personObject.State);
+  const [zipCode, setZipCode] = useState(personObject.zipCode);
+  const [skills, setSkills] = useState(personObject.skills);
+  const [preferences, setPreferences] = useState(personObject.preference);
+  const [availability, setAvailability] = useState(personObject.availability);
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [showAvailabilityDropdown, setShowAvailabilityDropdown] =
-    useState(false);
+  const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
 
   const router = useRouter();
 
@@ -151,9 +151,9 @@ export default function profile_management() {
                 <label style={styles.label}>Skills</label>
                 <div style = {styles.dataBox}>
                     <div style={styles.selectedSkills}>
-                        <span style = {styles.skillTag}>Health</span>
-                        <span style = {styles.skillTag}>Education</span>
-                        <span style = {styles.skillTag}>Arts</span>
+                        {skills.map((skill) => 
+                          <span style = {styles.skillTag}> {skill}</span>                   
+                        )}
                     </div>
                 </div>
                     
@@ -164,9 +164,9 @@ export default function profile_management() {
                 <label style={styles.label}>Availability</label>
                 <div style = {styles.dataBox}>
                     <div style={styles.selectedSkills}>
-                        <span style = {styles.skillTag}>Monday</span>
-                        <span style = {styles.skillTag}>Tuesday</span>
-                        <span style = {styles.skillTag}>Wednesday</span>
+                        {availability.map((skill) => 
+                          <span style = {styles.skillTag}> {skill}</span>                   
+                        )}
                     </div>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function profile_management() {
             <div style={styles.inputGroup}>
               <label style={styles.label}>Preferences</label>
                 <div style = {styles.dataBox}>
-                    <p>I'd prefer John to give me a hug</p>
+                    <p>{preferences}</p>
                 </div>
             </div>
           </>
