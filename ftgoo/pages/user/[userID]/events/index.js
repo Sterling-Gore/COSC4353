@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Navbar from "@/components/navbar";
 
 export default function Events() {
+  const router = useRouter();
+  const { userID } = router.query; // Extract userID from query params
+  const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
   const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
   const [isClicked, setIsClicked] = useState(false);
   const [isRSVPChecked, setIsRSVPChecked] = useState(null);
+
+  useEffect(() => {
+    // Mock check for user login status
+    const loggedInUser = localStorage.getItem("userEmail");
+    if (loggedInUser) {
+      setUserEmail(loggedInUser);
+    } else {
+      // Redirect to login if not logged in
+      router.push("/login");
+    }
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("userEmail");
+    setUserEmail(null);
+    router.push("/login");
+  };
 
   const handleEventsChangeOnClick = () => {
     if (currentPage === "myEvents") {
@@ -57,24 +80,29 @@ export default function Events() {
   return (
     <div style={styles.container}>
       {/* Navbar */}
-      <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <a href = "./account">Account</a>
-              <span style = {styles.navOnPage}>Events</span>
-              <a href="./notifications">Notification</a>
-              <a href="../">
-                <span style = {styles.navButton}>Log out</span>
-              </a>
-            </div>
-          </nav>
+      <Navbar
+        currentPage="Events"
+        userEmail={userEmail}
+        userID={userID}
+        handleLogout={handleLogout}
+        navLinks={[
+          { name: "Account", href: `/user/${userID}/account` },
+          { name: "Events", href: `/user/${userID}/events` },
+          { name: "Notification", href: `/user/${userID}/notifications` },
+          { name: "Log out", href: "#", onClick: handleLogout },
+        ]}
+        showLogout={true}
+      />
 
       <div style={styles.eventsContainer}>
-      <h1 style={styles.title}>Events</h1>
+        <h1 style={styles.title}>Events</h1>
         {currentPage === "myEvents" && (
           <div style={styles.eventsButtonsContainer}>
             <button style={styles.blackEventsButtons}>My events</button>
-            <button style={styles.grayEventsButtons} onClick={handleEventsChangeOnClick}>
+            <button
+              style={styles.grayEventsButtons}
+              onClick={handleEventsChangeOnClick}
+            >
               All events
             </button>
           </div>
@@ -89,7 +117,10 @@ export default function Events() {
                   {event.rsvp ? (
                     <button style={styles.rsvpButton}>RSVP'd</button>
                   ) : (
-                    <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event.eventNum)}>
+                    <button
+                      style={styles.rsvpButton}
+                      onClick={() => handleRSVPOnClick(event.eventNum)}
+                    >
                       Click here to RSVP
                     </button>
                   )}
@@ -100,7 +131,10 @@ export default function Events() {
         )}
         {currentPage === "allEvents" && (
           <div style={styles.eventsButtonsContainer}>
-            <button style={styles.grayEventsButtons} onClick={handleEventsChangeOnClick}>
+            <button
+              style={styles.grayEventsButtons}
+              onClick={handleEventsChangeOnClick}
+            >
               My events
             </button>
             <button style={styles.blackEventsButtons}>All events</button>
@@ -116,7 +150,10 @@ export default function Events() {
                   {event.rsvp ? (
                     <button style={styles.rsvpButton}>RSVP'd</button>
                   ) : (
-                    <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event.eventNum)}>
+                    <button
+                      style={styles.rsvpButton}
+                      onClick={() => handleRSVPOnClick(event.eventNum)}
+                    >
                       Click here to RSVP
                     </button>
                   )}
@@ -130,9 +167,7 @@ export default function Events() {
             <div style={styles.rsvpBox}></div>
             <div style={styles.eventInfoContainer}>
               <div>
-                <p style={styles.eventNameText}>
-                  Event {selectedEventNum} 
-                </p>
+                <p style={styles.eventNameText}>Event {selectedEventNum}</p>
               </div>
               <div style={styles.urgencyContainer}>
                 <p style={styles.urgencyText}>Urgency</p>
@@ -142,60 +177,63 @@ export default function Events() {
                 </div>
               </div>
             </div>
-            <p style={styles.infoText}>
-              Address 1
-            </p>
-            <input style={styles.addressInput} type="text" readOnly>
-            </input>
-            
+            <p style={styles.infoText}>Address 1</p>
+            <input style={styles.addressInput} type="text" readOnly></input>
+
             <div style={styles.cityStateZip}>
               <div style={styles.cityContainer}>
-                <p style={styles.infoText}>
-                  City
-                </p>
+                <p style={styles.infoText}>City</p>
                 <input style={styles.cityInput} type="text" readOnly></input>
               </div>
               <div style={styles.stateContainer}>
-                <p style={styles.infoText}>
-                  State
-                </p>
+                <p style={styles.infoText}>State</p>
                 <input style={styles.stateInput} type="text" readOnly></input>
               </div>
               <div style={styles.zipContainer}>
-                <p style={styles.infoText}>
-                  Zip Code
-                </p>
+                <p style={styles.infoText}>Zip Code</p>
                 <input style={styles.zipInput} type="text" readOnly></input>
               </div>
             </div>
 
-            <p style={styles.infoText}>
-              Description
-            </p>
-            <input style={styles.descriptionInput} type="text" readOnly>
-            </input>
-            
+            <p style={styles.infoText}>Description</p>
+            <input style={styles.descriptionInput} type="text" readOnly></input>
+
             <div style={styles.prefAvail}>
               <div style={styles.preferenceContainer}>
-                <p style={styles.infoText}>
-                  Required Skills
-                </p>
-                <input style={styles.preferenceInput} type="text" readOnly></input>
+                <p style={styles.infoText}>Required Skills</p>
+                <input
+                  style={styles.preferenceInput}
+                  type="text"
+                  readOnly
+                ></input>
               </div>
               <div style={styles.availabilityContainer}>
-                <p style={styles.infoText}>
-                  Event Date
-                </p>
-                <input style={styles.availabilityInput} type="text" readOnly></input>
+                <p style={styles.infoText}>Event Date</p>
+                <input
+                  style={styles.availabilityInput}
+                  type="text"
+                  readOnly
+                ></input>
               </div>
             </div>
 
             <div style={styles.rsvpSaveContainer}>
               <div style={styles.rsvpCheckContainer}>
-                <label htmlFor="rsvpCheckbox" style={styles.clickHereRSVPText}>Click here to RSVP</label>
-                <input type="checkbox" id="rsvpCheckbox" style={styles.rsvpCheckBoxStyle}></input>
+                <label htmlFor="rsvpCheckbox" style={styles.clickHereRSVPText}>
+                  Click here to RSVP
+                </label>
+                <input
+                  type="checkbox"
+                  id="rsvpCheckbox"
+                  style={styles.rsvpCheckBoxStyle}
+                ></input>
               </div>
-              <button style={isClicked ? styles.saveButtonClicked : styles.saveButton} onClick={handleSaveClick}>Save Changes</button>
+              <button
+                style={isClicked ? styles.saveButtonClicked : styles.saveButton}
+                onClick={handleSaveClick}
+              >
+                Save Changes
+              </button>
             </div>
 
             <button style={styles.goBack} onClick={handleGoBackOnClick}>
@@ -207,7 +245,6 @@ export default function Events() {
     </div>
   );
 }
-
 
 const styles = {
   container: {
@@ -316,7 +353,7 @@ const styles = {
     height: "60vh", // Adjust the height if needed
     borderRadius: "10px",
   },
-  
+
   eventInfo: {
     marginTop: "10px",
     color: "black",
@@ -372,7 +409,7 @@ const styles = {
     width: "4vh",
   },
   imageUrgencyContainer: {
-    marginTop: "15px",  
+    marginTop: "15px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -523,8 +560,8 @@ const styles = {
     boxSizing: "border-box",
     borderRadius: "3px",
   },
-  
-  rsvpSaveContainer: { 
+
+  rsvpSaveContainer: {
     display: "flex",
     justifyContent: "space-between", // Space out RSVP and Save Changes
     alignItems: "center", // Vertically align them
@@ -541,7 +578,7 @@ const styles = {
     color: "#309CFF",
     fontWeight: "300",
     lineHeight: "20px", // Set the same line height as the checkbox height for better alignment
-  },  
+  },
   rsvpCheckBoxStyle: {
     width: "30px", // Set the width of the checkbox
     height: "30px", // Set the height of the checkbox
@@ -567,15 +604,15 @@ const styles = {
     cursor: "pointer",
   },
   goBack: {
-    display: "flex",           // Enable flexbox for centering
-    justifyContent: "center",   // Center text horizontally
-    alignItems: "center",       // Center text vertically
+    display: "flex", // Enable flexbox for centering
+    justifyContent: "center", // Center text horizontally
+    alignItems: "center", // Center text vertically
     width: "100vh",
     height: "5vh",
     backgroundColor: "#309CFF",
-    color: "white",             // Optional: Add color for contrast
-    border: "none",             // Optional: Remove default border
+    color: "white", // Optional: Add color for contrast
+    border: "none", // Optional: Remove default border
     borderRadius: "3px",
-    cursor: "pointer",          // Optional: Change cursor to pointer on hover
+    cursor: "pointer", // Optional: Change cursor to pointer on hover
   },
-};  
+};
