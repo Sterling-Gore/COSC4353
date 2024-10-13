@@ -73,7 +73,7 @@ export default function Registration() {
         const data = await response.json();
         if (response.ok) {
           // Redirect to user events page on successful registration
-          router.push("/user/[data.user.password]/events");
+          router.push(`/user/${data.user.userID}/events`);
         } else {
           // Handle registration errors
           setError(data.error || "Registration failed. Please try again.");

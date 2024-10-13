@@ -1,5 +1,5 @@
 // pages/api/auth/registration.js
-import { addUser, findUserByEmail } from "../mockDatabase";
+import { getUsers, addUser, findUserByEmail } from "../mockDatabase";
 
 export default function handler(req, res) {
   if (req.method === "POST") {
@@ -52,6 +52,7 @@ export default function handler(req, res) {
 
     // Add new user with complete profile details
     const newUser = {
+      userID: 5,
       firstName,
       lastName,
       email,

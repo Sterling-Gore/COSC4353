@@ -33,7 +33,7 @@ export default function Login() {
       if (response.ok) {
         // Redirect to user events page on successful login
 
-        router.push(`/user/${data.user.password}/events`);
+        router.push(`/user/${data.user.userID}/events`);
       } else {
         // Handle login errors (e.g., wrong credentials)
         setError(

@@ -3,6 +3,12 @@ import { useRouter } from "next/router";
 import { personObject } from "@/pages/api/server";
 
 export default function profile_management() {
+  const router = useRouter();
+  const { userID } = router.query; // Extract userID from the query params
+  //const userID = params.userID;
+
+
+
   const [step, setStep] = useState(1);
   //const [email, setEmail] = useState("");
   //const [password, setPassword] = useState("");
@@ -21,8 +27,7 @@ export default function profile_management() {
   const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
   const [email, setEmail] = useState(personObject.email);
 
-  const router = useRouter();
-
+  
   const handleNext = (e) => {
     e.preventDefault();
     if (step === 1) {

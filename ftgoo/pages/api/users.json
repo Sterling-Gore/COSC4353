@@ -1,5 +1,6 @@
 [
   {
+    "userID": 1,
     "firstName": "jo",
     "lastName": "pa",
     "email": "testuser@example.com",
@@ -21,6 +22,7 @@
     "isLoggedIn": false
   },
   {
+    "userID": 2,
     "firstName": "Sterling",
     "lastName": "Gore",
     "email": "sterling@gmail.com",
@@ -42,6 +44,7 @@
     "isLoggedIn": false
   },
   {
+    "userID": 3,
     "firstName": "John",
     "lastName": "Doe",
     "email": "blurb@gmail.com",
@@ -61,6 +64,7 @@
     "isLoggedIn": false
   },
   {
+    "userID": 4,
     "firstName": "Gordan",
     "lastName": "Sly",
     "email": "thetest@gmail.com",
@@ -76,6 +80,48 @@
     ],
     "preferences": "test",
     "availability": [
+      "Wednesday"
+    ],
+    "isLoggedIn": false
+  },
+  {
+    "userID": 5,
+    "firstName": "henry",
+    "lastName": "silver",
+    "email": "henry@gmail.com",
+    "password": "henryyyy",
+    "address1": "1234asdf",
+    "address2": "",
+    "city": "asdf",
+    "state": "DE",
+    "zipCode": "asdf",
+    "skills": [
+      "Education"
+    ],
+    "preferences": "asdf",
+    "availability": [
+      "Tuesday"
+    ],
+    "isLoggedIn": false
+  },
+  {
+    "userID": 6,
+    "firstName": "Henry",
+    "lastName": "Silver",
+    "email": "test@gmail.com",
+    "password": "password",
+    "address1": "12345 house",
+    "address2": "",
+    "city": "houston",
+    "state": "IN",
+    "zipCode": "12345",
+    "skills": [
+      "Environment",
+      "Education"
+    ],
+    "preferences": "house",
+    "availability": [
+      "Tuesday",
       "Wednesday"
     ],
     "isLoggedIn": false
