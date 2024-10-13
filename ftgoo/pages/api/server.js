@@ -7,14 +7,16 @@ export let personObject = {
     password: "password",
     email: "johnDoe@gmail.com",
     Address1: "1874 Test Glade Lane",
-    Address2: "",
+    Address2: "---",
     city: "Houston",
-    State: "Texas",
+    State: "TX",
     zipCode: 12345,
     skills: ["Health", "Education"],
     availability: ["Monday", "Wednesday"],
     preference: "I love to teach health education!"
 };
+
+
 
 //personObject["firstName"] = "Sterling"
 //or

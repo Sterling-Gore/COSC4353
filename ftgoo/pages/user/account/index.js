@@ -19,6 +19,7 @@ export default function profile_management() {
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
+  const [email, setEmail] = useState(personObject.email);
 
   const router = useRouter();
 
@@ -41,6 +42,20 @@ export default function profile_management() {
         setError("Please fill in all fields");
         return;
       }
+      //puts data into the server
+      personObject.firstName = firstName;
+      personObject.lastName = lastName;
+      personObject.Address1 = address1;
+      personObject.Address2 = address2;
+      personObject.city = city;
+      personObject.state = state;
+      personObject.zipCode = zipCode;
+      personObject.skills = skills;
+      personObject.availability = availability;
+      personObject.preference = preferences;
+      console.log(personObject);
+
+
       setError("")
       setStep(1);
       // Handle form submission
@@ -95,20 +110,20 @@ export default function profile_management() {
             <div style={styles.inputGroup}>
               <label style={styles.label}>Email</label>
                 <div style = {styles.dataBox}>
-                    <p>sterlinggore2025@gmail.com</p>
+                    <p>{email}</p>
                 </div>
             </div>
             <div style={styles.row}>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>First Name</label>
                 <div style = {styles.dataBox}>
-                    <p>Sterling</p>
+                    <p>{firstName}</p>
                 </div>
               </div>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Last Name</label>
                 <div style = {styles.dataBox}>
-                    <p>Gore</p>
+                    <p>{lastName}</p>
                 </div>
               </div>
             </div>
@@ -116,13 +131,13 @@ export default function profile_management() {
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Address 1</label>
                 <div style = {styles.dataBox}>
-                    <p>123 Street Dr</p>
+                    <p>{address1}</p>
                 </div>
               </div>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Address 2</label>
                 <div style = {styles.dataBox}>
-                    <p>-----</p>
+                    <p>{address2}</p>
                 </div>
               </div>
             </div>
@@ -130,19 +145,19 @@ export default function profile_management() {
               <div style={styles.inputGroup}>
                 <label style={styles.label}>City</label>
                 <div style = {styles.dataBox}>
-                    <p>Houston</p>
+                    <p>{city}</p>
                 </div>
               </div>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>State</label>
                 <div style = {styles.dataBox}>
-                    <p>Texas</p>
+                    <p>{state}</p>
                 </div>
               </div>
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Zip Code</label>
                 <div style = {styles.dataBox}>
-                    <p>123456</p>
+                    <p>{zipCode}</p>
                 </div>
               </div>
             </div>
