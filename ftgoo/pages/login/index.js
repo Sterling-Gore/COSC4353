@@ -20,12 +20,28 @@ export default function Login() {
     }
 
     try {
-      // Add authentication logic here, such as calling an API
-      // If successful, redirect to the events or home
-      router.push("/user/events"); // Example redirect after login
+      // Call the login API
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        router.push("/user/events");
+      } else {
+        // Handle login errors (e.g., wrong credentials)
+        setError(
+          data.error ||
+            "Login failed. Please check your credentials and try again."
+        );
+      }
     } catch (err) {
-      // Handle login errors (e.g., wrong credentials)
-      setError("Login failed. Please check your credentials and try again.");
+      setError("An error occurred. Please try again later.");
     }
   };
 

@@ -22,8 +22,9 @@ export default function Registration() {
 
   const router = useRouter();
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
+
     if (step === 1) {
       if (!email || !password) {
         setError("Please fill in all fields");
@@ -45,8 +46,40 @@ export default function Registration() {
         setError("Please fill in all fields");
         return;
       }
-      // Handle form submission
-      router.push("/user/events"); // Example redirect after registration
+
+      try {
+        // Call the registration API
+        const response = await fetch("/api/auth/registration", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: `${firstName} ${lastName}`,
+            email,
+            password,
+            address1,
+            address2,
+            city,
+            state,
+            zipCode,
+            skills,
+            preferences,
+            availability,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to user events page on successful registration
+          router.push("/user/events");
+        } else {
+          // Handle registration errors
+          setError(data.error || "Registration failed. Please try again.");
+        }
+      } catch (err) {
+        setError("An error occurred. Please try again later.");
+      }
     }
   };
 
@@ -240,117 +273,115 @@ export default function Registration() {
                   />
                 </div>
               </div>
-              <div style={styles.row}>
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Skills</label>
-                  <div
-                    style={styles.multiSelectContainer}
-                    onClick={() => setShowSkillDropdown(!showSkillDropdown)}
-                  >
-                    <div style={styles.multiSelect}>
-                      <div style={styles.selectedSkills}>
-                        {skills.length
-                          ? skills.map((skill) => (
-                              <div key={skill} style={styles.skillTag}>
-                                {skill}
-                                <span
-                                  style={styles.clearTag}
-                                  onClick={() => handleSkillClear(skill)}
-                                >
-                                  &times;
-                                </span>
-                              </div>
-                            ))
-                          : "Select your skills..."}
-                      </div>
-                      {showSkillDropdown && (
-                        <div style={styles.dropdown}>
-                          {[
-                            "Health",
-                            "Education",
-                            "Environment",
-                            "Arts",
-                            "Animal Care",
-                          ].map((skill) => (
-                            <div
-                              key={skill}
-                              onClick={() => handleSkillSelect(skill)}
-                              style={{
-                                ...styles.dropdownItem,
-                                ...(skills.includes(skill) &&
-                                  styles.dropdownItemSelected),
-                              }}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={skills.includes(skill)}
-                                readOnly
-                                style={styles.availabilityCheckbox}
-                              />
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Skills</label>
+                <div
+                  style={styles.multiSelectContainer}
+                  onClick={() => setShowSkillDropdown(!showSkillDropdown)}
+                >
+                  <div style={styles.multiSelect}>
+                    <div style={styles.selectedSkills}>
+                      {skills.length
+                        ? skills.map((skill) => (
+                            <div key={skill} style={styles.skillTag}>
                               {skill}
+                              <span
+                                style={styles.clearTag}
+                                onClick={() => handleSkillClear(skill)}
+                              >
+                                &times;
+                              </span>
                             </div>
-                          ))}
-                        </div>
-                      )}
+                          ))
+                        : "Select your skills..."}
                     </div>
+                    {showSkillDropdown && (
+                      <div style={styles.dropdown}>
+                        {[
+                          "Health",
+                          "Education",
+                          "Environment",
+                          "Arts",
+                          "Animal Care",
+                        ].map((skill) => (
+                          <div
+                            key={skill}
+                            onClick={() => handleSkillSelect(skill)}
+                            style={{
+                              ...styles.dropdownItem,
+                              ...(skills.includes(skill) &&
+                                styles.dropdownItemSelected),
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={skills.includes(skill)}
+                              readOnly
+                              style={styles.availabilityCheckbox}
+                            />
+                            {skill}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Availability</label>
-                  <div
-                    style={styles.multiSelectContainer}
-                    onClick={() =>
-                      setShowAvailabilityDropdown(!showAvailabilityDropdown)
-                    }
-                  >
-                    <div style={styles.multiSelect}>
-                      <div style={styles.selectedSkills}>
-                        {availability.length
-                          ? availability.map((day) => (
-                              <div key={day} style={styles.skillTag}>
-                                {day}
-                                <span
-                                  style={styles.clearTag}
-                                  onClick={() => handleAvailabilityClear(day)}
-                                >
-                                  &times;
-                                </span>
-                              </div>
-                            ))
-                          : "Select your availability..."}
-                      </div>
-                      {showAvailabilityDropdown && (
-                        <div style={styles.dropdown}>
-                          {[
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                            "Sunday",
-                          ].map((day) => (
-                            <div
-                              key={day}
-                              onClick={() => handleAvailabilitySelect(day)}
-                              style={{
-                                ...styles.dropdownItem,
-                                ...(availability.includes(day) &&
-                                  styles.dropdownItemSelected),
-                              }}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={availability.includes(day)}
-                                readOnly
-                                style={styles.availabilityCheckbox}
-                              />
+              </div>
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Availability</label>
+                <div
+                  style={styles.multiSelectContainer}
+                  onClick={() =>
+                    setShowAvailabilityDropdown(!showAvailabilityDropdown)
+                  }
+                >
+                  <div style={styles.multiSelect}>
+                    <div style={styles.selectedSkills}>
+                      {availability.length
+                        ? availability.map((day) => (
+                            <div key={day} style={styles.skillTag}>
                               {day}
+                              <span
+                                style={styles.clearTag}
+                                onClick={() => handleAvailabilityClear(day)}
+                              >
+                                &times;
+                              </span>
                             </div>
-                          ))}
-                        </div>
-                      )}
+                          ))
+                        : "Select your availability..."}
                     </div>
+                    {showAvailabilityDropdown && (
+                      <div style={styles.dropdown}>
+                        {[
+                          "Monday",
+                          "Tuesday",
+                          "Wednesday",
+                          "Thursday",
+                          "Friday",
+                          "Saturday",
+                          "Sunday",
+                        ].map((day) => (
+                          <div
+                            key={day}
+                            onClick={() => handleAvailabilitySelect(day)}
+                            style={{
+                              ...styles.dropdownItem,
+                              ...(availability.includes(day) &&
+                                styles.dropdownItemSelected),
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={availability.includes(day)}
+                              readOnly
+                              style={styles.availabilityCheckbox}
+                            />
+                            {day}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
