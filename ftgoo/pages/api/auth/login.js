@@ -1,5 +1,5 @@
 // pages/api/auth/login.js
-import { findUserByEmail } from "./mockDatabase";
+import { findUserByEmail } from "../mockDatabase";
 
 export default function handler(req, res) {
   if (req.method === "POST") {

@@ -106,9 +106,6 @@ export default function matching() {
               <a href="./event-management">Event Management</a>
               <a href="./volunteer-history">History</a>
               <span style = {styles.navOnPage}>Matching</span>
-              <a href= "../user/events">
-                <span style = {styles.navSwitchButton}>User-Mode</span>
-              </a>
               <a href="../">
                 <span style = {styles.navButton}>Log out</span>
               </a>

@@ -18,9 +18,6 @@ export default function profile_management() {
               <a href="./event-management">Event Management</a>
               <a href="./volunteer-history">History</a>
               <a href = "./matching">Matching</a>
-              <a href= "../user/events">
-                <span style = {styles.navSwitchButton}>User-Mode</span>
-              </a>
               <a href="../">
                 <span style = {styles.navButton}>Log out</span>
               </a>

@@ -43,9 +43,6 @@ export default function VolunteerHistory() {
           <a href="./event-management">Event Management</a>
           <span style={styles.navOnPage}>History</span>
           <a href = "./matching">Matching</a>
-          <a href= "../user/events">
-                <span style = {styles.navSwitchButton}>User-Mode</span>
-              </a>
           <a href="../">
             <span style={styles.navButton}>Log out</span>
           </a>

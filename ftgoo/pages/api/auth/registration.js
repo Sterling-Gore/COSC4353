@@ -1,5 +1,5 @@
 // pages/api/auth/registration.js
-import { addUser, findUserByEmail } from "./mockDatabase";
+import { addUser, findUserByEmail } from "../mockDatabase";
 
 export default function handler(req, res) {
   if (req.method === "POST") {
