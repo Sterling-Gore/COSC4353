@@ -32,7 +32,8 @@ export default function Login() {
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-        router.push("/user/events");
+
+        router.push(`/user/${data.user.password}/events`);
       } else {
         // Handle login errors (e.g., wrong credentials)
         setError(

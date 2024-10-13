@@ -1,6 +1,7 @@
 [
   {
-    "name": "jo pa",
+    "firstName": "jo",
+    "lastName": "pa",
     "email": "testuser@example.com",
     "password": "password123",
     "address1": "123 wonderland",
@@ -20,7 +21,8 @@
     "isLoggedIn": false
   },
   {
-    "name": "Sterling Gore",
+    "firstName": "Sterling",
+    "lastName": "Gore",
     "email": "sterling@gmail.com",
     "password": "password123",
     "address1": "134 Wonderland Street",
@@ -36,6 +38,45 @@
     "availability": [
       "Monday",
       "Tuesday"
+    ],
+    "isLoggedIn": false
+  },
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "blurb@gmail.com",
+    "password": "testtest",
+    "address1": "123 house",
+    "address2": "",
+    "city": "Houston",
+    "state": "KS",
+    "zipCode": "45678",
+    "skills": [
+      "Education"
+    ],
+    "preferences": "test",
+    "availability": [
+      "Wednesday"
+    ],
+    "isLoggedIn": false
+  },
+  {
+    "firstName": "Gordan",
+    "lastName": "Sly",
+    "email": "thetest@gmail.com",
+    "password": "testtest",
+    "address1": "1245 house",
+    "address2": "",
+    "city": "Austin",
+    "state": "CT",
+    "zipCode": "123456",
+    "skills": [
+      "Environment",
+      "Arts"
+    ],
+    "preferences": "test",
+    "availability": [
+      "Wednesday"
     ],
     "isLoggedIn": false
   }

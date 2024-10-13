@@ -55,7 +55,8 @@ export default function Registration() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: `${firstName} ${lastName}`,
+            firstName,
+            lastName,
             email,
             password,
             address1,
@@ -72,7 +73,7 @@ export default function Registration() {
         const data = await response.json();
         if (response.ok) {
           // Redirect to user events page on successful registration
-          router.push("/user/events");
+          router.push("/user/[data.user.password]/events");
         } else {
           // Handle registration errors
           setError(data.error || "Registration failed. Please try again.");

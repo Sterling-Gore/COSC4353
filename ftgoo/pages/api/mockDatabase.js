@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const filePath = path.resolve(process.cwd(), "pages/api/auth/users.json");
+const filePath = path.resolve(process.cwd(), "pages/api/users.json");
 
 // Read users from the file
 export const getUsers = () => {

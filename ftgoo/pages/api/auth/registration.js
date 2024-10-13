@@ -4,7 +4,8 @@ import { addUser, findUserByEmail } from "../mockDatabase";
 export default function handler(req, res) {
   if (req.method === "POST") {
     const {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       address1,
@@ -28,7 +29,8 @@ export default function handler(req, res) {
 
     // Basic validation
     if (
-      !name ||
+      !firstName ||
+      !lastName ||
       !email ||
       !password ||
       !address1 ||
@@ -50,7 +52,8 @@ export default function handler(req, res) {
 
     // Add new user with complete profile details
     const newUser = {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       address1,
