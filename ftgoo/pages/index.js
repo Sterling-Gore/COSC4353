@@ -1,35 +1,50 @@
-
-
+// pages/index.js
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import Navbar from "@/components/navbar";
 
 export default function Home() {
+  const router = useRouter();
+  const [userEmail, setUserEmail] = useState(null);
+
+  useEffect(() => {
+    // Mock check for user login status
+    const loggedInUser = localStorage.getItem("userEmail");
+    if (loggedInUser) {
+      setUserEmail(loggedInUser);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userEmail");
+    setUserEmail(null);
+    router.push("/login");
+  };
+
   return (
     <>
       <div style={styles.container}>
-        <div style = {styles.containerCover}>
+        <div style={styles.containerCover}>
           {/* Navbar */}
-          <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <a href="./login">Login</a>
-              <a href="./registration">
-                <span style = {styles.navButton}>Create Account</span>
-              </a>
-            </div>
-          </nav>
+          <Navbar userEmail={userEmail} handleLogout={handleLogout} />
 
           {/* Centered "Hello" */}
           <div style={styles.center}>
             <div style={styles.centerLogo}>
-            <p>For the <span style={styles.good}>good</span> of others.</p>
+              <p>
+                For the <span style={styles.good}>good</span> of others.
+              </p>
             </div>
-          <p><span style = {styles.simpleText}>Find opportunities near you for volunteering</span></p>
-          <a href="./registration">
-            <span style = {styles.button}>Get Involved</span>
-          </a> 
+            <p>
+              <span style={styles.simpleText}>
+                Find opportunities near you for volunteering
+              </span>
+            </p>
+            <a href="./registration">
+              <span style={styles.button}>Get Involved</span>
+            </a>
           </div>
         </div>
-        
       </div>
     </>
   );
@@ -58,44 +73,9 @@ const styles = {
     justifyContent: "center", // Centers the content vertically
     alignItems: "center", // Centers the content horizontally
   },
-  navbar: {
-    position: "absolute",
-    top: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "20px",
-    backgroundColor: "#007BFF", // Transparent black background for the navbar
-    color: "#f4f4f4",
-    zIndex: 2, // Ensures the navbar is on top of the background
-  },
-  logo: {
-    fontSize: "24px",
-    fontWeight: "bold",
-  },
-  navLinks: {
-    display: "flex",
-    alignItems: "center",
-    gap: "24px",
-  },
-  navLinksA: {
-    color: "#f4f4f4",
-    textDecoration: "none",
-  },
-  navButton: {
-    backgroundColor: "#f4f4f4",
-    textAlign: "center",
-    color: "#007BFF",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "10px",
-    width: "15vw",
-  },
   center: {
     zIndex: 1, // Ensures the "Hello" is on top of the background
     textAlign: "center",
-    //fontFamily: "Georgia",
     color: "#ffffff",
     fontSize: "48px",
     gap: "30px",

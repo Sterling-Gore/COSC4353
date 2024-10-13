@@ -31,8 +31,8 @@ export default function Login() {
 
       const data = await response.json();
       if (response.ok) {
-        // Redirect to user events page on successful login
-
+        // Save email in localStorage and redirect to user events page on successful login
+        localStorage.setItem("userEmail", email);
         router.push(`/user/${data.user.userID}/events`);
       } else {
         // Handle login errors (e.g., wrong credentials)
@@ -87,7 +87,6 @@ export default function Login() {
     </div>
   );
 }
-
 // Inline styles for the login page
 const styles = {
   container: {

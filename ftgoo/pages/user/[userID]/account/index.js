@@ -1,17 +1,14 @@
-import { useState } from "react";
+// pages/user/[userID]/account/index.js
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Navbar from "@/components/navbar";
 import { personObject } from "@/pages/api/server";
 
-export default function profile_management() {
+export default function Account() {
   const router = useRouter();
-  const { userID } = router.query; // Extract userID from the query params
-  //const userID = params.userID;
-
-
-
+  const { userID } = router.query; // Extract userID from query params
+  const [userEmail, setUserEmail] = useState(null);
   const [step, setStep] = useState(1);
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState(personObject.firstName);
   const [lastName, setLastName] = useState(personObject.lastName);
   const [address1, setAddress1] = useState(personObject.Address1);
@@ -24,10 +21,27 @@ export default function profile_management() {
   const [availability, setAvailability] = useState(personObject.availability);
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
-  const [email, setEmail] = useState(personObject.email);
+  const [showAvailabilityDropdown, setShowAvailabilityDropdown] =
+    useState(false);
 
-  
+  useEffect(() => {
+    // Mock check for user login status
+    const loggedInUser = localStorage.getItem("userEmail");
+    if (loggedInUser) {
+      setUserEmail(loggedInUser);
+    } else {
+      // Redirect to login if not logged in
+      router.push("/login");
+    }
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault(); // Prevent default link behavior
+    localStorage.removeItem("userEmail");
+    setUserEmail(null);
+    router.push("/login");
+  };
+
   const handleNext = (e) => {
     e.preventDefault();
     if (step === 1) {
@@ -47,7 +61,7 @@ export default function profile_management() {
         setError("Please fill in all fields");
         return;
       }
-      //puts data into the server
+      // Update data into the server
       personObject.firstName = firstName;
       personObject.lastName = lastName;
       personObject.Address1 = address1;
@@ -58,12 +72,10 @@ export default function profile_management() {
       personObject.skills = skills;
       personObject.availability = availability;
       personObject.preference = preferences;
+
       console.log(personObject);
-
-
-      setError("")
+      setError("");
       setStep(1);
-      // Handle form submission
     }
   };
 
@@ -93,111 +105,114 @@ export default function profile_management() {
 
   return (
     <div style={styles.container}>
-        {/* Navbar */}
-        <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <span style = {styles.navOnPage}>Account</span>
-              <a href="./events">Events</a>
-              <a href="./notifications">Notification</a>
-              <a href="../">
-                <span style = {styles.navButton}>Log out</span>
-              </a>
-            </div>
-          </nav>
-        {/* center */ }
+      {/* Navbar */}
+      <Navbar
+        currentPage="Account"
+        userEmail={userEmail}
+        userID={userID}
+        handleLogout={handleLogout}
+        navLinks={[
+          { name: "Account", href: userID ? `/user/${userID}/account` : "#" },
+          { name: "Events", href: userID ? `/user/${userID}/events` : "#" },
+          {
+            name: "Notification",
+            href: userID ? `/user/${userID}/notifications` : "#",
+          },
+          { name: "Log out", href: "#", onClick: handleLogout },
+        ]}
+        showLogout={true}
+      />
+
+      {/* center */}
       <div style={styles.profileBox}>
         <h1 style={styles.title}>Manage Profile</h1>
         <form onSubmit={handleNext} style={styles.form}>
           {error && <p style={styles.error}>{error}</p>}
           {step === 1 && (
-          <>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Email</label>
-                <div style = {styles.dataBox}>
-                    <p>{email}</p>
-                </div>
-            </div>
-            <div style={styles.row}>
+            <>
               <div style={styles.inputGroup}>
-                <label style={styles.label}>First Name</label>
-                <div style = {styles.dataBox}>
+                <label style={styles.label}>Email</label>
+                <div style={styles.dataBox}>
+                  <p>{userEmail}</p>
+                </div>
+              </div>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>First Name</label>
+                  <div style={styles.dataBox}>
                     <p>{firstName}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Last Name</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Last Name</label>
+                  <div style={styles.dataBox}>
                     <p>{lastName}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Address 1</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Address 1</label>
+                  <div style={styles.dataBox}>
                     <p>{address1}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Address 2</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Address 2</label>
+                  <div style={styles.dataBox}>
                     <p>{address2}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>City</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>City</label>
+                  <div style={styles.dataBox}>
                     <p>{city}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>State</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>State</label>
+                  <div style={styles.dataBox}>
                     <p>{state}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Zip Code</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Zip Code</label>
+                  <div style={styles.dataBox}>
                     <p>{zipCode}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Skills</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Skills</label>
+                  <div style={styles.dataBox}>
                     <div style={styles.selectedSkills}>
-                        {skills.map((skill) => 
-                          <span style = {styles.skillTag}> {skill}</span>                   
-                        )}
+                      {skills.map((skill) => (
+                        <span style={styles.skillTag}> {skill}</span>
+                      ))}
                     </div>
+                  </div>
                 </div>
-                    
-                      
-                  
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Availability</label>
+                  <div style={styles.dataBox}>
+                    <div style={styles.selectedSkills}>
+                      {availability.map((skill) => (
+                        <span style={styles.skillTag}> {skill}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div style={styles.inputGroup}>
-                <label style={styles.label}>Availability</label>
-                <div style = {styles.dataBox}>
-                    <div style={styles.selectedSkills}>
-                        {availability.map((skill) => 
-                          <span style = {styles.skillTag}> {skill}</span>                   
-                        )}
-                    </div>
+                <label style={styles.label}>Preferences</label>
+                <div style={styles.dataBox}>
+                  <p>{preferences}</p>
                 </div>
               </div>
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Preferences</label>
-                <div style = {styles.dataBox}>
-                    <p>{preferences}</p>
-                </div>
-            </div>
-          </>
+            </>
           )}
           {step === 2 && (
             <>
