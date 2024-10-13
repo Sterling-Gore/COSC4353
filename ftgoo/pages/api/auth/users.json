@@ -1,0 +1,42 @@
+[
+  {
+    "name": "jo pa",
+    "email": "testuser@example.com",
+    "password": "password123",
+    "address1": "123 wonderland",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Education",
+      "Environment"
+    ],
+    "preferences": "i love",
+    "availability": [
+      "Tuesday",
+      "Wednesday"
+    ],
+    "isLoggedIn": false
+  },
+  {
+    "name": "Sterling Gore",
+    "email": "sterling@gmail.com",
+    "password": "password123",
+    "address1": "134 Wonderland Street",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Education",
+      "Environment"
+    ],
+    "preferences": "Chicken",
+    "availability": [
+      "Monday",
+      "Tuesday"
+    ],
+    "isLoggedIn": false
+  }
+]
