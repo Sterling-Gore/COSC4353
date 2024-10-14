@@ -22,34 +22,12 @@
     "isLoggedIn": false
   },
   {
-    "userID": 2,
-    "firstName": "Sterling",
-    "lastName": "Gore",
-    "email": "sterling@gmail.com",
-    "password": "password123",
-    "address1": "134 Wonderland Street",
-    "address2": "",
-    "city": "Houston",
-    "state": "TX",
-    "zipCode": "12345",
-    "skills": [
-      "Education",
-      "Environment"
-    ],
-    "preferences": "Chicken",
-    "availability": [
-      "Monday",
-      "Tuesday"
-    ],
-    "isLoggedIn": false
-  },
-  {
     "userID": 3,
     "firstName": "John",
     "lastName": "Doe",
     "email": "blurb@gmail.com",
     "password": "testtest",
-    "address1": "123 house",
+    "address1": "123 housesdfsdfsdfsdfasdfasdf",
     "address2": "",
     "city": "Houston",
     "state": "KS",

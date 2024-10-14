@@ -1,31 +1,145 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { personObject } from "@/pages/api/server";
 
+
+
 export default function profile_management() {
   const router = useRouter();
-  const { userID } = router.query; // Extract userID from the query params
-  //const userID = params.userID;
-
 
 
   const [step, setStep] = useState(1);
   //const [email, setEmail] = useState("");
   //const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState(personObject.firstName);
-  const [lastName, setLastName] = useState(personObject.lastName);
-  const [address1, setAddress1] = useState(personObject.Address1);
-  const [address2, setAddress2] = useState(personObject.Address2);
-  const [city, setCity] = useState(personObject.city);
-  const [state, setState] = useState(personObject.State);
-  const [zipCode, setZipCode] = useState(personObject.zipCode);
-  const [skills, setSkills] = useState(personObject.skills);
-  const [preferences, setPreferences] = useState(personObject.preference);
-  const [availability, setAvailability] = useState(personObject.availability);
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [preferences, setPreferences] = useState("");
+  const [availability, setAvailability] = useState([]);
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
-  const [email, setEmail] = useState(personObject.email);
+  const { userID } = router.query; // Extract userID from the query params
+  //console.log(userID);
+  
+  
+
+  async function GETdata()
+  {
+    if(!userID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/account-management/user-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+        setEmail(data.user.email);
+        setFirstName(data.user.firstName);
+        setLastName(data.user.lastName);
+        setAddress1(data.user.address1);
+        setAddress2(data.user.address2);
+        setCity(data.user.city);
+        setState(data.user.state);
+        setZipCode(data.user.zipCode);
+        setSkills(data.user.skills);
+        setAvailability(data.user.availability);
+        setPreferences(data.user.preferences);
+        
+        
+      } else {
+        setEmail("");
+        setFirstName("");
+        setLastName("");
+        setAddress1("");
+        setAddress2("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setSkills([""]);
+        setAvailability([""]);
+        setPreferences("");
+        //router.push(`/`);
+      }
+    } catch (err) {
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      setAddress1("");
+      setAddress2("");
+      setCity("");
+      setState("");
+      setZipCode("");
+      setSkills([""]);
+      setAvailability([""]);
+      setPreferences("");
+      //router.push(`/`);
+    }
+  };
+
+  async function PATCHdata()
+  {
+    if(!userID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/account-management/user-account", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID,
+          firstName, 
+          lastName, 
+          address1,
+          address2,
+          city,
+          state,
+          zipCode,
+          skills,
+          availability,
+          preferences
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+          
+      } else {
+    
+      }
+    } catch (err) {
+ 
+      //router.push(`/`);
+    }
+  };
+
+  
+  //useEffect() empty dependency array
+  useEffect(() => {GETdata()}, [userID]);
+  //GETdata(userID);
+
+
+  
+  
+
+  
 
   
   const handleNext = (e) => {
@@ -48,17 +162,7 @@ export default function profile_management() {
         return;
       }
       //puts data into the server
-      personObject.firstName = firstName;
-      personObject.lastName = lastName;
-      personObject.Address1 = address1;
-      personObject.Address2 = address2;
-      personObject.city = city;
-      personObject.state = state;
-      personObject.zipCode = zipCode;
-      personObject.skills = skills;
-      personObject.availability = availability;
-      personObject.preference = preferences;
-      console.log(personObject);
+      PATCHdata();
 
 
       setError("")

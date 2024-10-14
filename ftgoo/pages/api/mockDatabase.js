@@ -25,3 +25,24 @@ export const findUserByEmail = (email) => {
   const users = getUsers();
   return users.find((user) => user.email === email);
 };
+
+export const findUserByID = (userID) => {
+  const users = getUsers();
+  return users.find((user) => user.userID == userID);
+};
+
+export const updateUser = (updatedUser) => {
+  const users = getUsers();
+  const userIndex = users.findIndex((user) => user.userID == updatedUser.userID)
+  if (userIndex !== -1)
+  {
+    users[userIndex] = updatedUser;
+    fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+  }
+  else
+  {
+    throw new Error(`User with ID ${userID} not found`);
+  }
+
+
+}
