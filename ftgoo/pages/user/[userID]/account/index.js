@@ -98,11 +98,12 @@ export default function Account() {
 
   async function PATCHdata()
   {
+    console.log(`this is the userID: ${userID}`)
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
 
-      const response = await fetch("/api/account-management/user-account", {
+      const response = await fetch("/api/USER/user-data", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
