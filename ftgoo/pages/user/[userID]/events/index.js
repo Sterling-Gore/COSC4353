@@ -11,6 +11,17 @@ export default function Events() {
   const [isClicked, setIsClicked] = useState(false);
   const [isRSVPChecked, setIsRSVPChecked] = useState(null);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [preferences, setPreferences] = useState("");
+  const [availability, setAvailability] = useState([]);
+
   useEffect(() => {
     // Mock check for user login status
     const loggedInUser = localStorage.getItem("userEmail");
@@ -21,6 +32,111 @@ export default function Events() {
       router.push("/login");
     }
   }, []);
+
+  async function GETdata()
+  {
+    if(!userID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/USER/user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+        setUserEmail(data.user.email);
+        setFirstName(data.user.firstName);
+        setLastName(data.user.lastName);
+        setAddress1(data.user.address1);
+        setAddress2(data.user.address2);
+        setCity(data.user.city);
+        setState(data.user.state);
+        setZipCode(data.user.zipCode);
+        setSkills(data.user.skills);
+        setAvailability(data.user.availability);
+        setPreferences(data.user.preferences);
+        
+        
+      } else {
+        setUserEmail("");
+        setFirstName("");
+        setLastName("");
+        setAddress1("");
+        setAddress2("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setSkills([""]);
+        setAvailability([""]);
+        setPreferences("");
+        //router.push(`/`);
+      }
+    } catch (err) {
+      setUserEmail("");
+      setFirstName("");
+      setLastName("");
+      setAddress1("");
+      setAddress2("");
+      setCity("");
+      setState("");
+      setZipCode("");
+      setSkills([""]);
+      setAvailability([""]);
+      setPreferences("");
+      //router.push(`/`);
+    }
+  };
+
+  async function PATCHdata()
+  {
+    if(!userID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/account-management/user-account", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID,
+          firstName, 
+          lastName, 
+          address1,
+          address2,
+          city,
+          state,
+          zipCode,
+          skills,
+          availability,
+          preferences
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+          
+      } else {
+    
+      }
+    } catch (err) {
+ 
+      //router.push(`/`);
+    }
+  };
+
+  
+  //useEffect() empty dependency array
+  useEffect(() => {GETdata()}, [userID]);
+  //GETdata(userID);
 
   const handleLogout = (e) => {
     e.preventDefault();

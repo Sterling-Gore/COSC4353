@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function ProfileManagement() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userID, setUserID] = useState("");
 
   useEffect(() => {
     // Check if the user is logged in and get the user role
@@ -17,8 +21,49 @@ export default function ProfileManagement() {
     } else if (userRole !== "admin") {
       // If the user is logged in but not an admin, redirect to their user events page
       router.push(`/user/${userID}/events`);
+    }else {
+      setUserID(userID);
     }
   }, []);
+
+
+  async function GETdata()
+  {
+    if(!userID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/USER/user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+        setEmail(data.user.email);
+        setFirstName(data.user.firstName);
+        setLastName(data.user.lastName);
+        
+        
+      } else {
+        setmail("");
+        setFirstName("");
+        setLastName("");
+      }
+    } catch (err) {
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      //router.push(`/`);
+    }
+  };
+
+  useEffect(() => {GETdata()}, [userID]);
 
   const handleLogout = () => {
     // Handle logout logic here if necessary
@@ -40,20 +85,20 @@ export default function ProfileManagement() {
           <div style={styles.inputGroup}>
             <label style={styles.label}>Email</label>
             <div style={styles.dataBox}>
-              <p>sterlinggore2025@gmail.com</p>
+              <p>{email}</p>
             </div>
           </div>
           <div style={styles.row}>
             <div style={styles.inputGroup}>
               <label style={styles.label}>First Name</label>
               <div style={styles.dataBox}>
-                <p>Sterling</p>
+                <p>{firstName}</p>
               </div>
             </div>
             <div style={styles.inputGroup}>
               <label style={styles.label}>Last Name</label>
               <div style={styles.dataBox}>
-                <p>Gore</p>
+                <p>{lastName}</p>
               </div>
             </div>
           </div>
