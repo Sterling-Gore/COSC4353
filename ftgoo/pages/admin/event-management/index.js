@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState("Events");
@@ -14,15 +16,38 @@ export default function Events() {
   const [skills, setSkills] = useState([]);
 
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [eventDate, setEventDate] = useState("")
-  const [EventsArray, setEventsArary] = useState(
-    [
-      { eventNum: 1, rsvp: true },
-      { eventNum: 2, rsvp: true },
-      { eventNum: 3, rsvp: true },
-    ]
-  );
+  const [eventDate, setEventDate] = useState("");
+  const [EventsArray, setEventsArary] = useState([
+    { eventNum: 1, rsvp: true },
+    { eventNum: 2, rsvp: true },
+    { eventNum: 3, rsvp: true },
+  ]);
   const [numEvents, setnumEvents] = useState(3);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if the user is logged in and get the user role
+    const userRole = localStorage.getItem("userRole");
+    const userID = localStorage.getItem("userID");
+
+    // Redirect based on role
+    if (!userRole || !userID) {
+      // If no valid login data, redirect to login page
+      router.push("/login");
+    } else if (userRole !== "admin") {
+      // If the user is logged in but not an admin, redirect to their user events page
+      router.push(`/user/${userID}/events`);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // Handle logout logic here if necessary
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("adminEmail");
+    localStorage.removeItem("userID");
+    router.push("/login");
+  };
 
   const handlePageChangeOnClick = (page, eventNum) => {
     if (page === "Events") {
@@ -30,8 +55,7 @@ export default function Events() {
     } else if (page === "EditEvent") {
       setCurrentPage("EditEvent");
       setSelectedEventNum(eventNum);
-    }
-    else if (page === "CreateEvent") {
+    } else if (page === "CreateEvent") {
       setCurrentPage("CreateEvent");
       setSelectedEventNum(eventNum);
     }
@@ -60,56 +84,50 @@ export default function Events() {
     setSkills(skills.filter((s) => s !== skill));
   };
 
-
-
-
   return (
     <div style={styles.container}>
-        {/* Navbar */}
-        <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <a href= "./account">Account</a>
-              <span style = {styles.navOnPage}>Event Management</span>
-              <a href="./volunteer-history">History</a>
-              <a href = "./matching">Matching</a>
-              <a href="../">
-                <span style = {styles.navButton}>Log out</span>
-              </a>
-            </div>
-          </nav>
+      <AdminNavbar currentPage="Events" handleLogout={handleLogout} />
 
-
-          <div style={styles.eventsContainer}>
-      
-       
+      <div style={styles.eventsContainer}>
         {currentPage === "Events" && (
           <>
-          <h1 style={styles.title}>Event Management</h1>
-          <div style={styles.eventsGrid}>
-            {EventsArray.map((event) => (
-              <div style={styles.eventWrapper} key={event.eventNum}>
-                <div style={styles.eventBox}></div>
-                <div style={styles.eventInfo}>
-                  <p>Event {event.eventNum}</p>
-                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventNum)}>Edit</button>
-                  
-                  
+            <h1 style={styles.title}>Event Management</h1>
+            <div style={styles.eventsGrid}>
+              {EventsArray.map((event) => (
+                <div style={styles.eventWrapper} key={event.eventNum}>
+                  <div style={styles.eventBox}></div>
+                  <div style={styles.eventInfo}>
+                    <p>Event {event.eventNum}</p>
+                    <button
+                      style={styles.EditButton}
+                      onClick={() =>
+                        handlePageChangeOnClick("EditEvent", event.eventNum)
+                      }
+                    >
+                      Edit
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div>
-            <button style = {styles.createButton} onClick={() => handlePageChangeOnClick("CreateEvent", numEvents+1)}>Create Event</button>
-          </div>
+              ))}
+            </div>
+            <div>
+              <button
+                style={styles.createButton}
+                onClick={() =>
+                  handlePageChangeOnClick("CreateEvent", numEvents + 1)
+                }
+              >
+                Create Event
+              </button>
+            </div>
           </>
         )}
         {currentPage === "EditEvent" && (
           <>
-          <h1 style={styles.title}>Edit Event {selectedEventNum}</h1>
-          <div style={styles.rsvpContainer}>
-            <div style={styles.rsvpBox}></div>
-            <div style={styles.row}>
+            <h1 style={styles.title}>Edit Event {selectedEventNum}</h1>
+            <div style={styles.rsvpContainer}>
+              <div style={styles.rsvpBox}></div>
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Event Name</label>
                   <input
@@ -123,7 +141,7 @@ export default function Events() {
                 </div>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Urgency</label>
-                  <div style = {styles.urgencyContainer}>
+                  <div style={styles.urgencyContainer}>
                     <label style={styles.urgencyText}>
                       <input
                         type="radio"
@@ -152,7 +170,6 @@ export default function Events() {
                       Low
                     </label>
                   </div>
-              
                 </div>
               </div>
 
@@ -169,9 +186,6 @@ export default function Events() {
                   />
                 </div>
               </div>
-
-
-              
 
               <div style={styles.row}>
                 <div style={styles.inputGroup}>
@@ -273,8 +287,8 @@ export default function Events() {
                 </div>
               </div>
 
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
                     style={styles.multiSelectContainer}
@@ -328,39 +342,40 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
-              <div style={styles.inputGroup}>
-              <label style={styles.label}>Date:</label> {/* Add this line */}
-              <div style={styles.dateContainer}>
-                  <input
-                    type="date"
-                    placeholder="Event Date"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    required
-                    style={styles.dateBox}
-                  />
-                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Date:</label>{" "}
+                  {/* Add this line */}
+                  <div style={styles.dateContainer}>
+                    <input
+                      type="date"
+                      placeholder="Event Date"
+                      value={eventDate}
+                      onChange={(e) => setEventDate(e.target.value)}
+                      required
+                      style={styles.dateBox}
+                    />
                   </div>
+                </div>
               </div>
-            
-            <div style = {styles.rowButtons}>
-            <button style={styles.goBack} onClick={handleGoBackOnClick}>
-              Cancel
-            </button>
-            <button style={styles.goBack} onClick={handleGoBackOnClick}>
-              Save Changes
-            </button>
+
+              <div style={styles.rowButtons}>
+                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                  Cancel
+                </button>
+                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                  Save Changes
+                </button>
+              </div>
             </div>
-          </div>
           </>
         )}
 
-{currentPage === "CreateEvent" && (
+        {currentPage === "CreateEvent" && (
           <>
-          <h1 style={styles.title}>Create Event {selectedEventNum}</h1>
-          <div style={styles.rsvpContainer}>
-            <div style={styles.rsvpBox}></div>
-            <div style={styles.row}>
+            <h1 style={styles.title}>Create Event {selectedEventNum}</h1>
+            <div style={styles.rsvpContainer}>
+              <div style={styles.rsvpBox}></div>
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Event Name</label>
                   <input
@@ -374,7 +389,7 @@ export default function Events() {
                 </div>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Urgency</label>
-                  <div style = {styles.urgencyContainer}>
+                  <div style={styles.urgencyContainer}>
                     <label style={styles.urgencyText}>
                       <input
                         type="radio"
@@ -403,7 +418,6 @@ export default function Events() {
                       Low
                     </label>
                   </div>
-              
                 </div>
               </div>
 
@@ -420,9 +434,6 @@ export default function Events() {
                   />
                 </div>
               </div>
-
-
-              
 
               <div style={styles.row}>
                 <div style={styles.inputGroup}>
@@ -524,8 +535,8 @@ export default function Events() {
                 </div>
               </div>
 
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
                     style={styles.multiSelectContainer}
@@ -579,40 +590,37 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
-              <div style={styles.inputGroup}>
-              <label style={styles.label}>Date:</label> {/* Add this line */}
-              <div style={styles.dateContainer}>
-                  <input
-                    type="date"
-                    placeholder="Event Date"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    required
-                    style={styles.dateBox}
-                  />
-                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Date:</label>{" "}
+                  {/* Add this line */}
+                  <div style={styles.dateContainer}>
+                    <input
+                      type="date"
+                      placeholder="Event Date"
+                      value={eventDate}
+                      onChange={(e) => setEventDate(e.target.value)}
+                      required
+                      style={styles.dateBox}
+                    />
                   </div>
+                </div>
               </div>
-            
-            <div style = {styles.rowButtons}>
-            <button style={styles.goBack} onClick={handleGoBackOnClick}>
-              Cancel
-            </button>
-            <button style={styles.goBack} onClick={handleGoBackOnClick}>
-              Create Event
-            </button>
+
+              <div style={styles.rowButtons}>
+                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                  Cancel
+                </button>
+                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                  Create Event
+                </button>
+              </div>
             </div>
-          </div>
           </>
         )}
       </div>
-
-      
-      
     </div>
   );
 }
-
 
 const styles = {
   container: {
@@ -766,17 +774,16 @@ const styles = {
     marginTop: "20px",
   },
   dateBox: {
-    padding: '10px',
+    padding: "10px",
     minWidth: "20vw",
-    marginBottom: '20px',
-    borderRadius: '8px',
-    border: '1px solid #cccccc',
+    marginBottom: "20px",
+    borderRadius: "8px",
+    border: "1px solid #cccccc",
   },
   inputGroup: {
     flex: "1 1 calc(50% - 10px)",
     minWidth: "300px",
     marginBottom: "10px",
-    
   },
   label: {
     display: "flex",
@@ -833,7 +840,7 @@ const styles = {
     width: "20vh",
     borderRadius: "10px",
   },
-  
+
   eventInfo: {
     marginTop: "10px",
     color: "black",
@@ -894,7 +901,7 @@ const styles = {
     width: "4vh",
   },
   imageUrgencyContainer: {
-    marginTop: "15px",  
+    marginTop: "15px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -1026,8 +1033,8 @@ const styles = {
     boxSizing: "border-box",
     borderRadius: "3px",
   },
-  
-  rsvpSaveContainer: { 
+
+  rsvpSaveContainer: {
     display: "flex",
     justifyContent: "space-between", // Space out RSVP and Save Changes
     alignItems: "center", // Vertically align them
@@ -1044,7 +1051,7 @@ const styles = {
     color: "#309CFF",
     fontWeight: "300",
     lineHeight: "20px", // Set the same line height as the checkbox height for better alignment
-  },  
+  },
   rsvpCheckBoxStyle: {
     width: "30px", // Set the width of the checkbox
     height: "30px", // Set the height of the checkbox
@@ -1070,32 +1077,32 @@ const styles = {
     cursor: "pointer",
   },
   goBack: {
-    display: "flex",           // Enable flexbox for centering
-    justifyContent: "center",   // Center text horizontally
-    alignItems: "center",       // Center text vertically
+    display: "flex", // Enable flexbox for centering
+    justifyContent: "center", // Center text horizontally
+    alignItems: "center", // Center text vertically
     minWidth: "45vh",
     maxWidth: "100vh",
     height: "5vh",
     backgroundColor: "#FF3030",
-    color: "white", 
+    color: "white",
     fontSize: 20,
-    fontWeight: "bold",            // Optional: Add color for contrast
-    border: "none",             // Optional: Remove default border
+    fontWeight: "bold", // Optional: Add color for contrast
+    border: "none", // Optional: Remove default border
     borderRadius: "8px",
-    cursor: "pointer",          // Optional: Change cursor to pointer on hover
+    cursor: "pointer", // Optional: Change cursor to pointer on hover
   },
   createButton: {
-    display: "flex",           // Enable flexbox for centering
-    justifyContent: "center",   // Center text horizontally
-    alignItems: "center",       // Center text vertically
+    display: "flex", // Enable flexbox for centering
+    justifyContent: "center", // Center text horizontally
+    alignItems: "center", // Center text vertically
     width: "100vh",
     height: "5vh",
     backgroundColor: "#FF3030",
-    color: "white", 
+    color: "white",
     fontSize: 20,
-    fontWeight: "bold",            // Optional: Add color for contrast
-    border: "none",             // Optional: Remove default border
+    fontWeight: "bold", // Optional: Add color for contrast
+    border: "none", // Optional: Remove default border
     borderRadius: "8px",
-    cursor: "pointer",          // Optional: Change cursor to pointer on hover
+    cursor: "pointer", // Optional: Change cursor to pointer on hover
   },
-};  
+};

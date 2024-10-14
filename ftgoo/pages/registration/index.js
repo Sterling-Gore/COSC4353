@@ -67,11 +67,17 @@ export default function Registration() {
             skills,
             preferences,
             availability,
+            role: "user",
           }),
         });
 
         const data = await response.json();
         if (response.ok) {
+          // Save user details in local storage before redirecting
+          localStorage.setItem("userEmail", email);
+          localStorage.setItem("userID", data.user.userID);
+          localStorage.setItem("userRole", data.user.role);
+
           // Redirect to user events page on successful registration
           router.push(`/user/${data.user.userID}/events`);
         } else {
@@ -148,7 +154,14 @@ export default function Registration() {
                   <input
                     type="text"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );
+                      setFirstName(sanitizedValue);
+                    }}
                     placeholder="Enter your first name"
                     required
                     style={styles.input}
@@ -159,7 +172,13 @@ export default function Registration() {
                   <input
                     type="text"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );
+                      setLastName(sanitizedValue);
+                    }}
                     placeholder="Enter your last name"
                     required
                     style={styles.input}
@@ -172,7 +191,14 @@ export default function Registration() {
                   <input
                     type="text"
                     value={address1}
-                    onChange={(e) => setAddress1(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphanumeric characters, spaces, commas, periods, and hyphens
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );
+                      setAddress1(sanitizedValue);
+                    }}
                     placeholder="Enter your address"
                     required
                     style={styles.input}
@@ -183,7 +209,13 @@ export default function Registration() {
                   <input
                     type="text"
                     value={address2}
-                    onChange={(e) => setAddress2(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );
+                      setAddress2(sanitizedValue);
+                    }}
                     placeholder="Enter your address (optional)"
                     style={styles.input}
                   />
@@ -195,7 +227,13 @@ export default function Registration() {
                   <input
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );
+                      setCity(sanitizedValue);
+                    }}
                     placeholder="Enter your city"
                     required
                     style={styles.input}
@@ -267,10 +305,18 @@ export default function Registration() {
                   <input
                     type="text"
                     value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only numeric values
+                      const sanitizedValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );
+                      setZipCode(sanitizedValue);
+                    }}
                     placeholder="Enter your zip code"
                     required
                     style={styles.input}
+                    maxLength="5"
                   />
                 </div>
               </div>

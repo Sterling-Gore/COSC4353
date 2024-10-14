@@ -31,9 +31,16 @@ export default function Login() {
 
       const data = await response.json();
       if (response.ok) {
-        // Redirect to user events page on successful login
+        // Save user details in localStorage and redirect based on role
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userID", data.user.userID);
+        localStorage.setItem("userRole", data.user.role);
 
-        router.push(`/user/${data.user.userID}/events`);
+        if (data.user.role === "admin") {
+          router.push(`/admin/account`);
+        } else {
+          router.push(`/user/${data.user.userID}/events`);
+        }
       } else {
         // Handle login errors (e.g., wrong credentials)
         setError(
@@ -87,7 +94,6 @@ export default function Login() {
     </div>
   );
 }
-
 // Inline styles for the login page
 const styles = {
   container: {
