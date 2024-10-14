@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
@@ -26,9 +26,26 @@ export default function Events() {
 
   const router = useRouter();
 
+  useEffect(() => {
+    // Check if the user is logged in and get the user role
+    const userRole = localStorage.getItem("userRole");
+    const userID = localStorage.getItem("userID");
+
+    // Redirect based on role
+    if (!userRole || !userID) {
+      // If no valid login data, redirect to login page
+      router.push("/login");
+    } else if (userRole !== "admin") {
+      // If the user is logged in but not an admin, redirect to their user events page
+      router.push(`/user/${userID}/events`);
+    }
+  }, []);
+
   const handleLogout = () => {
     // Handle logout logic here if necessary
+    localStorage.removeItem("userRole");
     localStorage.removeItem("adminEmail");
+    localStorage.removeItem("userID");
     router.push("/login");
   };
 
