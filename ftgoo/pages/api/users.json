@@ -19,7 +19,31 @@
       "Tuesday",
       "Wednesday"
     ],
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "role": "user"
+  },
+  {
+    "userID": 2,
+    "firstName": "Sterling",
+    "lastName": "Gore",
+    "email": "sterling@gmail.com",
+    "password": "password123",
+    "address1": "134 Wonderland Street",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Education",
+      "Environment"
+    ],
+    "preferences": "Chicken",
+    "availability": [
+      "Monday",
+      "Tuesday"
+    ],
+    "isLoggedIn": false,
+    "role": "user"
   },
   {
     "userID": 3,
@@ -27,7 +51,7 @@
     "lastName": "Doe",
     "email": "blurb@gmail.com",
     "password": "testtest",
-    "address1": "123 housesdfsdfsdfsdfasdfasdf",
+    "address1": "123 house",
     "address2": "",
     "city": "Houston",
     "state": "KS",
@@ -39,14 +63,15 @@
     "availability": [
       "Wednesday"
     ],
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "role": "user"
   },
   {
     "userID": 4,
     "firstName": "Gordan",
     "lastName": "Sly",
-    "email": "thetest@gmail.com",
-    "password": "testtest",
+    "email": "admin@example.com",
+    "password": "password123",
     "address1": "1245 house",
     "address2": "",
     "city": "Austin",
@@ -60,7 +85,8 @@
     "availability": [
       "Wednesday"
     ],
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "role": "admin"
   },
   {
     "userID": 5,
@@ -80,7 +106,8 @@
     "availability": [
       "Tuesday"
     ],
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "role": "user"
   },
   {
     "userID": 6,
@@ -102,6 +129,74 @@
       "Tuesday",
       "Wednesday"
     ],
+    "isLoggedIn": false,
+    "role": "user"
+  },
+  {
+    "userID": 7,
+    "firstName": "jojo",
+    "lastName": "papa",
+    "email": "jopa@gmail.com",
+    "password": "password123",
+    "address1": "124 Wonderland Lane",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Health",
+      "Education"
+    ],
+    "preferences": "Cheese",
+    "availability": [
+      "Monday",
+      "Wednesday"
+    ],
+    "role": "user",
+    "isLoggedIn": false
+  },
+  {
+    "userID": 8,
+    "firstName": "ja",
+    "lastName": "pa",
+    "email": "jaja@gmail.com",
+    "password": "password123",
+    "address1": "123 Wonderland",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Health",
+      "Environment"
+    ],
+    "preferences": "Okay",
+    "availability": [
+      "Monday",
+      "Thursday"
+    ],
+    "role": "user",
+    "isLoggedIn": false
+  },
+  {
+    "userID": 9,
+    "firstName": "pa",
+    "lastName": "ja",
+    "email": "paja@gmail.com",
+    "password": "password123",
+    "address1": "132 Wonderland",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "skills": [
+      "Health"
+    ],
+    "preferences": "Okay",
+    "availability": [
+      "Tuesday"
+    ],
+    "role": "user",
     "isLoggedIn": false
   }
 ]
