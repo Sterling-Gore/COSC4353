@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function matching() {
   const [step, setStep] = useState(1);
@@ -14,38 +15,45 @@ export default function matching() {
   const [zipCode, setZipCode] = useState("");
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
-  const [availability, setAvailability] = useState(["Sterling Gore", "Jorell Padilla"]);
+  const [availability, setAvailability] = useState([
+    "Sterling Gore",
+    "Jorell Padilla",
+  ]);
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [showAvailabilityDropdown, setShowAvailabilityDropdown] =
-    useState([false, false]);
+  const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState([
+    false,
+    false,
+  ]);
   const [volunteers, setVolunteers] = useState([
-        "Sterling Gore",
-        "Jorell Padilla",
-        "Meenakshi Vinod",
-        "Jason Yen",
-      ]);
+    "Sterling Gore",
+    "Jorell Padilla",
+    "Meenakshi Vinod",
+    "Jason Yen",
+  ]);
   const [events, setEvents] = useState({
-        "Feeding the Homeless": [],
-        "Cleaning up the Park": ["Sterling Gore", "Jorell Padilla"],
-      });
+    "Feeding the Homeless": [],
+    "Cleaning up the Park": ["Sterling Gore", "Jorell Padilla"],
+  });
 
   const router = useRouter();
+
+  const handleLogout = () => {
+    // Handle logout logic here if necessary
+    localStorage.removeItem("adminEmail");
+    router.push("/login");
+  };
 
   const handleEdit = (e) => {
     // Logic for editing volunteers in a specific event
     //e.preventDefault();
-    if (step === 1) 
-    {
+    if (step === 1) {
       setStep(2);
-    }
-    else if (step == 2)
-    {
-        setStep(1);
+    } else if (step == 2) {
+      setStep(1);
     }
   };
 
-  
   /*
   const handleAvailabilitySelect = (day) => {
     setAvailability((prevAvailability) =>
@@ -60,12 +68,12 @@ export default function matching() {
       const currentVolunteers = Array.isArray(prevEvents[eventName])
         ? prevEvents[eventName]
         : [];
-  
+
       // Check if the volunteer is already in the list
       const updatedVolunteers = currentVolunteers.includes(volunteer)
         ? currentVolunteers.filter((d) => d !== volunteer) // Remove volunteer
         : [...currentVolunteers, volunteer]; // Add volunteer
-  
+
       return {
         ...prevEvents,
         [eventName]: updatedVolunteers,
@@ -80,8 +88,10 @@ export default function matching() {
   */
   const handleAvailabilityClear = (volunteer, eventName) => {
     setEvents((prevEvents) => {
-      const updatedVolunteers = prevEvents[eventName].filter((d) => d !== volunteer);
-  
+      const updatedVolunteers = prevEvents[eventName].filter(
+        (d) => d !== volunteer
+      );
+
       return {
         ...prevEvents,
         [eventName]: updatedVolunteers,
@@ -91,141 +101,156 @@ export default function matching() {
 
   const handleDropDown = (index) => {
     setShowAvailabilityDropdown((prevState) =>
-        prevState.map((item, i) => (i === index ? !item : item))
-      );
+      prevState.map((item, i) => (i === index ? !item : item))
+    );
   };
-
 
   return (
     <div style={styles.container}>
-        {/* Navbar */}
-        <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <a href= "./account">Account</a>
-              <a href="./event-management">Event Management</a>
-              <a href="./volunteer-history">History</a>
-              <span style = {styles.navOnPage}>Matching</span>
-              <a href="../">
-                <span style = {styles.navButton}>Log out</span>
-              </a>
-            </div>
-          </nav>
-        {/* center */ }
+      <AdminNavbar currentPage="Matching" handleLogout={handleLogout} />
+      {/* center */}
       <div style={styles.profileBox}>
         <h1 style={styles.title}>Volunteer Matching</h1>
         <div style={styles.form}>
           {error && <p style={styles.error}>{error}</p>}
           {step === 1 && (
-          <>
-            <div style={styles.inputGroup}>
+            <>
+              <div style={styles.inputGroup}>
                 {Object.keys(events).map((eventName, i) => (
-                    <>
+                  <>
                     <div style={styles.eventBox}>
-                    <div key = {i} style= {styles.eventTitle}>
+                      <div key={i} style={styles.eventTitle}>
                         <h3>{eventName}</h3>
+                      </div>
+                      <p style={styles.eventDate}>September {i + 6}th</p>
+                      <label style={styles.label}>Available Volunteers</label>
+                      <div style={styles.dataBox}>
+                        <div style={styles.selectedSkills}>
+                          {events[eventName].length
+                            ? events[eventName].map((volunteer) => (
+                                <div
+                                  key={volunteer}
+                                  style={styles.volunteerTag}
+                                >
+                                  {volunteer}
+                                </div>
+                              ))
+                            : "Select volunteers here..."}
+                        </div>
+                      </div>
                     </div>
-                    <p style={styles.eventDate}>September {i+6}th</p>
-                    <label style={styles.label}>Available Volunteers</label>
-                    <div style = {styles.dataBox}>
-                    <div style={styles.selectedSkills}>
-                    {events[eventName].length
-                          ? events[eventName].map((volunteer) => (
-                              <div key={volunteer} style={styles.volunteerTag}>
-                                {volunteer}
-                              </div>
-                            ))
-                          : "Select volunteers here..."}
-                    </div>
-                    </div>
-                    </div>
-                    </>
+                  </>
                 ))}
-                
               </div>
-          </>
+            </>
           )}
           {step === 2 && (
             <>
-                
-                <div style={styles.inputGroup}>
+              <div style={styles.inputGroup}>
                 {Object.keys(events).map((eventName, i) => (
-                    <>
+                  <>
                     <div style={styles.eventBox}>
-                    <div key = {i} style= {styles.eventTitle}>
+                      <div key={i} style={styles.eventTitle}>
                         <h3>{eventName}</h3>
-                    </div>
-                    <p style={styles.eventDate}>September {i+6}th</p>
-                    <label style={styles.label}>Available Volunteers</label>
-                    <div
+                      </div>
+                      <p style={styles.eventDate}>September {i + 6}th</p>
+                      <label style={styles.label}>Available Volunteers</label>
+                      <div
                         style={styles.multiSelectContainer}
-                        onClick={() =>
-                            handleDropDown(i)
-                        }
-                    >
+                        onClick={() => handleDropDown(i)}
+                      >
                         <div style={styles.multiSelect}>
-                        <div style={styles.selectedSkills}>
+                          <div style={styles.selectedSkills}>
                             {events[eventName].length
-                            ? events[eventName].map((volunteer) => (
-                                <div key={volunteer} style={styles.volunteerTag}>
+                              ? events[eventName].map((volunteer) => (
+                                  <div
+                                    key={volunteer}
+                                    style={styles.volunteerTag}
+                                  >
                                     {volunteer}
                                     <span
-                                    style={styles.clearTag}
-                                    onClick={() => handleAvailabilityClear(volunteer, eventName)}
+                                      style={styles.clearTag}
+                                      onClick={() =>
+                                        handleAvailabilityClear(
+                                          volunteer,
+                                          eventName
+                                        )
+                                      }
                                     >
-                                    &times;
+                                      &times;
                                     </span>
-                                </div>
+                                  </div>
                                 ))
-                            : "Select volunteers here..."}
-                        </div>
-                        {showAvailabilityDropdown[i] && (
+                              : "Select volunteers here..."}
+                          </div>
+                          {showAvailabilityDropdown[i] && (
                             <div style={styles.dropdown}>
-                            {volunteers.map((volunteer) => (
+                              {volunteers.map((volunteer) => (
                                 <div
-                                key={volunteer}
-                                onClick={() => handleAvailabilitySelect(volunteer, eventName)}
-                                style={{
+                                  key={volunteer}
+                                  onClick={() =>
+                                    handleAvailabilitySelect(
+                                      volunteer,
+                                      eventName
+                                    )
+                                  }
+                                  style={{
                                     ...styles.dropdownItem,
                                     ...(events[eventName].includes(volunteer) &&
-                                    styles.dropdownItemSelected),
-                                }}
+                                      styles.dropdownItemSelected),
+                                  }}
                                 >
-                                <input
+                                  <input
                                     type="checkbox"
-                                    checked={events[eventName].includes(volunteer)}
+                                    checked={events[eventName].includes(
+                                      volunteer
+                                    )}
                                     readOnly
                                     style={styles.availabilityCheckbox}
-                                />
-                                {volunteer}
+                                  />
+                                  {volunteer}
                                 </div>
-                            ))}
+                              ))}
                             </div>
-                        )}
+                          )}
                         </div>
+                      </div>
                     </div>
-                    </div>
-                    </>
+                  </>
                 ))}
-                  
-                </div>
-              
+              </div>
             </>
           )}
-          <div style= {styles.submitButtons}>
-            {step === 1 ? (<button style={styles.redButton} onClick={() => handleEdit("Event")}>Edit </button>) 
-            :(
-                <>
-                <button style={styles.cancelButton} onClick={() => handleEdit("Event")}>Cancel </button>
-                <button style={styles.redButton} onClick={() => handleEdit("Event")}>Save Changes </button>
-                </>
-            )} 
-        </div>
+          <div style={styles.submitButtons}>
+            {step === 1 ? (
+              <button
+                style={styles.redButton}
+                onClick={() => handleEdit("Event")}
+              >
+                Edit{" "}
+              </button>
+            ) : (
+              <>
+                <button
+                  style={styles.cancelButton}
+                  onClick={() => handleEdit("Event")}
+                >
+                  Cancel{" "}
+                </button>
+                <button
+                  style={styles.redButton}
+                  onClick={() => handleEdit("Event")}
+                >
+                  Save Changes{" "}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 const styles = {
   container: {
@@ -405,10 +430,10 @@ const styles = {
     color: "#555",
     marginBottom: "10px",
   },
-  submitButtons:{
+  submitButtons: {
     display: "flex",
     justifyContent: "flex-end",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   redButton: {
     backgroundColor: "#FF3030",

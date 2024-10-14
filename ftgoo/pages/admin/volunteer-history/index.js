@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function VolunteerHistory() {
   const [people, setPeople] = useState("SterlingGore");
@@ -11,15 +13,39 @@ export default function VolunteerHistory() {
   ];
   const SterlingGore = [
     { eventNum: 1, time: "8/18/2024", eventStatus: "Helped feed animals." },
-    { eventNum: 2, time: "9/2/2024", eventStatus: "Made food for the orphanage." },
+    {
+      eventNum: 2,
+      time: "9/2/2024",
+      eventStatus: "Made food for the orphanage.",
+    },
   ];
   const MeenakshiVinod = [
-    { eventNum: 1, time: "4/13/2024", eventStatus: "Helped the elderly with physical therapy." },
-    { eventNum: 2, time: "8/30/2024", eventStatus: "Hosted a painting class at a hospital." },
+    {
+      eventNum: 1,
+      time: "4/13/2024",
+      eventStatus: "Helped the elderly with physical therapy.",
+    },
+    {
+      eventNum: 2,
+      time: "8/30/2024",
+      eventStatus: "Hosted a painting class at a hospital.",
+    },
   ];
   const JasonYen = [
-    { eventNum: 1, time: "7/15/2024", eventStatus: "Donated blood and left kidney to MD Anderson." },
+    {
+      eventNum: 1,
+      time: "7/15/2024",
+      eventStatus: "Donated blood and left kidney to MD Anderson.",
+    },
   ];
+
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Handle logout logic here if necessary
+    localStorage.removeItem("adminEmail");
+    router.push("/login");
+  };
 
   // Determine which array of events to display based on the selected person
   let selectedEvents = [];
@@ -35,19 +61,10 @@ export default function VolunteerHistory() {
 
   return (
     <div style={styles.container}>
-      {/* Navbar */}
-      <nav style={styles.navbar}>
-        <div style={styles.logo}>FTGOO</div>
-        <div style={styles.navLinks}>
-          <a href="./account">Account</a>
-          <a href="./event-management">Event Management</a>
-          <span style={styles.navOnPage}>History</span>
-          <a href = "./matching">Matching</a>
-          <a href="../">
-            <span style={styles.navButton}>Log out</span>
-          </a>
-        </div>
-      </nav>
+      <AdminNavbar
+        currentPage="Volunteer History"
+        handleLogout={handleLogout}
+      />
 
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Volunteer History</h1>
@@ -69,9 +86,13 @@ export default function VolunteerHistory() {
 
           {selectedEvents.map((notification) => (
             <div style={styles.eventContainer} key={notification.eventNum}>
-              <div style={styles.topLeftEventText}>Event {notification.eventNum} - Reminder</div>
+              <div style={styles.topLeftEventText}>
+                Event {notification.eventNum} - Reminder
+              </div>
               <div style={styles.bottomLeftEventText}>{notification.time}</div>
-              <div style={styles.rightEventText}>{notification.eventStatus}</div>
+              <div style={styles.rightEventText}>
+                {notification.eventStatus}
+              </div>
             </div>
           ))}
         </div>
