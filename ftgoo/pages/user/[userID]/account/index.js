@@ -1,3 +1,4 @@
+// pages/user/[userID]/account/index.js
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
