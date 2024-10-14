@@ -1,147 +1,46 @@
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Navbar from "@/components/navbar";
 import { personObject } from "@/pages/api/server";
 
-
-
-export default function profile_management() {
+export default function Account() {
   const router = useRouter();
-
-
+  const { userID } = router.query; // Extract userID from query params
+  const [userEmail, setUserEmail] = useState(null);
   const [step, setStep] = useState(1);
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [skills, setSkills] = useState([]);
-  const [preferences, setPreferences] = useState("");
-  const [availability, setAvailability] = useState([]);
+  const [firstName, setFirstName] = useState(personObject.firstName);
+  const [lastName, setLastName] = useState(personObject.lastName);
+  const [address1, setAddress1] = useState(personObject.Address1);
+  const [address2, setAddress2] = useState(personObject.Address2);
+  const [city, setCity] = useState(personObject.city);
+  const [state, setState] = useState(personObject.State);
+  const [zipCode, setZipCode] = useState(personObject.zipCode);
+  const [skills, setSkills] = useState(personObject.skills);
+  const [preferences, setPreferences] = useState(personObject.preference);
+  const [availability, setAvailability] = useState(personObject.availability);
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [showAvailabilityDropdown, setShowAvailabilityDropdown] = useState(false);
-  const { userID } = router.query; // Extract userID from the query params
-  //console.log(userID);
-  
-  
+  const [showAvailabilityDropdown, setShowAvailabilityDropdown] =
+    useState(false);
 
-  async function GETdata()
-  {
-    if(!userID)return; //guard case for rendering
-    try {
-      // Call the login API
-
-      const response = await fetch("/api/account-management/user-account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({userID}),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        // Redirect to user events page on successful login
-        
-        setEmail(data.user.email);
-        setFirstName(data.user.firstName);
-        setLastName(data.user.lastName);
-        setAddress1(data.user.address1);
-        setAddress2(data.user.address2);
-        setCity(data.user.city);
-        setState(data.user.state);
-        setZipCode(data.user.zipCode);
-        setSkills(data.user.skills);
-        setAvailability(data.user.availability);
-        setPreferences(data.user.preferences);
-        
-        
-      } else {
-        setEmail("");
-        setFirstName("");
-        setLastName("");
-        setAddress1("");
-        setAddress2("");
-        setCity("");
-        setState("");
-        setZipCode("");
-        setSkills([""]);
-        setAvailability([""]);
-        setPreferences("");
-        //router.push(`/`);
-      }
-    } catch (err) {
-      setEmail("");
-      setFirstName("");
-      setLastName("");
-      setAddress1("");
-      setAddress2("");
-      setCity("");
-      setState("");
-      setZipCode("");
-      setSkills([""]);
-      setAvailability([""]);
-      setPreferences("");
-      //router.push(`/`);
+  useEffect(() => {
+    // Mock check for user login status
+    const loggedInUser = localStorage.getItem("userEmail");
+    if (loggedInUser) {
+      setUserEmail(loggedInUser);
+    } else {
+      // Redirect to login if not logged in
+      router.push("/login");
     }
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault(); // Prevent default link behavior
+    localStorage.removeItem("userEmail");
+    setUserEmail(null);
+    router.push("/login");
   };
 
-  async function PATCHdata()
-  {
-    if(!userID)return; //guard case for rendering
-    try {
-      // Call the login API
-
-      const response = await fetch("/api/account-management/user-account", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userID,
-          firstName, 
-          lastName, 
-          address1,
-          address2,
-          city,
-          state,
-          zipCode,
-          skills,
-          availability,
-          preferences
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        // Redirect to user events page on successful login
-          
-      } else {
-    
-      }
-    } catch (err) {
- 
-      //router.push(`/`);
-    }
-  };
-
-  
-  //useEffect() empty dependency array
-  useEffect(() => {GETdata()}, [userID]);
-  //GETdata(userID);
-
-
-  
-  
-
-  
-
-  
   const handleNext = (e) => {
     e.preventDefault();
     if (step === 1) {
@@ -161,13 +60,21 @@ export default function profile_management() {
         setError("Please fill in all fields");
         return;
       }
-      //puts data into the server
-      PATCHdata();
+      // Update data into the server
+      personObject.firstName = firstName;
+      personObject.lastName = lastName;
+      personObject.Address1 = address1;
+      personObject.Address2 = address2;
+      personObject.city = city;
+      personObject.state = state;
+      personObject.zipCode = zipCode;
+      personObject.skills = skills;
+      personObject.availability = availability;
+      personObject.preference = preferences;
 
-
-      setError("")
+      console.log(personObject);
+      setError("");
       setStep(1);
-      // Handle form submission
     }
   };
 
@@ -197,111 +104,114 @@ export default function profile_management() {
 
   return (
     <div style={styles.container}>
-        {/* Navbar */}
-        <nav style={styles.navbar}>
-            <div style={styles.logo}>FTGOO</div>
-            <div style={styles.navLinks}>
-              <span style = {styles.navOnPage}>Account</span>
-              <a href="./events">Events</a>
-              <a href="./notifications">Notification</a>
-              <a href="../">
-                <span style = {styles.navButton}>Log out</span>
-              </a>
-            </div>
-          </nav>
-        {/* center */ }
+      {/* Navbar */}
+      <Navbar
+        currentPage="Account"
+        userEmail={userEmail}
+        userID={userID}
+        handleLogout={handleLogout}
+        navLinks={[
+          { name: "Account", href: userID ? `/user/${userID}/account` : "#" },
+          { name: "Events", href: userID ? `/user/${userID}/events` : "#" },
+          {
+            name: "Notification",
+            href: userID ? `/user/${userID}/notifications` : "#",
+          },
+          { name: "Log out", href: "#", onClick: handleLogout },
+        ]}
+        showLogout={true}
+      />
+
+      {/* center */}
       <div style={styles.profileBox}>
         <h1 style={styles.title}>Manage Profile</h1>
         <form onSubmit={handleNext} style={styles.form}>
           {error && <p style={styles.error}>{error}</p>}
           {step === 1 && (
-          <>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Email</label>
-                <div style = {styles.dataBox}>
-                    <p>{email}</p>
-                </div>
-            </div>
-            <div style={styles.row}>
+            <>
               <div style={styles.inputGroup}>
-                <label style={styles.label}>First Name</label>
-                <div style = {styles.dataBox}>
+                <label style={styles.label}>Email</label>
+                <div style={styles.dataBox}>
+                  <p>{userEmail}</p>
+                </div>
+              </div>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>First Name</label>
+                  <div style={styles.dataBox}>
                     <p>{firstName}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Last Name</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Last Name</label>
+                  <div style={styles.dataBox}>
                     <p>{lastName}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Address 1</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Address 1</label>
+                  <div style={styles.dataBox}>
                     <p>{address1}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Address 2</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Address 2</label>
+                  <div style={styles.dataBox}>
                     <p>{address2}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>City</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>City</label>
+                  <div style={styles.dataBox}>
                     <p>{city}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>State</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>State</label>
+                  <div style={styles.dataBox}>
                     <p>{state}</p>
+                  </div>
                 </div>
-              </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Zip Code</label>
-                <div style = {styles.dataBox}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Zip Code</label>
+                  <div style={styles.dataBox}>
                     <p>{zipCode}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={styles.row}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Skills</label>
-                <div style = {styles.dataBox}>
+              <div style={styles.row}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Skills</label>
+                  <div style={styles.dataBox}>
                     <div style={styles.selectedSkills}>
-                        {skills.map((skill) => 
-                          <span style = {styles.skillTag}> {skill}</span>                   
-                        )}
+                      {skills.map((skill) => (
+                        <span style={styles.skillTag}> {skill}</span>
+                      ))}
                     </div>
+                  </div>
                 </div>
-                    
-                      
-                  
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Availability</label>
+                  <div style={styles.dataBox}>
+                    <div style={styles.selectedSkills}>
+                      {availability.map((skill) => (
+                        <span style={styles.skillTag}> {skill}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div style={styles.inputGroup}>
-                <label style={styles.label}>Availability</label>
-                <div style = {styles.dataBox}>
-                    <div style={styles.selectedSkills}>
-                        {availability.map((skill) => 
-                          <span style = {styles.skillTag}> {skill}</span>                   
-                        )}
-                    </div>
+                <label style={styles.label}>Preferences</label>
+                <div style={styles.dataBox}>
+                  <p>{preferences}</p>
                 </div>
               </div>
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Preferences</label>
-                <div style = {styles.dataBox}>
-                    <p>{preferences}</p>
-                </div>
-            </div>
-          </>
+            </>
           )}
           {step === 2 && (
             <>
