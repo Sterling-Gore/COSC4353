@@ -11,7 +11,19 @@ export default function handler(req, res) {
     if (user && user.password === password) {
       // Set user session (for demonstration purposes, we'll use a simple flag)
       user.isLoggedIn = true;
-      return res.status(200).json({ message: "Login successful", user });
+
+      // Return user details with relevant fields (e.g., userID, role)
+      const { userID, role, firstName, lastName } = user;
+
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          userID,
+          role,
+          firstName,
+          lastName,
+        },
+      });
     } else if (!user) {
       return res.status(401).json({ error: "User does not exist" });
     } else {

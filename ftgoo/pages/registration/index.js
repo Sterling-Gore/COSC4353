@@ -67,11 +67,17 @@ export default function Registration() {
             skills,
             preferences,
             availability,
+            role: "user",
           }),
         });
 
         const data = await response.json();
         if (response.ok) {
+          // Save user details in local storage before redirecting
+          localStorage.setItem("userEmail", email);
+          localStorage.setItem("userID", data.user.userID);
+          localStorage.setItem("userRole", data.user.role);
+
           // Redirect to user events page on successful registration
           router.push(`/user/${data.user.userID}/events`);
         } else {

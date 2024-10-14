@@ -31,9 +31,16 @@ export default function Login() {
 
       const data = await response.json();
       if (response.ok) {
-        // Save email in localStorage and redirect to user events page on successful login
+        // Save user details in localStorage and redirect based on role
         localStorage.setItem("userEmail", email);
-        router.push(`/user/${data.user.userID}/events`);
+        localStorage.setItem("userID", data.user.userID);
+        localStorage.setItem("userRole", data.user.role);
+
+        if (data.user.role === "admin") {
+          router.push(`/admin/account`);
+        } else {
+          router.push(`/user/${data.user.userID}/events`);
+        }
       } else {
         // Handle login errors (e.g., wrong credentials)
         setError(
