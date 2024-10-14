@@ -125,5 +125,30 @@
       "Wednesday"
     ],
     "isLoggedIn": false
+  },
+  {
+    "userID": 5,
+    "firstName": "Jason",
+    "lastName": "Yen",
+    "email": "jasonyen2004@gmail.com",
+    "password": "YenCH@77479$%",
+    "address1": "2711 Grants Lake BLVD. Apt 103",
+    "address2": "",
+    "city": "Sugar Land",
+    "state": "TX",
+    "zipCode": "77479",
+    "skills": [
+      "Education",
+      "Environment"
+    ],
+    "preferences": "Example Account.",
+    "availability": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "isLoggedIn": false
   }
 ]
