@@ -7,6 +7,7 @@ export default function Events() {
   const [people, setPeople] = useState("");
   const [volunteers, setVolunteers] = useState([]);
   const [events, setEvents] = useState([]);
+  const [myEvents, setMyEvents] = useState([]);
   const { userID } = router.query; // Extract userID from query params
   const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
@@ -65,6 +66,35 @@ export default function Events() {
         setAvailability(data.user.availability);
         setPreferences(data.user.preferences);
         
+        // Check if rsvpEvents and events are available
+
+        
+        const editedMyEvents = data.user.rsvpEvents.map((eventID) => {
+          const matchedEvent = events.find(event => event.eventID === eventID);
+          if (matchedEvent) {
+            return {
+              eventID: matchedEvent.eventID,
+              eventName: matchedEvent.eventName,
+              urgency: matchedEvent.urgency,
+              address: matchedEvent.address,
+              city: matchedEvent.city,
+              state: matchedEvent.state,
+              zipCode: matchedEvent.zipCode,
+              description: matchedEvent.description,
+              skills: matchedEvent.skills,
+              eventDate: matchedEvent.eventDate,
+              day: matchedEvent.day,
+            };
+          }
+          return null; // Return null if no match is found
+        });
+      
+        // Filter out any null values in case there were unmatched events
+        const filteredMyEvents = editedMyEvents.filter(event => event !== null);
+        // Log the filtered events for debugging
+    
+        // Set the state with the filtered events
+        setMyEvents([...filteredMyEvents]);
         
       } else {
         setUserEmail("");
@@ -161,9 +191,9 @@ export default function Events() {
 
   
   //useEffect() empty dependency array
-  useEffect(() => {GETuser_data()}, [userID]);
-  useEffect(() => {GETevent_data()}, []);
   
+  useEffect(() => {GETevent_data()}, []);
+  useEffect(() => {GETuser_data()}, [userID, events]);
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("userEmail");
@@ -233,21 +263,17 @@ export default function Events() {
         )}
         {currentPage === "myEvents" && (
           <div style={styles.eventsGrid}>
-            {myEventsArray.map((event) => (
-              <div style={styles.eventWrapper} key={event.eventNum}>
+            {myEvents.map((event) => (
+              <div style={styles.eventWrapper} key={event.eventID}>
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
-                  <p>Event {event.eventNum}</p>
-                  {event.rsvp ? (
-                    <button style={styles.rsvpButton}>RSVP'd</button>
-                  ) : (
+                  <p>{event.eventName}</p>
                     <button
                       style={styles.rsvpButton}
-                      onClick={() => handleRSVPOnClick(event.eventNum)}
+                      onClick={() => handleRSVPOnClick(event)}
                     >
-                      Click here to RSVP
+                      RSVP'd
                     </button>
-                  )}
                 </div>
               </div>
             ))}
