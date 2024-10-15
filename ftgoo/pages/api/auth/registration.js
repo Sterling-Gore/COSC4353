@@ -74,6 +74,8 @@ export default function handler(req, res) {
       availability,
       role: "user", // Add the role as 'user'
       isLoggedIn: false,
+      rsvpEvents: [],
+      oldEvents: [],
     };
 
     console.log("Creating new user:", newUser);

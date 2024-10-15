@@ -3,7 +3,56 @@ import { useRouter } from "next/router";
 import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function VolunteerHistory() {
-  const [people, setPeople] = useState("SterlingGore");
+  const [people, setPeople] = useState("");
+  const [volunteers, setVolunteers] = useState([]);
+
+  async function GETvolunteers_and_events()
+  {
+    try{
+
+      const response = await fetch("/api/ADMIN/volunteer-history", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data_from_db = await response.json();
+      if(response.ok) {
+        //setVolunteers(data_from_db.volunteers)
+        
+        const editedVolunteers = [];
+        data_from_db.volunteers.map((volunteer) => (
+          editedVolunteers.push(
+            {
+              "events" : data_from_db.events.filter((event) => (volunteer.oldEvents.includes(event.eventID))),
+              "firstName": volunteer.firstName,
+              "lastName": volunteer.lastName,
+              "userID": volunteer.userID,
+              
+            }
+          )
+        ));
+        //console.log(`PLEASE FOR THE LOVE OF GOD WORK ${editedVolunteers}`)
+        setPeople(editedVolunteers[0].userID) //this could break code if no volunteers
+        setVolunteers(editedVolunteers)
+      }
+      else{
+        console.log("bad response");
+      }
+    } catch(err){
+      console.log("error");
+    }
+  };
+
+
+
+  useEffect(() => {GETvolunteers_and_events()}, []);
+
+
+
+  
+
 
   const JorellPadilla = [
     { eventNum: 1, time: "9/21/2024", eventStatus: "Helped the homeless." },
@@ -64,16 +113,8 @@ export default function VolunteerHistory() {
   };
 
   // Determine which array of events to display based on the selected person
-  let selectedEvents = [];
-  if (people === "SterlingGore") {
-    selectedEvents = SterlingGore;
-  } else if (people === "JorellPadilla") {
-    selectedEvents = JorellPadilla;
-  } else if (people === "MeenakshiVinod") {
-    selectedEvents = MeenakshiVinod;
-  } else if (people === "JasonYen") {
-    selectedEvents = JasonYen;
-  }
+  let selectedEvents = volunteers.find((volunteer) => volunteer.userID == people)?.events || [];
+  
 
   return (
     <div style={styles.container}>
@@ -93,21 +134,20 @@ export default function VolunteerHistory() {
               required
               style={styles.input}
             >
-              <option value="SterlingGore">Sterling Gore</option>
-              <option value="JorellPadilla">Jorell Padilla</option>
-              <option value="MeenakshiVinod">Meenakshi Vinod</option>
-              <option value="JasonYen">Jason Yen</option>
+              {volunteers.map((volunteer) => (
+                <option key={volunteer.userID} value={volunteer.userID}>{"(" + volunteer.userID + ") " + volunteer.firstName + " " + volunteer.lastName}</option>
+              ))}
             </select>
           </div>
 
-          {selectedEvents.map((notification) => (
-            <div style={styles.eventContainer} key={notification.eventNum}>
+          {selectedEvents.map((event) => (
+            <div style={styles.eventContainer} key={event.eventName}>
               <div style={styles.topLeftEventText}>
-                Event {notification.eventNum} - Reminder
+                Event: {event.eventName}
               </div>
-              <div style={styles.bottomLeftEventText}>{notification.time}</div>
+              <div style={styles.bottomLeftEventText}>{event.eventDate}</div>
               <div style={styles.rightEventText}>
-                {notification.eventStatus}
+                {event.Description}
               </div>
             </div>
           ))}

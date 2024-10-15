@@ -1,12 +1,23 @@
 import fs from "fs";
 import path from "path";
 
-const filePath = path.resolve(process.cwd(), "pages/api/users.json");
+const userPath = path.resolve(process.cwd(), "pages/api/users.json");
+const eventPath = path.resolve(process.cwd(), "pages/api/events.json");
+
 
 // Read users from the file
 export const getUsers = () => {
   try {
-    const data = fs.readFileSync(filePath, "utf-8");
+    const data = fs.readFileSync(userPath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    return [];
+  }
+};
+
+export const getEvents = () => {
+  try {
+    const data = fs.readFileSync(eventPath, "utf-8");
     return JSON.parse(data);
   } catch (error) {
     return [];
@@ -17,7 +28,7 @@ export const getUsers = () => {
 export const addUser = (user) => {
   const users = getUsers();
   users.push(user);
-  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+  fs.writeFileSync(userPath, JSON.stringify(users, null, 2));
 };
 
 // Find a user by email
@@ -37,7 +48,7 @@ export const updateUser = (updatedUser) => {
   if (userIndex !== -1)
   {
     users[userIndex] = updatedUser;
-    fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+    fs.writeFileSync(userPath, JSON.stringify(users, null, 2));
   }
   else
   {
@@ -45,4 +56,6 @@ export const updateUser = (updatedUser) => {
   }
 
 
-}
+};
+
+

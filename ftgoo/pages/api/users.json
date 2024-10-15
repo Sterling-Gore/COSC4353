@@ -20,7 +20,11 @@
       "Wednesday"
     ],
     "isLoggedIn": false,
-    "role": "user"
+    "role": "user",
+    "rsvpEvents": [],
+    "oldEvents": [
+      4
+    ]
   },
   {
     "userID": 2,
@@ -43,7 +47,11 @@
       "Tuesday"
     ],
     "isLoggedIn": false,
-    "role": "user"
+    "role": "user",
+    "rsvpEvents": [],
+    "oldEvents": [
+      4
+    ]
   },
   {
     "userID": 3,
@@ -64,7 +72,11 @@
       "Wednesday"
     ],
     "isLoggedIn": false,
-    "role": "user"
+    "role": "user",
+    "rsvpEvents": [],
+    "oldEvents": [
+      4
+    ]
   },
   {
     "userID": 4,
@@ -107,7 +119,11 @@
       "Tuesday"
     ],
     "isLoggedIn": false,
-    "role": "user"
+    "role": "user",
+    "rsvpEvents": [],
+    "oldEvents": [
+      4
+    ]
   },
   {
     "userID": 6,
@@ -130,7 +146,11 @@
       "Wednesday"
     ],
     "isLoggedIn": false,
-    "role": "user"
+    "role": "user",
+    "rsvpEvents": [],
+    "oldEvents": [
+      4
+    ]
   },
   {
     "userID": 7,
@@ -153,7 +173,11 @@
       "Wednesday"
     ],
     "role": "user",
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": [
+      4,5
+    ]
   },
   {
     "userID": 8,
@@ -176,7 +200,11 @@
       "Thursday"
     ],
     "role": "user",
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": [
+      5
+    ]
   },
   {
     "userID": 9,
@@ -197,6 +225,33 @@
       "Tuesday"
     ],
     "role": "user",
-    "isLoggedIn": false
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": [
+      4, 5
+    ]
+  },
+  {
+    "userID": 10,
+    "firstName": "Johnny",
+    "lastName": "Thomas",
+    "email": "testing@gmail.com",
+    "password": "password123",
+    "address1": "1234 house",
+    "address2": "",
+    "city": "Austin",
+    "state": "KY",
+    "zipCode": "12345",
+    "skills": [
+      "Education"
+    ],
+    "preferences": "this is a test",
+    "availability": [
+      "Tuesday"
+    ],
+    "role": "user",
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": []
   }
 ]

@@ -26,7 +26,7 @@ export default function Home() {
       <div style={styles.container}>
         <div style={styles.containerCover}>
           {/* Navbar */}
-          <Navbar userEmail={userEmail} handleLogout={handleLogout} />
+          <Navbar userEmail={null} handleLogout={handleLogout} />
 
           {/* Centered "Hello" */}
           <div style={styles.center}>
