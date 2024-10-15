@@ -14,23 +14,74 @@ export default function Events() {
   const [zipCode, setZipCode] = useState("");
   const [description, setDescription] = useState("");
   const [skills, setSkills] = useState([]);
-
+  const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [eventDate, setEventDate] = useState("");
-  const [EventsArray, setEventsArary] = useState([
-    { eventNum: 1, rsvp: true },
-    { eventNum: 2, rsvp: true },
-    { eventNum: 3, rsvp: true },
-  ]);
-  const [numEvents, setnumEvents] = useState(3);
+  const [EventsArray, setEventsArary] = useState([]);
+  const [numEvents, setnumEvents] = useState(0);
 
   const router = useRouter();
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+
+      if (
+        !eventName ||
+        !urgency ||
+        !address ||
+        !city ||
+        !state ||
+        !zipCode ||
+        !skills ||
+        !description ||
+        !eventDate 
+      ) {
+        setError("Please fill in all fields");
+        return;
+      }
+
+      try {
+        // Call the registration API
+        const response = await fetch("/api/events/events", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eventName,
+            urgency,
+            address,
+            city,
+            state,
+            zipCode,
+            skills,
+            description,
+            eventDate,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Save user details in local storage before redirecting
+          localStorage.setItem("eventName", eventName);
+          localStorage.setItem("eventID", data.event.eventID);
+
+          // Redirect to user events page on successful registration
+          window.location.reload();  // This will refresh the current page
+        } else {
+          // Handle registration errors
+          setError(data.error || "Event Creation Failed. Please try again.");
+        }
+      } catch (err) {
+        setError("An error occurred. Please try again later.");
+      }
+  };
 
   useEffect(() => {
     // Check if the user is logged in and get the user role
     const userRole = localStorage.getItem("userRole");
     const userID = localStorage.getItem("userID");
-
+  
     // Redirect based on role
     if (!userRole || !userID) {
       // If no valid login data, redirect to login page
@@ -38,8 +89,22 @@ export default function Events() {
     } else if (userRole !== "admin") {
       // If the user is logged in but not an admin, redirect to their user events page
       router.push(`/user/${userID}/events`);
+    } else {
+      // Fetch the events from the 'events.json' file if the user is authenticated and an admin
+      const fetchEvents = async () => {
+        try {
+          const response = await fetch("/events.json"); // Adjust the path if necessary
+          const data = await response.json();
+          setEventsArray(data.events); // Assuming the file contains an array of events under the 'events' key
+          setnumEvents(data.events.length); // Update numEvents based on the length of the events array
+        } catch (err) {
+          console.error("Failed to load events:", err);
+        }
+      };
+  
+      fetchEvents(); // Fetch the events if user is an admin
     }
-  }, []);
+  }, [router]); // Add router as a dependency to avoid potential issues
 
   const handleLogout = () => {
     // Handle logout logic here if necessary
@@ -63,13 +128,6 @@ export default function Events() {
 
   const handleGoBackOnClick = () => {
     setCurrentPage("Events");
-  };
-
-  const handleSaveClick = () => {
-    setIsClicked(true);
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 1000);
   };
 
   const handleSkillSelect = (skill) => {
@@ -373,6 +431,8 @@ export default function Events() {
         {currentPage === "CreateEvent" && (
           <>
             <h1 style={styles.title}>Create Event {selectedEventNum}</h1>
+            <form onSubmit={handleNext} style={styles.form}>
+            {error && <p style={styles.error}>{error}</p>}
             <div style={styles.rsvpContainer}>
               <div style={styles.rsvpBox}></div>
               <div style={styles.row}>
@@ -610,11 +670,12 @@ export default function Events() {
                 <button style={styles.goBack} onClick={handleGoBackOnClick}>
                   Cancel
                 </button>
-                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                <button type="submit" style={styles.goBack}>
                   Create Event
                 </button>
               </div>
             </div>
+            </form>
           </>
         )}
       </div>
@@ -1104,5 +1165,13 @@ const styles = {
     border: "none", // Optional: Remove default border
     borderRadius: "8px",
     cursor: "pointer", // Optional: Change cursor to pointer on hover
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  error: {
+    color: "#d9534f",
+    marginBottom: "10px",
   },
 };

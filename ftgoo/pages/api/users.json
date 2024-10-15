@@ -176,7 +176,8 @@
     "isLoggedIn": false,
     "rsvpEvents": [],
     "oldEvents": [
-      4,5
+      4,
+      5
     ]
   },
   {
@@ -228,7 +229,8 @@
     "isLoggedIn": false,
     "rsvpEvents": [],
     "oldEvents": [
-      4, 5
+      4,
+      5
     ]
   },
   {
@@ -246,6 +248,29 @@
       "Education"
     ],
     "preferences": "this is a test",
+    "availability": [
+      "Tuesday"
+    ],
+    "role": "user",
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": []
+  },
+  {
+    "userID": 11,
+    "firstName": "Meenakshi",
+    "lastName": "Vinod",
+    "email": "Meenakshi.V@gmail.com",
+    "password": "Meenakshi0429",
+    "address1": "1418 Steppinstone Way",
+    "address2": "",
+    "city": "Spring",
+    "state": "TX",
+    "zipCode": "77379",
+    "skills": [
+      "Education"
+    ],
+    "preferences": "None",
     "availability": [
       "Tuesday"
     ],
