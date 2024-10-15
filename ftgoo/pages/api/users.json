@@ -176,7 +176,8 @@
     "isLoggedIn": false,
     "rsvpEvents": [],
     "oldEvents": [
-      4,5
+      4,
+      5
     ]
   },
   {
@@ -228,7 +229,8 @@
     "isLoggedIn": false,
     "rsvpEvents": [],
     "oldEvents": [
-      4, 5
+      4,
+      5
     ]
   },
   {
@@ -248,6 +250,32 @@
     "preferences": "this is a test",
     "availability": [
       "Tuesday"
+    ],
+    "role": "user",
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": []
+  },
+  {
+    "userID": 11,
+    "firstName": "Jason",
+    "lastName": "Yen",
+    "email": "jasonyen2004@gmail.com",
+    "password": "YenCH@77479$%",
+    "address1": "12345 Pine Ave.",
+    "address2": "",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "77479",
+    "skills": [
+      "Health",
+      "Animal Care"
+    ],
+    "preferences": "abc\n",
+    "availability": [
+      "Monday",
+      "Tuesday",
+      "Wednesday"
     ],
     "role": "user",
     "isLoggedIn": false,

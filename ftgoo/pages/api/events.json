@@ -2,12 +2,12 @@
     {
       "eventID": 1,
       "eventName": "John's Food Shelter",
-      "urgency": "high",
+      "urgency": "High",
       "address": "123 Pine Avenue TX",
       "city": "Houston",
       "state": "TX",
       "zipCode": "12345",
-      "Description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
+      "description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
       "skills": ["Health"],
       "eventDate": "2024-10-31",
       "day": "Thursday"
@@ -15,12 +15,12 @@
     {
       "eventID": 2,
       "eventName": "John's Animal Shelter",
-      "urgency": "low",
+      "urgency": "Low",
       "address": "456 Cherry Avenue TX",
       "city": "Dallas",
       "state": "TX",
       "zipCode": "54321",
-      "Description": "Providing volunteering care for animals that needs treatment.",
+      "description": "Providing volunteering care for animals that needs treatment.",
       "skills": ["Health", "Education", "Animal Care"],
       "eventDate": "2025-01-01",
       "day": "Wednesday"
@@ -28,12 +28,12 @@
     {
       "eventID": 3,
       "eventName": "Children's Art Supply",
-      "urgency": "low",
+      "urgency": "Low",
       "address": "789 Blossom Avenue TX",
       "city": "Austin",
       "state": "TX",
       "zipCode": "56789",
-      "Description": "Providing kids with one on one help to doodle, draw, or create art.",
+      "description": "Providing kids with one on one help to doodle, draw, or create art.",
       "skills": ["Education", "Arts"],
       "eventDate": "2024-11-01",
       "day": "Friday"
@@ -41,12 +41,12 @@
     {
         "eventID": 4,
         "eventName": "SWAG ALERT",
-        "urgency": "high",
+        "urgency": "High",
         "address": "789 Blossom Avenue TX",
         "city": "Austin",
         "state": "TX",
         "zipCode": "56789",
-        "Description": "GIVING SWAG OUT TO THE NEEDY.",
+        "description": "GIVING SWAG OUT TO THE NEEDY.",
         "skills": ["Arts"],
         "eventDate": "2024-10-01",
         "day": "Tuesday"
@@ -54,12 +54,12 @@
       {
         "eventID": 5,
         "eventName": "Test Event",
-        "urgency": "high",
+        "urgency": "High",
         "address": "Testing Lane, Texas",
         "city": "Houston",
         "state": "TX",
         "zipCode": "12345",
-        "Description": "This is a test!!!.",
+        "description": "This is a test!!!.",
         "skills": ["Arts"],
         "eventDate": "2024-10-01",
         "day": "Tuesday"

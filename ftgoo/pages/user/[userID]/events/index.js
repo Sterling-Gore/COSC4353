@@ -4,13 +4,15 @@ import Navbar from "@/components/navbar";
 
 export default function Events() {
   const router = useRouter();
+  const [people, setPeople] = useState("");
+  const [volunteers, setVolunteers] = useState([]);
+  const [events, setEvents] = useState([]);
   const { userID } = router.query; // Extract userID from query params
   const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
-  const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
   const [isClicked, setIsClicked] = useState(false);
   const [isRSVPChecked, setIsRSVPChecked] = useState(null);
-
+  const [thisEvent, setThisEvent] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address1, setAddress1] = useState("");
@@ -33,7 +35,7 @@ export default function Events() {
     }
   }, []);
 
-  async function GETdata()
+  async function GETuser_data()
   {
     if(!userID)return; //guard case for rendering
     try {
@@ -93,6 +95,30 @@ export default function Events() {
       //router.push(`/`);
     }
   };
+  
+  async function GETevent_data() {
+    try {
+      const response = await fetch("/api/USER/events-data", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data_from_db = await response.json();
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setEvents(data_from_db.events);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
+  
 
   async function PATCHdata()
   {
@@ -135,9 +161,9 @@ export default function Events() {
 
   
   //useEffect() empty dependency array
-  useEffect(() => {GETdata()}, [userID]);
-  //GETdata(userID);
-
+  useEffect(() => {GETuser_data()}, [userID]);
+  useEffect(() => {GETevent_data()}, []);
+  
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("userEmail");
@@ -153,9 +179,9 @@ export default function Events() {
     }
   };
 
-  const handleRSVPOnClick = (eventNum) => {
-    setSelectedEventNum(eventNum); // Set the selected event number
+  const handleRSVPOnClick = (thisEvent) => {
     setCurrentPage("RSVP");
+    setThisEvent(thisEvent);
   };
 
   const handleGoBackOnClick = () => {
@@ -173,24 +199,6 @@ export default function Events() {
     { eventNum: 1, rsvp: true },
     { eventNum: 2, rsvp: true },
     { eventNum: 3, rsvp: true },
-    { eventNum: 4, rsvp: true },
-    { eventNum: 5, rsvp: true },
-    { eventNum: 6, rsvp: true },
-    { eventNum: 7, rsvp: true },
-    { eventNum: 8, rsvp: true },
-    { eventNum: 9, rsvp: true },
-  ];
-
-  const allEventsArray = [
-    { eventNum: 1, rsvp: false },
-    { eventNum: 2, rsvp: false },
-    { eventNum: 3, rsvp: false },
-    { eventNum: 4, rsvp: false },
-    { eventNum: 5, rsvp: false },
-    { eventNum: 6, rsvp: false },
-    { eventNum: 7, rsvp: false },
-    { eventNum: 8, rsvp: false },
-    { eventNum: 9, rsvp: false },
   ];
 
   return (
@@ -258,75 +266,71 @@ export default function Events() {
         )}
         {currentPage === "allEvents" && (
           <div style={styles.eventsGrid}>
-            {allEventsArray.map((event) => (
-              <div style={styles.eventWrapper} key={event.eventNum}>
+            {events.map((event) => (
+              <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
-                  <p>Event {event.eventNum}</p>
-                  {event.rsvp ? (
-                    <button style={styles.rsvpButton}>RSVP'd</button>
-                  ) : (
-                    <button
-                      style={styles.rsvpButton}
-                      onClick={() => handleRSVPOnClick(event.eventNum)}
-                    >
-                      Click here to RSVP
-                    </button>
-                  )}
+                  <p>{event.eventName}</p>
+                  <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event)}>
+                    Click here to RSVP
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         )}
+
         {currentPage === "RSVP" && (
           <div style={styles.rsvpContainer}>
             <div style={styles.rsvpBox}></div>
             <div style={styles.eventInfoContainer}>
               <div>
-                <p style={styles.eventNameText}>Event {selectedEventNum}</p>
+                <p style={styles.eventNameText}>{thisEvent.eventName}</p>
               </div>
               <div style={styles.urgencyContainer}>
                 <p style={styles.urgencyText}>Urgency</p>
                 <div style={styles.imageUrgencyContainer}>
                   <img src="/Ellipse.png" style={styles.blueDot}></img>
-                  <p style={styles.urgencyText}>Low</p>
+                  <p style={styles.urgencyText}>{thisEvent.urgency}</p>
                 </div>
               </div>
             </div>
-            <p style={styles.infoText}>Address 1</p>
-            <input style={styles.addressInput} type="text" readOnly></input>
+            <p style={styles.infoText}>Address</p> 
+            <input style={styles.addressInput} placeholder={thisEvent.address} type="text" readOnly></input>
 
             <div style={styles.cityStateZip}>
               <div style={styles.cityContainer}>
                 <p style={styles.infoText}>City</p>
-                <input style={styles.cityInput} type="text" readOnly></input>
+                <input style={styles.cityInput} placeholder={thisEvent.city} type="text" readOnly></input>
               </div>
               <div style={styles.stateContainer}>
                 <p style={styles.infoText}>State</p>
-                <input style={styles.stateInput} type="text" readOnly></input>
+                <input style={styles.stateInput} placeholder={thisEvent.state} type="text" readOnly></input>
               </div>
               <div style={styles.zipContainer}>
                 <p style={styles.infoText}>Zip Code</p>
-                <input style={styles.zipInput} type="text" readOnly></input>
+                <input style={styles.zipInput} placeholder={thisEvent.zipCode} type="text" readOnly></input>
               </div>
             </div>
 
             <p style={styles.infoText}>Description</p>
-            <input style={styles.descriptionInput} type="text" readOnly></input>
+            <textarea style={styles.descriptionInput} placeholder={thisEvent.description} type="text" readOnly></textarea>
 
             <div style={styles.prefAvail}>
-              <div style={styles.preferenceContainer}>
+              <div style={styles.skillsContainer}>
                 <p style={styles.infoText}>Required Skills</p>
-                <input
-                  style={styles.preferenceInput}
+                <textarea
+                  style={styles.skillsInput}
+                  placeholder={thisEvent.skills}
                   type="text"
                   readOnly
-                ></input>
+                ></textarea>
               </div>
               <div style={styles.availabilityContainer}>
                 <p style={styles.infoText}>Event Date</p>
                 <input
                   style={styles.availabilityInput}
+                  placeholder={thisEvent.eventDate}
                   type="text"
                   readOnly
                 ></input>
@@ -435,7 +439,7 @@ const styles = {
   },
   eventsContainer: {
     marginTop: "10vh",
-    width: "52.5vw",
+    width: "82.5vw",
     minHeight: "40vh",
     display: "flex",
     flexDirection: "column",
@@ -627,7 +631,7 @@ const styles = {
   },
   descriptionInput: {
     width: "100vh",
-    height: "5vh",
+    height: "20vh",
     backgroundColor: "#D3D3D3",
     color: "black",
     fontSize: "25px",
@@ -642,15 +646,15 @@ const styles = {
     gap: "10px",
     marginBottom: "10px",
   },
-  preferenceContainer: {
+  skillsContainer: {
     display: "flex",
     flexBasis: "55%",
     flexDirection: "column",
     flexGrow: 1,
   },
-  preferenceInput: {
+  skillsInput: {
     width: "100%", // Full width of the parent container
-    height: "5vh", // Adjust height to something more reasonable
+    height: "10vh", // Adjust height to something more reasonable
     backgroundColor: "#D3D3D3",
     border: "none",
     paddingLeft: "10px",

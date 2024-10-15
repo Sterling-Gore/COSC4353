@@ -9,7 +9,6 @@ export default function VolunteerHistory() {
   async function GETvolunteers_and_events()
   {
     try{
-
       const response = await fetch("/api/ADMIN/volunteer-history", {
         method: "GET",
         headers: {
