@@ -1,0 +1,12 @@
+[
+  {
+    "notificationID": 1,
+    "userID": 11,
+    "eventID": 1,
+    "eventName": "John's Food Shelter",
+    "eventDate": "2024-10-31",
+    "day": "Thursday",
+    "type": "Assignment",
+    "status": "You have RSVP'd for this event. A reminder will be sent to you a day prior to the event."
+  }
+]

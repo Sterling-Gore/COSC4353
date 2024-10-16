@@ -3,7 +3,7 @@ import path from "path";
 
 const userPath = path.resolve(process.cwd(), "pages/api/users.json");
 const eventPath = path.resolve(process.cwd(), "pages/api/events.json");
-
+const notificationsPath = path.resolve(process.cwd(), "pages/api/notifications.json");
 
 // Read users from the file
 export const getUsers = () => {
@@ -23,6 +23,15 @@ export const getEvents = () => {
     return [];
   }
 };
+
+export const getNotifications = () => {
+  try {
+    const data = fs.readFileSync(notificationsPath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    return [];
+  }
+}
 
 // Add a new user and write it to the file
 export const addUser = (user) => {

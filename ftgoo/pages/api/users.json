@@ -284,7 +284,8 @@
     "role": "user",
     "isLoggedIn": false,
     "rsvpEvents": [
-      2
+      2,
+      3
     ],
     "oldEvents": []
   }

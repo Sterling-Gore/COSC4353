@@ -16,6 +16,7 @@ export default function Notifications() {
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
   const [availability, setAvailability] = useState([]);
+  const [myNotifications, setMyNotifications] = useState([]);
 
   useEffect(() => {
     // Mock check for user login status
@@ -129,9 +130,33 @@ export default function Notifications() {
     }
   };
 
+  async function GETnotification_data() {
+    try {
+      const response = await fetch("/api/ADMIN/notification-data", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data_from_db = await response.json();
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setMyNotifications(data_from_db.notifications);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
   
   //useEffect() empty dependency array
   useEffect(() => {GETdata()}, [userID]);
+  useEffect(() => {GETnotification_data()}, []);
+  console.log(myNotifications);
   //GETdata(userID);
 
   const handleLogout = (e) => {
@@ -141,25 +166,6 @@ export default function Notifications() {
     router.push("/login");
   };
 
-  const notificationsArray = [
-    {
-      eventNum: 1,
-      time: "1:22 PM",
-      eventStatus:
-        "This event is now coming up, please show up quickly, it starts soon.",
-    },
-    {
-      eventNum: 2,
-      time: "1:01 PM",
-      eventStatus: "This event was now cancelled. No need to come and visit.",
-    },
-    {
-      eventNum: 3,
-      time: "1:00 PM",
-      eventStatus:
-        "New events that match your profile, please check them out in the events page.",
-    },
-  ];
 
   if (!userID) {
     // Wait until userID is defined
@@ -185,13 +191,13 @@ export default function Notifications() {
 
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Notifications</h1>
-        {notificationsArray.map((notification) => (
-          <div style={styles.eventContainer} key={notification.eventNum}>
+        {myNotifications.map((notification) => (
+          <div style={styles.eventContainer} key={notification.notificationID}>
             <div style={styles.topLeftEventText}>
-              Event {notification.eventNum} - Reminder
+              Notification: {notification.eventName}
             </div>
-            <div style={styles.bottomLeftEventText}>{notification.time}</div>
-            <div style={styles.rightEventText}>{notification.eventStatus}</div>
+            <div style={styles.bottomLeftEventText}>{notification.eventDate} - {notification.day}</div>
+            <div style={styles.rightEventText}>{notification.status}</div>
           </div>
         ))}
       </div>
@@ -243,7 +249,7 @@ const styles = {
     marginBottom: "5vh",
     //padding: "20px 20px",
     width: "80%",
-    height: "12vh",
+    height: "16vh",
     border: "2px solid black", // Ensure the border is black and solid
     borderRadius: "8px",
     display: "flex",

@@ -8,6 +8,7 @@ export default function Events() {
   const [volunteers, setVolunteers] = useState([]);
   const [events, setEvents] = useState([]);
   const [myEvents, setMyEvents] = useState([]);
+  const [myNotifications, setMyNotifications] = useState([]);
   const { userID } = router.query; // Extract userID from query params
   const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
@@ -150,12 +151,38 @@ export default function Events() {
 
   }
 
+  async function GETnotification_data() {
+    try {
+      const response = await fetch("/api/ADMIN/notification-data", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data_from_db = await response.json();
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setMyNotifications(data_from_db.notifications);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
+
   
   
   //useEffect() empty dependency array
   
   useEffect(() => {GETevent_data()}, []);
+  useEffect(() => {GETnotification_data()}, []);
   useEffect(() => {GETuser_data()}, [userID, events]);
+
+  console.log(myNotifications);
 
   const handleLogout = (e) => {
     e.preventDefault();
