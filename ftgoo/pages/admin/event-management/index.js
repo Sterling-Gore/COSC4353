@@ -17,7 +17,7 @@ export default function Events() {
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [eventDate, setEventDate] = useState("");
-  const [EventsArray, setEventsArary] = useState([]);
+  const [events, setEvents] = useState([]);
   const [numEvents, setnumEvents] = useState(0);
 
   const router = useRouter();
@@ -65,6 +65,7 @@ export default function Events() {
           // Save user details in local storage before redirecting
           localStorage.setItem("eventName", eventName);
           localStorage.setItem("eventID", data.event.eventID);
+          setSelectedEventNum(data.event.eventID)
 
           // Redirect to user events page on successful registration
           window.location.reload();  // This will refresh the current page
@@ -77,11 +78,41 @@ export default function Events() {
       }
   };
 
+  async function GETevent_data() {
+    try {
+      const response = await fetch("/api/events/event-data", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data_from_db = await response.json();
+
+      console.log(data_from_db.events);
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setEvents(data_from_db.events);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
+
+  useEffect(() => {
+    GETevent_data();
+    console.log(events); // This will print the events state to check if it's being populated
+  }, []);
+
   useEffect(() => {
     // Check if the user is logged in and get the user role
     const userRole = localStorage.getItem("userRole");
     const userID = localStorage.getItem("userID");
-  
+
     // Redirect based on role
     if (!userRole || !userID) {
       // If no valid login data, redirect to login page
@@ -89,22 +120,8 @@ export default function Events() {
     } else if (userRole !== "admin") {
       // If the user is logged in but not an admin, redirect to their user events page
       router.push(`/user/${userID}/events`);
-    } else {
-      // Fetch the events from the 'events.json' file if the user is authenticated and an admin
-      const fetchEvents = async () => {
-        try {
-          const response = await fetch("/events.json"); // Adjust the path if necessary
-          const data = await response.json();
-          setEventsArray(data.events); // Assuming the file contains an array of events under the 'events' key
-          setnumEvents(data.events.length); // Update numEvents based on the length of the events array
-        } catch (err) {
-          console.error("Failed to load events:", err);
-        }
-      };
-  
-      fetchEvents(); // Fetch the events if user is an admin
     }
-  }, [router]); // Add router as a dependency to avoid potential issues
+  }, []);
 
   const handleLogout = () => {
     // Handle logout logic here if necessary
@@ -149,26 +166,21 @@ export default function Events() {
       <div style={styles.eventsContainer}>
         {currentPage === "Events" && (
           <>
-            <h1 style={styles.title}>Event Management</h1>
-            <div style={styles.eventsGrid}>
-              {EventsArray.map((event) => (
-                <div style={styles.eventWrapper} key={event.eventNum}>
-                  <div style={styles.eventBox}></div>
-                  <div style={styles.eventInfo}>
-                    <p>Event {event.eventNum}</p>
-                    <button
-                      style={styles.EditButton}
-                      onClick={() =>
-                        handlePageChangeOnClick("EditEvent", event.eventNum)
-                      }
-                    >
-                      Edit
-                    </button>
-                  </div>
+          <h1 style={styles.title}>Event Management</h1>
+          <div style={styles.eventsGrid}>
+            {events.map((event) => (
+              <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
+                <div style={styles.eventBox}></div>
+                <div style={styles.eventInfo}>
+                  <p>{event.eventName}</p>
+                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventNum)}>
+                    Edit
+                  </button>
                 </div>
-              ))}
-            </div>
-            <div>
+              </div>
+            ))}
+          </div>
+          <div>
               <button
                 style={styles.createButton}
                 onClick={() =>
