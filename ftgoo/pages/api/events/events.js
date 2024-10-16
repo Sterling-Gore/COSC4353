@@ -13,6 +13,7 @@ export default function handler(req, res) {
       description,
       skills,
       eventDate,
+      selectedDay,
     } = req.body;
 
     // Check if user already exists before proceeding to step 2
@@ -35,7 +36,8 @@ export default function handler(req, res) {
       !zipCode ||
       !description ||
       !skills ||
-      !eventDate 
+      !eventDate ||
+      !selectedDay 
     ) {
       console.log("Validation failed: Missing fields");
       return res.status(400).json({ error: "All fields are required" });
@@ -58,6 +60,7 @@ export default function handler(req, res) {
       skills,
       description,
       eventDate,
+      selectedDay,
     };
 
     console.log("Creating new event:", newEvent);

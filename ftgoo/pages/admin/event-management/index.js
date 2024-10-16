@@ -17,6 +17,8 @@ export default function Events() {
   const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [eventDate, setEventDate] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
+  const [showDayDropdown, setShowDayDropdown] = useState(false); // State to show/hide the day dropdown
   const [events, setEvents] = useState([]);
   const [numEvents, setnumEvents] = useState(0);
 
@@ -34,7 +36,8 @@ export default function Events() {
         !zipCode ||
         !skills ||
         !description ||
-        !eventDate 
+        !eventDate ||
+        !selectedDay
       ) {
         setError("Please fill in all fields");
         return;
@@ -57,6 +60,7 @@ export default function Events() {
             skills,
             description,
             eventDate,
+            selectedDay,
           }),
         });
 
@@ -157,6 +161,11 @@ export default function Events() {
 
   const handleSkillClear = (skill) => {
     setSkills(skills.filter((s) => s !== skill));
+  };
+
+  const handleDaySelect = (day) => {
+    setSelectedDay(day); // Set only one day at a time
+    setShowDayDropdown(false); // Close dropdown after selection
   };
 
   return (
@@ -355,9 +364,6 @@ export default function Events() {
                     style={styles.input}
                   />
                 </div>
-              </div>
-
-              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
@@ -412,6 +418,9 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Date:</label>{" "}
                   {/* Add this line */}
@@ -424,6 +433,55 @@ export default function Events() {
                       required
                       style={styles.dateBox}
                     />
+                  </div>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Day</label>
+                  <div
+                    style={styles.multiSelectContainer}
+                    onClick={() => setShowDayDropdown(!showDayDropdown)} // Change to handle day dropdown
+                  >
+                    <div style={styles.multiSelect}>
+                      <div style={styles.selectedSkills}>
+                        {selectedDay ? ( // Show selected day
+                          <div style={styles.skillTag}>
+                            {selectedDay}
+                            <span
+                              style={styles.clearTag}
+                              onClick={() => setSelectedDay("")} // Clear the selected day
+                            >
+                              &times;
+                            </span>
+                          </div>
+                        ) : (
+                          "Select event day" // Placeholder if no day selected
+                        )}
+                      </div>
+                      {showDayDropdown && (
+                        <div style={styles.dropdown}>
+                          {[
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                          ].map((day) => (
+                            <div
+                              key={day}
+                              onClick={() => handleDaySelect(day)} // Select day
+                              style={{
+                                ...styles.dropdownItem,
+                                ...(selectedDay === day && styles.dropdownItemSelected), // Highlight selected day
+                              }}
+                            >
+                              {day}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -605,9 +663,6 @@ export default function Events() {
                     style={styles.input}
                   />
                 </div>
-              </div>
-
-              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
@@ -662,6 +717,9 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Date:</label>{" "}
                   {/* Add this line */}
@@ -674,6 +732,55 @@ export default function Events() {
                       required
                       style={styles.dateBox}
                     />
+                  </div>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Day</label>
+                  <div
+                    style={styles.multiSelectContainer}
+                    onClick={() => setShowDayDropdown(!showDayDropdown)} // Change to handle day dropdown
+                  >
+                    <div style={styles.multiSelect}>
+                      <div style={styles.selectedSkills}>
+                        {selectedDay ? ( // Show selected day
+                          <div style={styles.skillTag}>
+                            {selectedDay}
+                            <span
+                              style={styles.clearTag}
+                              onClick={() => setSelectedDay("")} // Clear the selected day
+                            >
+                              &times;
+                            </span>
+                          </div>
+                        ) : (
+                          "Select event day" // Placeholder if no day selected
+                        )}
+                      </div>
+                      {showDayDropdown && (
+                        <div style={styles.dropdown}>
+                          {[
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                          ].map((day) => (
+                            <div
+                              key={day}
+                              onClick={() => handleDaySelect(day)} // Select day
+                              style={{
+                                ...styles.dropdownItem,
+                                ...(selectedDay === day && styles.dropdownItemSelected), // Highlight selected day
+                              }}
+                            >
+                              {day}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
