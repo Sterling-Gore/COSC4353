@@ -16,7 +16,7 @@ export default function Notifications() {
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
   const [availability, setAvailability] = useState([]);
-  const [myNotifications, setMyNotifications] = useState([]);
+  //const [myNotifications, setMyNotifications] = useState([]);
 
   useEffect(() => {
     // Mock check for user login status
@@ -130,33 +130,10 @@ export default function Notifications() {
     }
   };
 
-  async function GETnotification_data() {
-    try {
-      const response = await fetch("/api/ADMIN/notification-data", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      const data_from_db = await response.json();
-  
-      if (response.ok) {
-        // Directly set the events array from the response
-        setMyNotifications(data_from_db.notifications);
-      } else {
-        console.log("Bad response");
-      }
-    } catch (err) {
-      console.log("Error:", err); // Log the error for debugging
-    }
-
-  }
-  
   //useEffect() empty dependency array
   useEffect(() => {GETdata()}, [userID]);
-  useEffect(() => {GETnotification_data()}, []);
-  console.log(myNotifications);
+  //useEffect(() => {GETnotification_data()}, []);
+
   //GETdata(userID);
 
   const handleLogout = (e) => {
@@ -191,7 +168,7 @@ export default function Notifications() {
 
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Notifications</h1>
-        {myNotifications.map((notification) => (
+        {/*myNotifications.map((notification) => (
           <div style={styles.eventContainer} key={notification.notificationID}>
             <div style={styles.topLeftEventText}>
               Notification: {notification.eventName}
@@ -199,7 +176,7 @@ export default function Notifications() {
             <div style={styles.bottomLeftEventText}>{notification.eventDate} - {notification.day}</div>
             <div style={styles.rightEventText}>{notification.status}</div>
           </div>
-        ))}
+        ))*/}
       </div>
     </div>
   );

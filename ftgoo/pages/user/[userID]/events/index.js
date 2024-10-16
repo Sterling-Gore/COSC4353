@@ -8,7 +8,7 @@ export default function Events() {
   const [volunteers, setVolunteers] = useState([]);
   const [events, setEvents] = useState([]);
   const [myEvents, setMyEvents] = useState([]);
-  const [myNotifications, setMyNotifications] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const { userID } = router.query; // Extract userID from query params
   const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
@@ -90,6 +90,24 @@ export default function Events() {
           }
           return null; // Return null if no match is found
         });
+
+        const editedAllEvents = events.filter(event => 
+          !data.user.rsvpEvents.includes(event.eventID)
+        ).map(unmatchedEvent => ({
+            eventID: unmatchedEvent.eventID,
+            eventName: unmatchedEvent.eventName,
+            urgency: unmatchedEvent.urgency,
+            address: unmatchedEvent.address,
+            city: unmatchedEvent.city,
+            state: unmatchedEvent.state,
+            zipCode: unmatchedEvent.zipCode,
+            description: unmatchedEvent.description,
+            skills: unmatchedEvent.skills,
+            eventDate: unmatchedEvent.eventDate,
+            day: unmatchedEvent.day,
+        }));
+        
+
       
         // Filter out any null values in case there were unmatched events
         const filteredMyEvents = editedMyEvents.filter(event => event !== null);
@@ -97,7 +115,7 @@ export default function Events() {
     
         // Set the state with the filtered events
         setMyEvents([...filteredMyEvents]);
-        
+        setAllEvents([...editedAllEvents]);
       } else {
         setUserEmail("");
         setFirstName("");
@@ -151,38 +169,10 @@ export default function Events() {
 
   }
 
-  async function GETnotification_data() {
-    try {
-      const response = await fetch("/api/ADMIN/notification-data", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      const data_from_db = await response.json();
-  
-      if (response.ok) {
-        // Directly set the events array from the response
-        setMyNotifications(data_from_db.notifications);
-      } else {
-        console.log("Bad response");
-      }
-    } catch (err) {
-      console.log("Error:", err); // Log the error for debugging
-    }
-
-  }
-
-  
-  
   //useEffect() empty dependency array
   
   useEffect(() => {GETevent_data()}, []);
-  useEffect(() => {GETnotification_data()}, []);
   useEffect(() => {GETuser_data()}, [userID, events]);
-
-  console.log(myNotifications);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -305,7 +295,7 @@ export default function Events() {
                       style={styles.rsvpButton}
                       onClick={() => handleRSVPOnClick(event)}
                     >
-                      RSVP'd
+                      Check Event
                     </button>
                 </div>
               </div>
@@ -325,7 +315,7 @@ export default function Events() {
         )}
         {currentPage === "allEvents" && (
           <div style={styles.eventsGrid}>
-            {events.map((event) => (
+            {allEvents.map((event) => (
               <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
@@ -338,7 +328,6 @@ export default function Events() {
             ))}
           </div>
         )}
-
         {currentPage === "RSVP" && (
           <div style={styles.rsvpContainer}>
             <div style={styles.rsvpBox}></div>
@@ -356,7 +345,6 @@ export default function Events() {
             </div>
             <p style={styles.infoText}>Address</p> 
             <input style={styles.addressInput} placeholder={thisEvent.address} type="text" readOnly></input>
-
             <div style={styles.cityStateZip}>
               <div style={styles.cityContainer}>
                 <p style={styles.infoText}>City</p>
@@ -371,10 +359,8 @@ export default function Events() {
                 <input style={styles.zipInput} placeholder={thisEvent.zipCode} type="text" readOnly></input>
               </div>
             </div>
-
             <p style={styles.infoText}>Description</p>
             <textarea style={styles.descriptionInput} placeholder={thisEvent.description} type="text" readOnly></textarea>
-
             <div style={styles.prefAvail}>
               <div style={styles.skillsContainer}>
                 <p style={styles.infoText}>Required Skills</p>
@@ -395,7 +381,6 @@ export default function Events() {
                 ></input>
               </div>
             </div>
-
             <div style={styles.rsvpSaveContainer}>
               <div style={styles.rsvpCheckContainer}>
                 <label htmlFor="rsvpCheckbox" style={styles.clickHereRSVPText}>
@@ -415,7 +400,6 @@ export default function Events() {
                 Save Changes
               </button>
             </div>
-
             <button style={styles.goBack} onClick={handleGoBackOnClick}>
               Go Back
             </button>

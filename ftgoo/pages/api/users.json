@@ -285,6 +285,7 @@
     "isLoggedIn": false,
     "rsvpEvents": [
       2,
+      5,
       3
     ],
     "oldEvents": []

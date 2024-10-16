@@ -24,14 +24,6 @@ export const getEvents = () => {
   }
 };
 
-export const getNotifications = () => {
-  try {
-    const data = fs.readFileSync(notificationsPath, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-}
 
 // Add a new user and write it to the file
 export const addUser = (user) => {
