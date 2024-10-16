@@ -227,7 +227,11 @@
     ],
     "role": "user",
     "isLoggedIn": false,
-    "rsvpEvents": [1, 2, 3],
+    "rsvpEvents": [
+      1,
+      2,
+      3
+    ],
     "oldEvents": [
       4,
       5
@@ -279,7 +283,9 @@
     ],
     "role": "user",
     "isLoggedIn": false,
-    "rsvpEvents": [3, 4],
+    "rsvpEvents": [
+      2
+    ],
     "oldEvents": []
   }
 ]

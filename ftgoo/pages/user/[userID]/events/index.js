@@ -12,6 +12,7 @@ export default function Events() {
   const [userEmail, setUserEmail] = useState(null);
   const [currentPage, setCurrentPage] = useState("myEvents");
   const [isClicked, setIsClicked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [isRSVPChecked, setIsRSVPChecked] = useState(null);
   const [thisEvent, setThisEvent] = useState(null);
   const [firstName, setFirstName] = useState("");
@@ -148,52 +149,14 @@ export default function Events() {
     }
 
   }
+
   
-
-  async function PATCHdata()
-  {
-    if(!userID)return; //guard case for rendering
-    try {
-      // Call the login API
-
-      const response = await fetch("/api/account-management/user-account", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userID,
-          firstName, 
-          lastName, 
-          address1,
-          address2,
-          city,
-          state,
-          zipCode,
-          skills,
-          availability,
-          preferences
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        // Redirect to user events page on successful login
-          
-      } else {
-    
-      }
-    } catch (err) {
- 
-      //router.push(`/`);
-    }
-  };
-
   
   //useEffect() empty dependency array
   
   useEffect(() => {GETevent_data()}, []);
   useEffect(() => {GETuser_data()}, [userID, events]);
+
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("userEmail");
@@ -218,18 +181,61 @@ export default function Events() {
     setCurrentPage("myEvents");
   };
 
-  const handleSaveClick = () => {
+  const handleCheckBoxChange = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
+  const handleRSVPNum = async (userID, eventID, isChecked) => {
+    try {
+      if (isChecked) {
+        const response = await fetch("/api/USER/rsvp-data", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userID,         // User's ID
+            eventID        // Event to RSVP to
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to user events page on successful login
+            
+        } else {}
+        window.location.reload();
+      }
+      else if (!isChecked){
+        const response = await fetch("/api/USER/rsvp-data", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userID,         // User's ID
+            eventID        // Event to RSVP to
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to user events page on successful login
+            
+        } else {}
+        window.location.reload();
+      }
+    }
+    catch (error) {
+      console.error("Failed to update RSVP events", error);
+    }
+  };
+
+  const handleSaveClick = (userID, eventID, isChecked) => {
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);
     }, 1000);
+    handleRSVPNum(userID, eventID, isChecked);
   };
-
-  const myEventsArray = [
-    { eventNum: 1, rsvp: true },
-    { eventNum: 2, rsvp: true },
-    { eventNum: 3, rsvp: true },
-  ];
 
   return (
     <div style={styles.container}>
@@ -371,12 +377,13 @@ export default function Events() {
                 <input
                   type="checkbox"
                   id="rsvpCheckbox"
+                  onChange={handleCheckBoxChange}
                   style={styles.rsvpCheckBoxStyle}
                 ></input>
               </div>
               <button
                 style={isClicked ? styles.saveButtonClicked : styles.saveButton}
-                onClick={handleSaveClick}
+                onClick={() => handleSaveClick(userID, thisEvent.eventID, isChecked)}
               >
                 Save Changes
               </button>
