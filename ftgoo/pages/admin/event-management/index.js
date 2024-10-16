@@ -163,10 +163,44 @@ export default function Events() {
     setSkills(skills.filter((s) => s !== skill));
   };
 
-  const handleDaySelect = (day) => {
-    setSelectedDay(day); // Set only one day at a time
-    setShowDayDropdown(false); // Close dropdown after selection
+
+  const handleDateChanges = (e) => {
+    setEventDate(e.target.value);
+
+    const date = new Date(e.target.value);
+    const day = date.getDay();
+    let stringDay;
+    console.log(`this is the day: ${day}`);
+    switch(day) {
+      case 0:
+        stringDay = "Monday";
+        break;
+      case 1:
+        stringDay = "Tuesday";
+        break;
+      case 2:
+        stringDay = "Wednesday";
+        break;
+      case 3:
+        stringDay = "Thursday";
+        break;
+      case 4:
+        stringDay = "Friday";
+        break;
+      case 5:
+        stringDay = "Saturday";
+        break;
+      case 6:
+        stringDay = "Sunday";
+        break;
+      default:
+        stringDay = "error";
+        break;
+    }
+    setSelectedDay(stringDay);
   };
+
+ 
 
   return (
     <div style={styles.container}>
@@ -429,7 +463,7 @@ export default function Events() {
                       type="date"
                       placeholder="Event Date"
                       value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
+                      onChange={handleDateChanges}
                       required
                       style={styles.dateBox}
                     />
@@ -437,52 +471,7 @@ export default function Events() {
                 </div>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Day</label>
-                  <div
-                    style={styles.multiSelectContainer}
-                    onClick={() => setShowDayDropdown(!showDayDropdown)} // Change to handle day dropdown
-                  >
-                    <div style={styles.multiSelect}>
-                      <div style={styles.selectedSkills}>
-                        {selectedDay ? ( // Show selected day
-                          <div style={styles.skillTag}>
-                            {selectedDay}
-                            <span
-                              style={styles.clearTag}
-                              onClick={() => setSelectedDay("")} // Clear the selected day
-                            >
-                              &times;
-                            </span>
-                          </div>
-                        ) : (
-                          "Select event day" // Placeholder if no day selected
-                        )}
-                      </div>
-                      {showDayDropdown && (
-                        <div style={styles.dropdown}>
-                          {[
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                            "Sunday",
-                          ].map((day) => (
-                            <div
-                              key={day}
-                              onClick={() => handleDaySelect(day)} // Select day
-                              style={{
-                                ...styles.dropdownItem,
-                                ...(selectedDay === day && styles.dropdownItemSelected), // Highlight selected day
-                              }}
-                            >
-                              {day}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <p style={styles.eventDay}>{selectedDay}</p>
                 </div>
               </div>
 
@@ -728,7 +717,7 @@ export default function Events() {
                       type="date"
                       placeholder="Event Date"
                       value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
+                      onChange={handleDateChanges}
                       required
                       style={styles.dateBox}
                     />
@@ -736,52 +725,7 @@ export default function Events() {
                 </div>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Day</label>
-                  <div
-                    style={styles.multiSelectContainer}
-                    onClick={() => setShowDayDropdown(!showDayDropdown)} // Change to handle day dropdown
-                  >
-                    <div style={styles.multiSelect}>
-                      <div style={styles.selectedSkills}>
-                        {selectedDay ? ( // Show selected day
-                          <div style={styles.skillTag}>
-                            {selectedDay}
-                            <span
-                              style={styles.clearTag}
-                              onClick={() => setSelectedDay("")} // Clear the selected day
-                            >
-                              &times;
-                            </span>
-                          </div>
-                        ) : (
-                          "Select event day" // Placeholder if no day selected
-                        )}
-                      </div>
-                      {showDayDropdown && (
-                        <div style={styles.dropdown}>
-                          {[
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                            "Sunday",
-                          ].map((day) => (
-                            <div
-                              key={day}
-                              onClick={() => handleDaySelect(day)} // Select day
-                              style={{
-                                ...styles.dropdownItem,
-                                ...(selectedDay === day && styles.dropdownItemSelected), // Highlight selected day
-                              }}
-                            >
-                              {day}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <p style={styles.eventDay}>{selectedDay}</p>
                 </div>
               </div>
 
@@ -982,6 +926,17 @@ const styles = {
     color: "#333",
     boxSizing: "border-box",
     fontSize: 20,
+  },
+  eventDay: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    padding: "10px",
+    backgroundColor: "#fff",
+    color: "#333",
+    boxSizing: "border-box",
+    fontSize: 30,
+    fontWeight: "bold",
   },
   eventsContainer: {
     marginTop: "10vh",
