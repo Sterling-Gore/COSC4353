@@ -24,7 +24,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 2,
@@ -51,7 +53,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 3,
@@ -76,7 +80,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 4,
@@ -98,7 +104,12 @@
       "Wednesday"
     ],
     "isLoggedIn": false,
-    "role": "admin"
+    "role": "admin",
+    "rsvpEvents": [],
+    "oldEvents": [
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 5,
@@ -123,7 +134,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 6,
@@ -150,7 +163,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 7,
@@ -178,7 +193,9 @@
     "oldEvents": [
       4,
       5
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 8,
@@ -205,7 +222,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       5
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 9,
@@ -227,11 +246,25 @@
     ],
     "role": "user",
     "isLoggedIn": false,
-    "rsvpEvents": [],
+    "rsvpEvents": [
+      1,
+      2,
+      3
+    ],
     "oldEvents": [
       4,
       5
-    ]
+    ],
+    "notifications": [
+      {
+        "eventID": 2,
+        "eventName": "John's Animal Shelter",
+        "eventDate": "2025-01-01",
+        "day": "wednesday",
+        "notificationType": "reminder",
+        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
+      }
+    ] 
   },
   {
     "userID": 10,
@@ -258,25 +291,50 @@
   },
   {
     "userID": 11,
-    "firstName": "Meenakshi",
-    "lastName": "Vinod",
-    "email": "Meenakshi.V@gmail.com",
-    "password": "Meenakshi0429",
-    "address1": "1418 Steppinstone Way",
+    "firstName": "Jason",
+    "lastName": "Yen",
+    "email": "jasonyen2004@gmail.com",
+    "password": "YenCH@77479$%",
+    "address1": "12345 Pine Ave.",
     "address2": "",
-    "city": "Spring",
+    "city": "Houston",
     "state": "TX",
-    "zipCode": "77379",
+    "zipCode": "77479",
     "skills": [
-      "Education"
+      "Health",
+      "Animal Care"
     ],
-    "preferences": "None",
+    "preferences": "abc\n",
     "availability": [
-      "Tuesday"
+      "Monday",
+      "Tuesday",
+      "Wednesday"
     ],
     "role": "user",
     "isLoggedIn": false,
-    "rsvpEvents": [],
-    "oldEvents": []
+    "rsvpEvents": [
+      2,
+      5,
+      3
+    ],
+    "oldEvents": [],
+    "notifications": [
+      {
+        "eventID": 2,
+        "eventName": "John's Animal Shelter",
+        "eventDate": "2025-01-01",
+        "day": "Wednesday",
+        "notificationType": "Reminder",
+        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
+      },
+      {
+        "eventID": 3,
+        "eventName": "Event 3",
+        "eventDate": "2025-01-01",
+        "day": "Wednesday",
+        "notificationType": "Update",
+        "status": "This event is cancelled!"
+      }
+    ] 
   }
 ]
