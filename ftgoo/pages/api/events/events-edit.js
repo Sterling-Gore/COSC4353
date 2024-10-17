@@ -51,7 +51,7 @@ export default function handler(req, res) {
         console.log(event);
 
         updateEvent(event);
-        eventUpdateNotification(eventID, eventName, eventDate);
+        eventUpdateNotification(eventID, eventName, eventDate, selectedDay);
         return res.status(200).json({ message: "Landing", event})
       }
       else{

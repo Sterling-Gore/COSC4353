@@ -152,10 +152,11 @@ export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day
 };
 
 
-export const eventUpdateNotification = (eventID, eventName, eventDate ) => {
+export const eventUpdateNotification = (eventID, eventName, eventDate, day ) => {
   const users = getUsers();
   for (let i = 0; i < users.length; i++)
   {
+    //console.log(`${eventID}:  Name=${users[i].firstName}  Events=${users[i].rsvpEvents}`);
     if( users[i].rsvpEvents.includes(eventID))
     {
       const newNotification = {
