@@ -285,7 +285,7 @@ export default function Events() {
   };
 
   const handleGoBackOnClick = () => {
-    window.location.reload();  // This will refresh the current page
+    window.location.reload();  // This will refresh the current p
     setCurrentPage("Events");
   };
 

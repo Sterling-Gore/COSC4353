@@ -65,7 +65,8 @@
     "zipCode": "cn w ",
     "skills": [],
     "description": "wcecww",
-    "eventDate": "2024-10-28"
+    "eventDate": "2024-10-23",
+    "selectedDay": "Wednesday"
   },
   {
     "eventID": 6,
@@ -120,12 +121,27 @@
     "address": "q  n 22n ",
     "city": "nnnmsm",
     "state": "CA",
-    "zipCode": "bbebxbj",
+    "zipCode": "bbebxb",
     "skills": [
       "Environment"
     ],
     "description": "n xns ",
     "eventDate": "2024-11-01",
     "selectedDay": "Friday"
+  },
+  {
+    "eventID": 10,
+    "eventName": "Jbcjk",
+    "urgency": "High",
+    "address": "acnnmasnm",
+    "city": "jacsjjasm",
+    "state": "CA",
+    "zipCode": "287827",
+    "skills": [
+      "Education"
+    ],
+    "description": "k",
+    "eventDate": "2024-10-30",
+    "selectedDay": "Wednesday"
   }
 ]
