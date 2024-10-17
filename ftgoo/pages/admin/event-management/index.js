@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
-import { setDate } from "date-fns";
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState("Events");
@@ -173,7 +172,7 @@ export default function Events() {
         setZipCode("");
         setDescription("");
         setSkills([""]);
-        setDate("");
+        setEventDate("");
         setSelectedDay([""]);
         //router.push(`/`);
       }
@@ -186,7 +185,7 @@ export default function Events() {
         setZipCode("");
         setDescription("");
         setSkills([""]);
-        setDate("");
+        setEventDate("");
         setSelectedDay([""]);
       //router.push(`/`);
     }
