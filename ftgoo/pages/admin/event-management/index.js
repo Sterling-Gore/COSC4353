@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
+import { setDate } from "date-fns";
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState("Events");
+  const [eventID, setEventID] = useState(null); // Assuming you will get this from somewhere, e.g., URL parameters
   const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
   const [isClicked, setIsClicked] = useState(false);
   const [eventName, setEventName] = useState("");
@@ -23,6 +25,31 @@ export default function Events() {
   const [numEvents, setnumEvents] = useState(0);
 
   const router = useRouter();
+
+  const handleAfter = (e) => {
+    e.preventDefault();
+      if (
+        !eventName ||
+        !urgency ||
+        !address ||
+        !city ||
+        !state ||
+        !zipCode ||
+        !skills ||
+        !description ||
+        !eventDate ||
+        !selectedDay
+      ) {
+        setError("Please fill in all fields");
+        return;
+      }
+      // Update data into the server
+      PATCHdata();
+      
+      setError("");
+    
+  };
+
 
   const handleNext = async (e) => {
     e.preventDefault();
@@ -107,6 +134,115 @@ export default function Events() {
 
   }
 
+  async function GETdata()
+  {
+    if(!eventID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/events/events-edit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({eventID}),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+        setEventName(data.event.eventName);
+        setUrgency(data.event.urgency);
+        setAddress(data.event.address);
+        setCity(data.event.city);
+        setState(data.event.state);
+        setZipCode(data.event.zipCode);
+        setDescription(data.event.description);
+        setSkills(data.event.skills);
+        setEventDate(data.event.eventDate);  // Fix here
+        setSelectedDay(data.event.selectedDay);  // Fix here
+        
+        
+      } else {
+        setEventName("");
+        setUrgency("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setDescription("");
+        setSkills([""]);
+        setDate("");
+        setSelectedDay([""]);
+        //router.push(`/`);
+      }
+    } catch (err) {
+        setEventName("");
+        setUrgency("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setDescription("");
+        setSkills([""]);
+        setDate("");
+        setSelectedDay([""]);
+      //router.push(`/`);
+    }
+  };
+
+  async function PATCHdata()
+  {
+    console.log(`this is the userID: ${eventID}`)
+    if(!eventID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/events/events-edit", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventID,
+          eventName,
+          urgency,
+          address,
+          city,
+          state,
+          zipCode,
+          description,
+          skills,
+          eventDate,
+          selectedDay
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        window.location.reload();  // This will refresh the current page
+      } else {
+    
+      }
+    } catch (err) {
+ 
+      //router.push(`/`);
+    }
+  };
+
+  
+  //useEffect() empty dependency array
+  useEffect(() => {
+    if (eventID) {
+      console.log("Event ID for edit page:", eventID); // Debugging
+      GETdata();
+    }
+  }, [eventID]);
+  //GETdata(userID);
+  console.log("event name", eventName);
+
   useEffect(() => {
     GETevent_data();
     console.log(events); // This will print the events state to check if it's being populated
@@ -135,19 +271,21 @@ export default function Events() {
     router.push("/login");
   };
 
-  const handlePageChangeOnClick = (page, eventNum) => {
+  const handlePageChangeOnClick = (page, eventID) => {
     if (page === "Events") {
       setCurrentPage("Events");
     } else if (page === "EditEvent") {
       setCurrentPage("EditEvent");
-      setSelectedEventNum(eventNum);
+      setSelectedEventNum(eventID);
+      setEventID(eventID);
     } else if (page === "CreateEvent") {
       setCurrentPage("CreateEvent");
-      setSelectedEventNum(eventNum);
+      setSelectedEventNum(eventID);
     }
   };
 
   const handleGoBackOnClick = () => {
+    window.location.reload();  // This will refresh the current page
     setCurrentPage("Events");
   };
 
@@ -216,7 +354,7 @@ export default function Events() {
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
                   <p>{event.eventName}</p>
-                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventNum)}>
+                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventID)}>
                     Edit
                   </button>
                 </div>
@@ -238,6 +376,8 @@ export default function Events() {
         {currentPage === "EditEvent" && (
           <>
             <h1 style={styles.title}>Edit Event {selectedEventNum}</h1>
+            <form onSubmit={handleAfter} style={styles.form}>
+            {error && <p style={styles.error}>{error}</p>}
             <div style={styles.rsvpContainer}>
               <div style={styles.rsvpBox}></div>
               <div style={styles.row}>
@@ -246,7 +386,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={eventName}
-                    onChange={(e) => setEventName(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      ); setEventName(e.target.value)}}
                     placeholder="Enter the event name"
                     required
                     style={styles.input}
@@ -292,7 +437,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setAddress(e.target.value)}}
                     placeholder="Enter the address"
                     required
                     style={styles.input}
@@ -306,7 +456,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setCity(e.target.value)}}
                     placeholder="Enter the city"
                     required
                     style={styles.input}
@@ -378,7 +533,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only numeric values
+                      const sanitizedValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );setZipCode(e.target.value)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}
@@ -392,7 +552,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setDescription(e.target.value)}}
                     placeholder="Enter a description for the event"
                     required
                     style={styles.input}
@@ -479,11 +644,12 @@ export default function Events() {
                 <button style={styles.goBack} onClick={handleGoBackOnClick}>
                   Cancel
                 </button>
-                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                <button type="submit" style={styles.goBack}>
                   Save Changes
                 </button>
               </div>
             </div>
+            </form>
           </>
         )}
 
@@ -500,7 +666,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={eventName}
-                    onChange={(e) => setEventName(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setEventName(e.target.value)}}
                     placeholder="Enter the event name"
                     required
                     style={styles.input}
@@ -546,7 +716,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setAddress(e.target.value)}}
                     placeholder="Enter the address"
                     required
                     style={styles.input}
@@ -560,7 +734,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setCity(e.target.value)}}
                     placeholder="Enter the city"
                     required
                     style={styles.input}
@@ -632,7 +810,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only numeric values
+                      const sanitizedValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );setZipCode(e.target.value)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}
@@ -646,7 +829,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setDescription(e.target.value)}}
                     placeholder="Enter a description for the event"
                     required
                     style={styles.input}
