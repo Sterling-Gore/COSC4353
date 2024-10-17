@@ -1,4 +1,4 @@
-import { findEventByID, updateEvent } from "../mockDatabase";
+import { findEventByID, updateEvent, eventUpdateNotification } from "../mockDatabase";
 
 export default function handler(req, res) {
   //console.log(`this is the method: ${req.method} `);
@@ -51,6 +51,7 @@ export default function handler(req, res) {
         console.log(event);
 
         updateEvent(event);
+        eventUpdateNotification(eventID, eventName, eventDate);
         return res.status(200).json({ message: "Landing", event})
       }
       else{

@@ -149,4 +149,26 @@ export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day
     }
   }
 
-}
+};
+
+
+export const eventUpdateNotification = (eventID, eventName, eventDate ) => {
+  const users = getUsers();
+  for (let i = 0; i < users.length; i++)
+  {
+    if( users[i].rsvpEvents.includes(eventID))
+    {
+      const newNotification = {
+        eventID: eventID,
+        eventName: eventName,
+        eventDate: eventDate,
+        day: day,
+        notificationType: "Event Update",
+        status: "An RSVP'd event has been updated!"
+      }
+      users[i].notifications.push(newNotification);
+      updateUser(users[i])
+    }
+  }
+
+};

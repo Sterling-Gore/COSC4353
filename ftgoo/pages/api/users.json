@@ -58,7 +58,9 @@
     ],
     "isLoggedIn": false,
     "role": "user",
-    "rsvpEvents": [],
+    "rsvpEvents": [
+      2
+    ],
     "oldEvents": [
       4
     ],

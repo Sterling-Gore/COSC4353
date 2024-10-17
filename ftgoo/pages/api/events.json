@@ -16,20 +16,21 @@
   },
   {
     "eventID": 2,
-    "eventName": "John's Animal Shelter",
-    "urgency": "Low",
+    "eventName": "John's Animal Shelterdf",
+    "urgency": "Medium",
     "address": "456 Cherry Avenue TX",
-    "city": "Dallas",
+    "city": "Dallasdsfsdfg",
     "state": "TX",
     "zipCode": "54321",
-    "description": "Providing volunteering care for animals that needs treatment.",
+    "description": "Providing volunteering care for animals that neeeditedds treatment.",
     "skills": [
       "Health",
       "Education",
       "Animal Care"
     ],
-    "eventDate": "2025-01-01",
-    "day": "Wednesday"
+    "eventDate": "2025-01-15",
+    "day": "Wednesday",
+    "selectedDay": "Wednesday"
   },
   {
     "eventID": 3,
