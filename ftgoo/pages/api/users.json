@@ -26,7 +26,15 @@
       4
     ],
     "notifications": [
-    ] 
+      {
+        "eventID": 7,
+        "eventName": "Event for Sterling2",
+        "eventDate": "2024-10-22",
+        "day": "Tuesday",
+        "notificationType": "New Event",
+        "status": "This event matches your skills and availability!"
+      }
+    ]
   },
   {
     "userID": 2,
@@ -55,7 +63,23 @@
       4
     ],
     "notifications": [
-    ] 
+      {
+        "eventID": 6,
+        "eventName": "Event For Sterling",
+        "eventDate": "2024-10-14",
+        "day": "Monday",
+        "notificationType": "New Event",
+        "status": "This event matches your skills and availability!"
+      },
+      {
+        "eventID": 7,
+        "eventName": "Event for Sterling2",
+        "eventDate": "2024-10-22",
+        "day": "Tuesday",
+        "notificationType": "New Event",
+        "status": "This event matches your skills and availability!"
+      }
+    ]
   },
   {
     "userID": 3,
@@ -81,8 +105,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 4,
@@ -106,10 +129,8 @@
     "isLoggedIn": false,
     "role": "admin",
     "rsvpEvents": [],
-    "oldEvents": [
-    ],
-    "notifications": [
-    ] 
+    "oldEvents": [],
+    "notifications": []
   },
   {
     "userID": 5,
@@ -135,8 +156,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 6,
@@ -165,7 +185,15 @@
       4
     ],
     "notifications": [
-    ] 
+      {
+        "eventID": 7,
+        "eventName": "Event for Sterling2",
+        "eventDate": "2024-10-22",
+        "day": "Tuesday",
+        "notificationType": "New Event",
+        "status": "This event matches your skills and availability!"
+      }
+    ]
   },
   {
     "userID": 7,
@@ -195,7 +223,15 @@
       5
     ],
     "notifications": [
-    ] 
+      {
+        "eventID": 6,
+        "eventName": "Event For Sterling",
+        "eventDate": "2024-10-14",
+        "day": "Monday",
+        "notificationType": "New Event",
+        "status": "This event matches your skills and availability!"
+      }
+    ]
   },
   {
     "userID": 8,
@@ -223,8 +259,7 @@
     "oldEvents": [
       5
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 9,
@@ -264,7 +299,7 @@
         "notificationType": "reminder",
         "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
       }
-    ] 
+    ]
   },
   {
     "userID": 10,
@@ -335,6 +370,6 @@
         "notificationType": "Update",
         "status": "This event is cancelled!"
       }
-    ] 
+    ]
   }
 ]

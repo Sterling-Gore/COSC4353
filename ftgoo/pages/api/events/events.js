@@ -1,5 +1,5 @@
 // pages/api/auth/registration.js
-import { getEvents, addEvent, findEventByID } from "../mockDatabase";
+import { getEvents, addEvent, findEventByID, volunteerMatchOnEventCreation } from "../mockDatabase";
 
 export default function handler(req, res) {
   if (req.method === "POST") {
@@ -65,6 +65,9 @@ export default function handler(req, res) {
 
     console.log("Creating new event:", newEvent);
     addEvent(newEvent);
+
+    //volunteerMatch
+    volunteerMatchOnEventCreation(newEventID, eventName, eventDate, selectedDay, skills);
 
     // Set isLoggedIn to true to indicate that the user has just registered
     newEvent.isCreated = true;

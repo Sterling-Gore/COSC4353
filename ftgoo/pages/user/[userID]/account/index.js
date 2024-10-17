@@ -2,7 +2,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
-import { personObject } from "@/pages/api/server";
 
 export default function Account() {
   const router = useRouter();

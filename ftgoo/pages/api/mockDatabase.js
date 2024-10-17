@@ -126,3 +126,27 @@ export const updateEvent = (updatedEvent) => {
   }
 };
 
+
+
+//notifications
+
+export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day, skills, ) => {
+  const users = getUsers();
+  for (let i = 0; i < users.length; i++)
+  {
+    if( skills.every( skill => users[i].skills.includes(skill)) && users[i].availability.includes(day))
+    {
+      const newNotification = {
+        eventID: eventID,
+        eventName: eventName,
+        eventDate: eventDate,
+        day: day,
+        notificationType: "New Event",
+        status: "This event matches your skills and availability!"
+      }
+      users[i].notifications.push(newNotification);
+      updateUser(users[i])
+    }
+  }
+
+}
