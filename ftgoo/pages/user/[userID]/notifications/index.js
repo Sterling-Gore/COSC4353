@@ -16,7 +16,7 @@ export default function Notifications() {
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
   const [availability, setAvailability] = useState([]);
-  //const [myNotifications, setMyNotifications] = useState([]);
+  const [myNotifications, setMyNotifications] = useState([]);
 
   useEffect(() => {
     // Mock check for user login status
@@ -130,8 +130,35 @@ export default function Notifications() {
     }
   };
 
+  async function GETnotifications_data() {
+    try {
+      const response = await fetch("/api/USER/user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: 
+          JSON.stringify({userID})
+      });
+  
+      const data_from_db = await response.json();
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setMyNotifications(data_from_db.user.notifications);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
+
   //useEffect() empty dependency array
   useEffect(() => {GETdata()}, [userID]);
+  useEffect(() => {GETnotifications_data()}, [userID]);
+  
   //useEffect(() => {GETnotification_data()}, []);
 
   //GETdata(userID);
@@ -168,15 +195,15 @@ export default function Notifications() {
 
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Notifications</h1>
-        {/*myNotifications.map((notification) => (
-          <div style={styles.eventContainer} key={notification.notificationID}>
+        {myNotifications.map((notification) => (
+          <div style={styles.eventContainer} /*key={notification.notificationID}*/>
             <div style={styles.topLeftEventText}>
-              Notification: {notification.eventName}
+              {notification.notificationType} - {notification.eventName} 
             </div>
             <div style={styles.bottomLeftEventText}>{notification.eventDate} - {notification.day}</div>
             <div style={styles.rightEventText}>{notification.status}</div>
           </div>
-        ))*/}
+        ))}
       </div>
     </div>
   );

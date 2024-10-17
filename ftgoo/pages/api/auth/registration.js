@@ -76,6 +76,7 @@ export default function handler(req, res) {
       isLoggedIn: false,
       rsvpEvents: [],
       oldEvents: [],
+      notifications: [],
     };
 
     console.log("Creating new user:", newUser);

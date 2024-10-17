@@ -24,7 +24,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 2,
@@ -51,7 +53,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 3,
@@ -76,7 +80,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 4,
@@ -98,7 +104,12 @@
       "Wednesday"
     ],
     "isLoggedIn": false,
-    "role": "admin"
+    "role": "admin",
+    "rsvpEvents": [],
+    "oldEvents": [
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 5,
@@ -123,7 +134,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 6,
@@ -150,7 +163,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       4
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 7,
@@ -178,7 +193,9 @@
     "oldEvents": [
       4,
       5
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 8,
@@ -205,7 +222,9 @@
     "rsvpEvents": [],
     "oldEvents": [
       5
-    ]
+    ],
+    "notifications": [
+    ] 
   },
   {
     "userID": 9,
@@ -235,7 +254,17 @@
     "oldEvents": [
       4,
       5
-    ]
+    ],
+    "notifications": [
+      {
+        "eventID": 2,
+        "eventName": "John's Animal Shelter",
+        "eventDate": "2025-01-01",
+        "day": "wednesday",
+        "notificationType": "reminder",
+        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
+      }
+    ] 
   },
   {
     "userID": 10,
@@ -288,6 +317,24 @@
       5,
       3
     ],
-    "oldEvents": []
+    "oldEvents": [],
+    "notifications": [
+      {
+        "eventID": 2,
+        "eventName": "John's Animal Shelter",
+        "eventDate": "2025-01-01",
+        "day": "Wednesday",
+        "notificationType": "Reminder",
+        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
+      },
+      {
+        "eventID": 3,
+        "eventName": "Event 3",
+        "eventDate": "2025-01-01",
+        "day": "Wednesday",
+        "notificationType": "Update",
+        "status": "This event is cancelled!"
+      }
+    ] 
   }
 ]
