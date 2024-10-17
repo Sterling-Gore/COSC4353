@@ -3,7 +3,7 @@ import path from "path";
 
 const userPath = path.resolve(process.cwd(), "pages/api/users.json");
 const eventPath = path.resolve(process.cwd(), "pages/api/events.json");
-
+const notificationsPath = path.resolve(process.cwd(), "pages/api/notifications.json");
 
 // Read users from the file
 export const getUsers = () => {
@@ -24,12 +24,53 @@ export const getEvents = () => {
   }
 };
 
+
 // Add a new user and write it to the file
 export const addUser = (user) => {
   const users = getUsers();
   users.push(user);
   fs.writeFileSync(userPath, JSON.stringify(users, null, 2));
 };
+
+// Function to write updated data to users.json
+export const writeUsers = (users) => {
+  try {
+    fs.writeFileSync(userPath, JSON.stringify(users, null, 2));
+  } catch (error) {
+    console.error("Error writing users.json:", error);
+  }
+};
+
+export const addRSVP = (userID, eventID) => {
+  const user = findUserByID(userID);
+
+  if (!user) {
+    throw new Error(`User with ID ${userID} not found.`);
+  }
+  if (!user.rsvpEvents.includes(eventID)) {
+    user.rsvpEvents.push(eventID);
+    updateUser(user);
+  } else {
+    throw new Error(`RSVP for event ${eventID} already exists for this user.`);
+  }
+};
+
+export const deleteRSVP = (userID, eventID) => {
+  const user = findUserByID(userID);
+  console.log(user);
+  if (!user) {
+    throw new Error(`User with ID ${userID} not found.`);
+  }
+  if (user.rsvpEvents.includes(eventID)) {
+    user.rsvpEvents = user.rsvpEvents.filter(id => id !== eventID);
+    console.log(user);
+    updateUser(user);
+  } else {
+    throw new Error(`RSVP for event ${eventID} does not exist for this user.`);
+  }
+}
+
+
 
 // Find a user by email
 export const findUserByEmail = (email) => {

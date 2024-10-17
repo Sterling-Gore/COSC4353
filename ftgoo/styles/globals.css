@@ -40,3 +40,12 @@ a {
     color-scheme: dark;
   }
 }
+
+input::placeholder {
+  color: black;
+}
+
+textarea::placeholder {
+  color: black;
+}
+
