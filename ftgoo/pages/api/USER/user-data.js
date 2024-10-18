@@ -8,9 +8,9 @@ export default function handler(req, res) {
       // Mock user data for authentication
       //console.log(`this is the userID: ${userID} `);
       const user = findUserByID(userID);
-      
+    
   
-      if (user /*&& user.isLoggedIn == true*/) {
+      if (user) {
         // get the user data
         return res.status(200).json({ message: "Landing", user });
       } else if (!user) {

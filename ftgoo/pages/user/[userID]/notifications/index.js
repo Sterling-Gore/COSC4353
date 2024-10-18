@@ -59,7 +59,7 @@ export default function Notifications() {
         setSkills(data.user.skills);
         setAvailability(data.user.availability);
         setPreferences(data.user.preferences);
-        
+        setMyNotifications(data.user.notifications);
         
       } else {
         setUserEmail("");
@@ -73,6 +73,7 @@ export default function Notifications() {
         setSkills([""]);
         setAvailability([""]);
         setPreferences("");
+        setMyNotifications([""]);
         //router.push(`/`);
       }
     } catch (err) {
@@ -87,6 +88,7 @@ export default function Notifications() {
       setSkills([""]);
       setAvailability([""]);
       setPreferences("");
+      setMyNotifications([""]);
       //router.push(`/`);
     }
   };
@@ -130,34 +132,33 @@ export default function Notifications() {
     }
   };
 
-  async function GETnotifications_data() {
+
+  async function PATCHreminder(){
+    if(!userID)return; //guard case for rendering
     try {
-      const response = await fetch("/api/USER/user-data", {
-        method: "POST",
+      // Call the login API
+
+      const response = await fetch("/api/ADMIN/reminder-notification", {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: 
-          JSON.stringify({userID})
+        body: JSON.stringify({userID}),
       });
-  
-      const data_from_db = await response.json();
-  
-      if (response.ok) {
-        // Directly set the events array from the response
-        setMyNotifications(data_from_db.user.notifications);
-      } else {
-        console.log("Bad response");
-      }
-    } catch (err) {
-      console.log("Error:", err); // Log the error for debugging
-    }
 
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+      } else {}
+    } catch (err) {
+      console.error("Failed to update reminders in notifications.", err);
+    }
   }
 
   //useEffect() empty dependency array
+  useEffect(() => {PATCHreminder()}, [userID]);
   useEffect(() => {GETdata()}, [userID]);
-  useEffect(() => {GETnotifications_data()}, [userID]);
   
   //useEffect(() => {GETnotification_data()}, []);
 
@@ -187,7 +188,7 @@ export default function Notifications() {
         navLinks={[
           { name: "Account", href: `/user/${userID}/account` },
           { name: "Events", href: `/user/${userID}/events` },
-          { name: "Notification", href: `/user/${userID}/notifications` },
+          { name: "Notification", href: `/user/${userID}/notifications`},
           { name: "Log out", href: "#", onClick: handleLogout },
         ]}
         showLogout={true}
@@ -196,12 +197,13 @@ export default function Notifications() {
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Notifications</h1>
         {myNotifications.map((notification) => (
-          <div style={styles.eventContainer} /*key={notification.notificationID}*/>
+          <div style={styles.eventContainer} key={`${notification.userID}-${notification.eventID}`}>
             <div style={styles.topLeftEventText}>
               {notification.notificationType} - {notification.eventName} 
             </div>
-            <div style={styles.bottomLeftEventText}>{notification.eventDate} - {notification.day}</div>
-            <div style={styles.rightEventText}>{notification.status}</div>
+            <div style={styles.bottomLeftEventText}>{notification.notificationDate} - {notification.day}</div>
+            <div style={styles.topRightEventText}>Event Time: {notification.eventDate}</div>
+            <div style={styles.bottomRightEventText}>{notification.status}</div>
           </div>
         ))}
       </div>
@@ -253,7 +255,7 @@ const styles = {
     marginBottom: "5vh",
     //padding: "20px 20px",
     width: "80%",
-    height: "16vh",
+    height: "18vh",
     border: "2px solid black", // Ensure the border is black and solid
     borderRadius: "8px",
     display: "flex",
@@ -277,12 +279,22 @@ const styles = {
     bottom: 0,
     left: 0,
   },
-  rightEventText: {
+  topRightEventText: {
     textAlign: "right",
     color: "black",
     fontSize: "22px",
     position: "absolute",
     top: 0,
+    right: 0,
+    maxWidth: "415px",
+    lineHeight: "1.5",
+  },
+  bottomRightEventText: {
+    textAlign: "right",
+    color: "black",
+    fontSize: "22px",
+    position: "absolute",
+    bottom: 0,
     right: 0,
     maxWidth: "415px",
     lineHeight: "1.5",

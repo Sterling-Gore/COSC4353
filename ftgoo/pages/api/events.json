@@ -9,7 +9,7 @@
       "zipCode": "12345",
       "description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
       "skills": ["Health"],
-      "eventDate": "2024-10-31",
+      "eventDate": "2024-10-18",
       "day": "Thursday"
     },
     {
@@ -22,8 +22,8 @@
       "zipCode": "54321",
       "description": "Providing volunteering care for animals that needs treatment.",
       "skills": ["Health", "Education", "Animal Care"],
-      "eventDate": "2025-01-01",
-      "day": "Wednesday"
+      "eventDate": "2024-10-19",
+      "day": "Saturday"
     },
     {
       "eventID": 3,
@@ -48,8 +48,8 @@
         "zipCode": "56789",
         "description": "GIVING SWAG OUT TO THE NEEDY.",
         "skills": ["Arts"],
-        "eventDate": "2024-10-01",
-        "day": "Tuesday"
+        "eventDate": "2024-10-19",
+        "day": "Saturday"
       },
       {
         "eventID": 5,

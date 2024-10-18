@@ -25,8 +25,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 2,
@@ -54,8 +53,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 3,
@@ -81,8 +79,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 4,
@@ -106,10 +103,8 @@
     "isLoggedIn": false,
     "role": "admin",
     "rsvpEvents": [],
-    "oldEvents": [
-    ],
-    "notifications": [
-    ] 
+    "oldEvents": [],
+    "notifications": []
   },
   {
     "userID": 5,
@@ -135,8 +130,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 6,
@@ -164,8 +158,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 7,
@@ -194,8 +187,7 @@
       4,
       5
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 8,
@@ -223,8 +215,7 @@
     "oldEvents": [
       5
     ],
-    "notifications": [
-    ] 
+    "notifications": []
   },
   {
     "userID": 9,
@@ -260,11 +251,12 @@
         "eventID": 2,
         "eventName": "John's Animal Shelter",
         "eventDate": "2025-01-01",
+        "notificationDate": "2024-10-17",
         "day": "wednesday",
         "notificationType": "reminder",
         "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
       }
-    ] 
+    ]
   },
   {
     "userID": 10,
@@ -315,26 +307,22 @@
     "rsvpEvents": [
       2,
       5,
-      3
+      3,
+      1,
+      4
     ],
     "oldEvents": [],
     "notifications": [
       {
-        "eventID": 2,
-        "eventName": "John's Animal Shelter",
-        "eventDate": "2025-01-01",
-        "day": "Wednesday",
+        "userID": "11",
+        "eventID": 1,
+        "eventName": "John's Food Shelter",
+        "eventDate": "2024-10-18",
+        "notificationDate": "2024-10-18",
+        "day": "Thursday",
         "notificationType": "Reminder",
-        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
-      },
-      {
-        "eventID": 3,
-        "eventName": "Event 3",
-        "eventDate": "2025-01-01",
-        "day": "Wednesday",
-        "notificationType": "Update",
-        "status": "This event is cancelled!"
+        "status": "This event is occurring tomorrow, make sure to arrive by the event's time!"
       }
-    ] 
+    ]
   }
 ]

@@ -1,0 +1,10 @@
+{
+  "userID": "11",
+  "eventID": 2,
+  "eventName": "John's Animal Shelter",
+  "eventDate": "2024-10-19",
+  "notificationDate": "2024-10-18",
+  "day": "Wednesday",
+  "notificationType": "Reminder",
+  "status": "This event is occurring tomorrow, make sure to arrive by the event's time!"
+}
