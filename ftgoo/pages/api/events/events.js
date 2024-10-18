@@ -16,16 +16,6 @@ export default function handler(req, res) {
       selectedDay,
     } = req.body;
 
-    // Check if user already exists before proceeding to step 2
-    const existingEvent = findEventByID(eventName);
-    if (existingEvent) {
-      console.log("This event already exists", eventName);
-      return res.status(400).json({
-        error:
-          "This event already exists. Please create a new event.",
-      });
-    }
-
     // Basic validation
     if (
       !eventName ||
@@ -43,6 +33,15 @@ export default function handler(req, res) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
+    // Check if user already exists before proceeding to step 2
+    const existingEvent = findEventByID(eventName);
+    if (existingEvent) {
+      console.log("This event already exists", eventName);
+      return res.status(400).json({
+        error:
+          "This event already exists. Please create a new event.",
+      });
+    }
 
     // Generate a unique userID
     const events = getEvents();
