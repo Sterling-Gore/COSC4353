@@ -4,8 +4,6 @@ import Navbar from "@/components/navbar";
 
 export default function Events() {
   const router = useRouter();
-  const [people, setPeople] = useState("");
-  const [volunteers, setVolunteers] = useState([]);
   const [events, setEvents] = useState([]);
   const [myEvents, setMyEvents] = useState([]);
   const [allEvents, setAllEvents] = useState([]);
@@ -14,7 +12,6 @@ export default function Events() {
   const [currentPage, setCurrentPage] = useState("myEvents");
   const [isClicked, setIsClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [isRSVPChecked, setIsRSVPChecked] = useState(null);
   const [thisEvent, setThisEvent] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -70,7 +67,6 @@ export default function Events() {
         
         // Check if rsvpEvents and events are available
 
-        
         const editedMyEvents = data.user.rsvpEvents.map((eventID) => {
           const matchedEvent = events.find(event => event.eventID === eventID);
           if (matchedEvent) {

@@ -3,7 +3,6 @@ import path from "path";
 
 const userPath = path.resolve(process.cwd(), "pages/api/users.json");
 const eventPath = path.resolve(process.cwd(), "pages/api/events.json");
-const notificationsPath = path.resolve(process.cwd(), "pages/api/notifications.json");
 
 // Read users from the file
 export const getUsers = () => {
@@ -15,6 +14,7 @@ export const getUsers = () => {
   }
 };
 
+// Read events from the file
 export const getEvents = () => {
   try {
     const data = fs.readFileSync(eventPath, "utf-8");
@@ -23,7 +23,6 @@ export const getEvents = () => {
     return [];
   }
 };
-
 
 // Add a new user and write it to the file
 export const addUser = (user) => {
@@ -41,6 +40,7 @@ export const writeUsers = (users) => {
   }
 };
 
+// Function to write updated RSVP data to users.json
 export const addRSVP = (userID, eventID) => {
   const user = findUserByID(userID);
 
@@ -55,6 +55,7 @@ export const addRSVP = (userID, eventID) => {
   }
 };
 
+// Function to delete updated RSVP data to users.json
 export const deleteRSVP = (userID, eventID) => {
   const user = findUserByID(userID);
   if (!user) {
@@ -68,18 +69,19 @@ export const deleteRSVP = (userID, eventID) => {
   }
 }
 
-
 // Find a user by email
 export const findUserByEmail = (email) => {
   const users = getUsers();
   return users.find((user) => user.email === email);
 };
 
+// Find a user by userID
 export const findUserByID = (userID) => {
   const users = getUsers();
   return users.find((user) => user.userID == userID);
 };
 
+// Update a user with a updatedUser
 export const updateUser = (updatedUser) => {
   const users = getUsers();
   const userIndex = users.findIndex((user) => user.userID == updatedUser.userID)
@@ -123,11 +125,8 @@ export const updateEvent = (updatedEvent) => {
   }
 };
 
-
-
-//notifications
-
-export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day, skills, ) => {
+// Function to find matching skills
+export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day, skills) => {
   const users = getUsers();
   for (let i = 0; i < users.length; i++)
   {
@@ -146,10 +145,9 @@ export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day
       updateUser(users[i])
     }
   }
-
 };
 
-
+// Function to add update notifications to users
 export const eventUpdateNotification = (eventID, eventName, eventDate, day ) => {
   const users = getUsers();
   for (let i = 0; i < users.length; i++)
@@ -170,9 +168,9 @@ export const eventUpdateNotification = (eventID, eventName, eventDate, day ) => 
       updateUser(users[i])
     }
   }
-
 };
 
+// Function to add reminder notifications to users
 export const addReminder = (userID) => {
   const user = findUserByID(userID);
   const rsvpEvents = user.rsvpEvents;

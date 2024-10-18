@@ -328,10 +328,10 @@
     "isLoggedIn": false,
     "rsvpEvents": [
       2,
-      5,
       3,
       1,
-      4
+      4,
+      7
     ],
     "oldEvents": [],
     "notifications": [
@@ -344,6 +344,26 @@
         "day": "Thursday",
         "notificationType": "Reminder",
         "status": "This event is occurring tomorrow, make sure to arrive by the event's time!"
+      },
+      {
+        "userID": "11",
+        "eventID": 2,
+        "eventName": "John's Animal Shelter",
+        "eventDate": "2024-10-19",
+        "notificationDate": "2024-10-18",
+        "day": "Saturday",
+        "notificationType": "Reminder",
+        "status": "This event is occurring soon, make sure to arrive by the event's time!"
+      },
+      {
+        "userID": "11",
+        "eventID": 4,
+        "eventName": "SWAG ALERT",
+        "eventDate": "2024-10-19",
+        "notificationDate": "2024-10-18",
+        "day": "Saturday",
+        "notificationType": "Reminder",
+        "status": "This event is occurring soon, make sure to arrive by the event's time!"
       }
     ]
   }
