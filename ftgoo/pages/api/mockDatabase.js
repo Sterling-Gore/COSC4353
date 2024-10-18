@@ -68,51 +68,6 @@ export const deleteRSVP = (userID, eventID) => {
   }
 }
 
-export const addReminder = (userID) => {
-  const user = findUserByID(userID);
-  const rsvpEvents = user.rsvpEvents;
-  const events = getEvents();
-  
-  const matchedEvents = events.filter(event => rsvpEvents.includes(event.eventID));
-  
-  const originalToday = new Date();
-  const today = new Date(originalToday.getTime() - 5 * 60 * 60 * 1000);
-
-  const oneDayInMs = 24 * 60 * 60 * 1000; // Milliseconds in one day
-  
-  // Read existing notifications from the file
-
-  matchedEvents.forEach(event => {
-    const eventDate = new Date(event.eventDate); // Convert eventDate string to Date object
-    
-    // Check if the event is one day from today
-    if ((eventDate - today) <= oneDayInMs && (eventDate - today) > 0) {
-      // Create the reminderNotification object
-      const reminderNotification = {
-        userID: userID,
-        eventID: event.eventID,
-        eventName: event.eventName,
-        eventDate: event.eventDate,
-        notificationDate: new Date().toISOString().split('T')[0], // Only year, month, day
-        day: event.day,
-        notificationType: "Reminder",
-        status: "This event is occurring tomorrow, make sure to arrive by the event's time!"
-      };
-
-      // Check if this notification already exists in the notifications array
-      const notificationExists = user.notifications.some(
-        notif => notif.userID === userID && notif.eventID === reminderNotification.eventID
-      );
-
-      // Only add the notification if it doesn't already exist
-      if (!notificationExists) {
-        user.notifications.push(reminderNotification);
-        // Write the updated notifications array back to the file
-        updateUser(user);
-      }
-    }
-  });
-};
 
 // Find a user by email
 export const findUserByEmail = (email) => {
@@ -182,6 +137,7 @@ export const volunteerMatchOnEventCreation = (eventID, eventName, eventDate, day
         eventID: eventID,
         eventName: eventName,
         eventDate: eventDate,
+        notificationDate: new Date().toISOString().split('T')[0],
         day: day,
         notificationType: "New Event",
         status: "This event matches your skills and availability!"
@@ -205,6 +161,7 @@ export const eventUpdateNotification = (eventID, eventName, eventDate, day ) => 
         eventID: eventID,
         eventName: eventName,
         eventDate: eventDate,
+        notificationDate: new Date().toISOString().split('T')[0],
         day: day,
         notificationType: "Event Update",
         status: "An RSVP'd event has been updated!"
@@ -214,4 +171,51 @@ export const eventUpdateNotification = (eventID, eventName, eventDate, day ) => 
     }
   }
 
+};
+
+export const addReminder = (userID) => {
+  const user = findUserByID(userID);
+  const rsvpEvents = user.rsvpEvents;
+  const events = getEvents();
+  
+  const matchedEvents = events.filter(event => rsvpEvents.includes(event.eventID));
+  
+  const originalToday = new Date();
+  //the -5 is used to match the time zone to CTE
+  const today = new Date(originalToday.getTime() - 5 * 60 * 60 * 1000);
+
+  const oneDayInMs = 24 * 60 * 60 * 1000; // Milliseconds in one day
+  
+  // Read existing notifications from the file
+
+  matchedEvents.forEach(event => {
+    const eventDate = new Date(event.eventDate); // Convert eventDate string to Date object
+    
+    // Check if the event is one day from today
+    if ((eventDate - today) <= oneDayInMs && (eventDate - today) > 0) {
+      // Create the reminderNotification object
+      const reminderNotification = {
+        userID: userID,
+        eventID: event.eventID,
+        eventName: event.eventName,
+        eventDate: event.eventDate,
+        notificationDate: new Date().toISOString().split('T')[0], // Only year, month, day
+        day: event.day,
+        notificationType: "Reminder",
+        status: "This event is occurring soon, make sure to arrive by the event's time!"
+      };
+
+      // Check if this notification already exists in the notifications array
+      const notificationExists = user.notifications.some(
+        notif => notif.userID === userID && notif.eventID === reminderNotification.eventID
+      );
+
+      // Only add the notification if it doesn't already exist
+      if (!notificationExists) {
+        user.notifications.push(reminderNotification);
+        // Write the updated notifications array back to the file
+        updateUser(user);
+      }
+    }
+  });
 };

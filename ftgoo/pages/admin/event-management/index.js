@@ -537,7 +537,7 @@ export default function Events() {
                       const sanitizedValue = e.target.value.replace(
                         /[^0-9]/g,
                         ""
-                      );setZipCode(e.target.value)}}
+                      );setZipCode(sanitizedValue)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}
@@ -814,7 +814,7 @@ export default function Events() {
                       const sanitizedValue = e.target.value.replace(
                         /[^0-9]/g,
                         ""
-                      );setZipCode(e.target.value)}}
+                      );setZipCode(sanitizedValue)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}

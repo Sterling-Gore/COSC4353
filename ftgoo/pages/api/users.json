@@ -49,11 +49,33 @@
     ],
     "isLoggedIn": false,
     "role": "user",
-    "rsvpEvents": [],
+    "rsvpEvents": [
+      6
+    ],
     "oldEvents": [
       4
     ],
-    "notifications": []
+    "notifications": [
+      {
+        "eventID": 6,
+        "eventName": "Hello this is a test",
+        "eventDate": "2024-10-19",
+        "notificationDate": "2024-10-18",
+        "day": "Saturday",
+        "notificationType": "Event Update",
+        "status": "An RSVP'd event has been updated!"
+      },
+      {
+        "userID": "2",
+        "eventID": 6,
+        "eventName": "Hello this is a test",
+        "eventDate": "2024-10-19",
+        "notificationDate": "2024-10-18",
+        "day": "Saturday",
+        "notificationType": "Reminder",
+        "status": "This event is occurring soon, make sure to arrive by the event's time!"
+      }
+    ]
   },
   {
     "userID": 3,

@@ -60,7 +60,7 @@ export default function handler(req, res) {
       skills,
       description,
       eventDate,
-      selectedDay,
+      day: selectedDay,
     };
 
     console.log("Creating new event:", newEvent);

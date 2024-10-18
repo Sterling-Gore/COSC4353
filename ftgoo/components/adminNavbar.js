@@ -44,12 +44,6 @@ export default function AdminNavbar({ currentPage, handleLogout }) {
           Event Management
         </a>
         <a
-          href="/admin/matching"
-          style={currentPage === "Matching" ? styles.navOnPage : styles.navLink}
-        >
-          Matching
-        </a>
-        <a
           href="/admin/volunteer-history"
           style={
             currentPage === "Volunteer History"

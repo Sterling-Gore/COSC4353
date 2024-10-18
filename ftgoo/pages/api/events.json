@@ -8,9 +8,11 @@
     "state": "TX",
     "zipCode": "12345",
     "description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
-    "skills": ["Health"],
+    "skills": [
+      "Health"
+    ],
     "eventDate": "2024-10-18",
-    "day": "Thursday"
+    "day": "Friday"
   },
   {
     "eventID": 2,
@@ -21,7 +23,11 @@
     "state": "TX",
     "zipCode": "54321",
     "description": "Providing volunteering care for animals that needs treatment.",
-    "skills": ["Health", "Education", "Animal Care"],
+    "skills": [
+      "Health",
+      "Education",
+      "Animal Care"
+    ],
     "eventDate": "2024-10-19",
     "day": "Saturday"
   },
@@ -34,34 +40,72 @@
     "state": "TX",
     "zipCode": "56789",
     "description": "Providing kids with one on one help to doodle, draw, or create art.",
-    "skills": ["Education", "Arts"],
+    "skills": [
+      "Education",
+      "Arts"
+    ],
     "eventDate": "2024-11-01",
     "day": "Friday"
   },
   {
-      "eventID": 4,
-      "eventName": "SWAG ALERT",
-      "urgency": "High",
-      "address": "789 Blossom Avenue TX",
-      "city": "Austin",
-      "state": "TX",
-      "zipCode": "56789",
-      "description": "GIVING SWAG OUT TO THE NEEDY.",
-      "skills": ["Arts"],
-      "eventDate": "2024-10-19",
-      "day": "Saturday"
-    },
-    {
-      "eventID": 5,
-      "eventName": "Test Event",
-      "urgency": "High",
-      "address": "Testing Lane, Texas",
-      "city": "Houston",
-      "state": "TX",
-      "zipCode": "12345",
-      "description": "This is a test!!!.",
-      "skills": ["Arts"],
-      "eventDate": "2024-10-01",
-      "day": "Tuesday"
-    }
+    "eventID": 4,
+    "eventName": "SWAG ALERT",
+    "urgency": "High",
+    "address": "789 Blossom Avenue TX",
+    "city": "Austin",
+    "state": "TX",
+    "zipCode": "56789",
+    "description": "GIVING SWAG OUT TO THE NEEDY.",
+    "skills": [
+      "Arts"
+    ],
+    "eventDate": "2024-10-19",
+    "day": "Saturday"
+  },
+  {
+    "eventID": 5,
+    "eventName": "Test Event",
+    "urgency": "High",
+    "address": "Testing Lane, Texas",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "description": "This is a test!!!.",
+    "skills": [
+      "Arts"
+    ],
+    "eventDate": "2024-10-01",
+    "day": "Tuesday"
+  },
+  {
+    "eventID": 6,
+    "eventName": "Hello this is a test",
+    "urgency": "High",
+    "address": "This is a test",
+    "city": "sadfasdf",
+    "state": "KY",
+    "zipCode": "123123",
+    "skills": [
+      "Education",
+      "Health"
+    ],
+    "description": "sdfasdf",
+    "eventDate": "2024-10-19",
+    "day": "Saturday"
+  },
+  {
+    "eventID": 7,
+    "eventName": "gfgfgfg",
+    "urgency": "High",
+    "address": "fgfg",
+    "city": "asdfsdf",
+    "state": "KY",
+    "zipCode": "1212",
+    "skills": [
+      "Arts"
+    ],
+    "description": "sdfsdf",
+    "eventDate": "2024-10-23",
+    "day": "Wednesday"
+  }
 ]

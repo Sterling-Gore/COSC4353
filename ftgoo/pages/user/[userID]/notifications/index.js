@@ -59,7 +59,7 @@ export default function Notifications() {
         setSkills(data.user.skills);
         setAvailability(data.user.availability);
         setPreferences(data.user.preferences);
-        setMyNotifications(data.user.notifications);
+        setMyNotifications(data.user.notifications.toReversed());
         
       } else {
         setUserEmail("");
@@ -197,14 +197,16 @@ export default function Notifications() {
       <div style={styles.notificationsContainer}>
         <h1 style={styles.title}>Notifications</h1>
         {myNotifications.map((notification) => (
+          <>
           <div style={styles.eventContainer} key={`${notification.userID}-${notification.eventID}`}>
             <div style={styles.topLeftEventText}>
               {notification.notificationType} - {notification.eventName} 
             </div>
-            <div style={styles.bottomLeftEventText}>{notification.notificationDate} - {notification.day}</div>
-            <div style={styles.topRightEventText}>Event Time: {notification.eventDate}</div>
+            <div style={styles.topRightEventText}> {notification.notificationDate}</div>
+            <div style={styles.bottomLeftEventText}>Event Time: {notification.eventDate} - {notification.day}</div>
             <div style={styles.bottomRightEventText}>{notification.status}</div>
           </div>
+          </>
         ))}
       </div>
     </div>
@@ -243,6 +245,11 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
     color: "#333",
+  },
+  NotificationHeader: {
+    color: "#333",
+    fontWeight: "bold",
+    fontSize: 20
   },
   notificationsText: {
     fontSize: "37px",

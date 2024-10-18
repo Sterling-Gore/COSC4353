@@ -47,7 +47,7 @@ export default function handler(req, res) {
         event.description = description;
         event.skills = skills;
         event.eventDate = eventDate;
-        event.selectedDay = selectedDay;
+        event.day = selectedDay;
         console.log(event);
 
         updateEvent(event);
