@@ -25,16 +25,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-      {
-        "eventID": 7,
-        "eventName": "Event for Sterling2",
-        "eventDate": "2024-10-22",
-        "day": "Tuesday",
-        "notificationType": "New Event",
-        "status": "This event matches your skills and availability!"
-      }
-    ]
+    "notifications": []
   },
   {
     "userID": 2,
@@ -58,30 +49,11 @@
     ],
     "isLoggedIn": false,
     "role": "user",
-    "rsvpEvents": [
-      2
-    ],
+    "rsvpEvents": [],
     "oldEvents": [
       4
     ],
-    "notifications": [
-      {
-        "eventID": 6,
-        "eventName": "Event For Sterling",
-        "eventDate": "2024-10-14",
-        "day": "Monday",
-        "notificationType": "New Event",
-        "status": "This event matches your skills and availability!"
-      },
-      {
-        "eventID": 7,
-        "eventName": "Event for Sterling2",
-        "eventDate": "2024-10-22",
-        "day": "Tuesday",
-        "notificationType": "New Event",
-        "status": "This event matches your skills and availability!"
-      }
-    ]
+    "notifications": []
   },
   {
     "userID": 3,
@@ -186,16 +158,7 @@
     "oldEvents": [
       4
     ],
-    "notifications": [
-      {
-        "eventID": 7,
-        "eventName": "Event for Sterling2",
-        "eventDate": "2024-10-22",
-        "day": "Tuesday",
-        "notificationType": "New Event",
-        "status": "This event matches your skills and availability!"
-      }
-    ]
+    "notifications": []
   },
   {
     "userID": 7,
@@ -224,16 +187,7 @@
       4,
       5
     ],
-    "notifications": [
-      {
-        "eventID": 6,
-        "eventName": "Event For Sterling",
-        "eventDate": "2024-10-14",
-        "day": "Monday",
-        "notificationType": "New Event",
-        "status": "This event matches your skills and availability!"
-      }
-    ]
+    "notifications": []
   },
   {
     "userID": 8,
@@ -297,6 +251,7 @@
         "eventID": 2,
         "eventName": "John's Animal Shelter",
         "eventDate": "2025-01-01",
+        "notificationDate": "2024-10-17",
         "day": "wednesday",
         "notificationType": "reminder",
         "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
@@ -352,25 +307,21 @@
     "rsvpEvents": [
       2,
       5,
-      3
+      3,
+      1,
+      4
     ],
     "oldEvents": [],
     "notifications": [
       {
-        "eventID": 2,
-        "eventName": "John's Animal Shelter",
-        "eventDate": "2025-01-01",
-        "day": "Wednesday",
+        "userID": "11",
+        "eventID": 1,
+        "eventName": "John's Food Shelter",
+        "eventDate": "2024-10-18",
+        "notificationDate": "2024-10-18",
+        "day": "Thursday",
         "notificationType": "Reminder",
-        "status": "This event is occuring tomorrow, make sure to arrive by the event's time!"
-      },
-      {
-        "eventID": 3,
-        "eventName": "Event 3",
-        "eventDate": "2025-01-01",
-        "day": "Wednesday",
-        "notificationType": "Update",
-        "status": "This event is cancelled!"
+        "status": "This event is occurring tomorrow, make sure to arrive by the event's time!"
       }
     ]
   }
