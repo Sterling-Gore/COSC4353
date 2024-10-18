@@ -1,67 +1,67 @@
 [
-    {
-      "eventID": 1,
-      "eventName": "John's Food Shelter",
+  {
+    "eventID": 1,
+    "eventName": "John's Food Shelter",
+    "urgency": "High",
+    "address": "123 Pine Avenue TX",
+    "city": "Houston",
+    "state": "TX",
+    "zipCode": "12345",
+    "description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
+    "skills": ["Health"],
+    "eventDate": "2024-10-18",
+    "day": "Thursday"
+  },
+  {
+    "eventID": 2,
+    "eventName": "John's Animal Shelter",
+    "urgency": "Low",
+    "address": "456 Cherry Avenue TX",
+    "city": "Dallas",
+    "state": "TX",
+    "zipCode": "54321",
+    "description": "Providing volunteering care for animals that needs treatment.",
+    "skills": ["Health", "Education", "Animal Care"],
+    "eventDate": "2024-10-19",
+    "day": "Saturday"
+  },
+  {
+    "eventID": 3,
+    "eventName": "Children's Art Supply",
+    "urgency": "Low",
+    "address": "789 Blossom Avenue TX",
+    "city": "Austin",
+    "state": "TX",
+    "zipCode": "56789",
+    "description": "Providing kids with one on one help to doodle, draw, or create art.",
+    "skills": ["Education", "Arts"],
+    "eventDate": "2024-11-01",
+    "day": "Friday"
+  },
+  {
+      "eventID": 4,
+      "eventName": "SWAG ALERT",
       "urgency": "High",
-      "address": "123 Pine Avenue TX",
-      "city": "Houston",
-      "state": "TX",
-      "zipCode": "12345",
-      "description": "Free food for the homeless, we urgently need volunteers to hand out the food.",
-      "skills": ["Health"],
-      "eventDate": "2024-10-18",
-      "day": "Thursday"
-    },
-    {
-      "eventID": 2,
-      "eventName": "John's Animal Shelter",
-      "urgency": "Low",
-      "address": "456 Cherry Avenue TX",
-      "city": "Dallas",
-      "state": "TX",
-      "zipCode": "54321",
-      "description": "Providing volunteering care for animals that needs treatment.",
-      "skills": ["Health", "Education", "Animal Care"],
-      "eventDate": "2024-10-19",
-      "day": "Saturday"
-    },
-    {
-      "eventID": 3,
-      "eventName": "Children's Art Supply",
-      "urgency": "Low",
       "address": "789 Blossom Avenue TX",
       "city": "Austin",
       "state": "TX",
       "zipCode": "56789",
-      "description": "Providing kids with one on one help to doodle, draw, or create art.",
-      "skills": ["Education", "Arts"],
-      "eventDate": "2024-11-01",
-      "day": "Friday"
+      "description": "GIVING SWAG OUT TO THE NEEDY.",
+      "skills": ["Arts"],
+      "eventDate": "2024-10-19",
+      "day": "Saturday"
     },
     {
-        "eventID": 4,
-        "eventName": "SWAG ALERT",
-        "urgency": "High",
-        "address": "789 Blossom Avenue TX",
-        "city": "Austin",
-        "state": "TX",
-        "zipCode": "56789",
-        "description": "GIVING SWAG OUT TO THE NEEDY.",
-        "skills": ["Arts"],
-        "eventDate": "2024-10-19",
-        "day": "Saturday"
-      },
-      {
-        "eventID": 5,
-        "eventName": "Test Event",
-        "urgency": "High",
-        "address": "Testing Lane, Texas",
-        "city": "Houston",
-        "state": "TX",
-        "zipCode": "12345",
-        "description": "This is a test!!!.",
-        "skills": ["Arts"],
-        "eventDate": "2024-10-01",
-        "day": "Tuesday"
-      }
-  ]
+      "eventID": 5,
+      "eventName": "Test Event",
+      "urgency": "High",
+      "address": "Testing Lane, Texas",
+      "city": "Houston",
+      "state": "TX",
+      "zipCode": "12345",
+      "description": "This is a test!!!.",
+      "skills": ["Arts"],
+      "eventDate": "2024-10-01",
+      "day": "Tuesday"
+    }
+]

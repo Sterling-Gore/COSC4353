@@ -4,6 +4,7 @@ import AdminNavbar from "@/components/adminNavbar"; // Adjust the path as needed
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState("Events");
+  const [eventID, setEventID] = useState(null); // Assuming you will get this from somewhere, e.g., URL parameters
   const [selectedEventNum, setSelectedEventNum] = useState(null); // New state for selected event number
   const [isClicked, setIsClicked] = useState(false);
   const [eventName, setEventName] = useState("");
@@ -14,17 +15,237 @@ export default function Events() {
   const [zipCode, setZipCode] = useState("");
   const [description, setDescription] = useState("");
   const [skills, setSkills] = useState([]);
-
+  const [error, setError] = useState("");
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [eventDate, setEventDate] = useState("");
-  const [EventsArray, setEventsArary] = useState([
-    { eventNum: 1, rsvp: true },
-    { eventNum: 2, rsvp: true },
-    { eventNum: 3, rsvp: true },
-  ]);
-  const [numEvents, setnumEvents] = useState(3);
+  const [selectedDay, setSelectedDay] = useState("");
+  const [showDayDropdown, setShowDayDropdown] = useState(false); // State to show/hide the day dropdown
+  const [events, setEvents] = useState([]);
+  const [numEvents, setnumEvents] = useState(0);
 
   const router = useRouter();
+
+  const handleAfter = (e) => {
+    e.preventDefault();
+      if (
+        !eventName ||
+        !urgency ||
+        !address ||
+        !city ||
+        !state ||
+        !zipCode ||
+        !skills ||
+        !description ||
+        !eventDate ||
+        !selectedDay
+      ) {
+        setError("Please fill in all fields");
+        return;
+      }
+      // Update data into the server
+      PATCHdata();
+      
+      setError("");
+    
+  };
+
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+
+      if (
+        !eventName ||
+        !urgency ||
+        !address ||
+        !city ||
+        !state ||
+        !zipCode ||
+        !skills ||
+        !description ||
+        !eventDate ||
+        !selectedDay
+      ) {
+        setError("Please fill in all fields");
+        return;
+      }
+
+      try {
+        // Call the registration API
+        const response = await fetch("/api/events/events", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eventName,
+            urgency,
+            address,
+            city,
+            state,
+            zipCode,
+            skills,
+            description,
+            eventDate,
+            selectedDay,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Save user details in local storage before redirecting
+          localStorage.setItem("eventName", eventName);
+          localStorage.setItem("eventID", data.event.eventID);
+          setSelectedEventNum(data.event.eventID)
+
+          // Redirect to user events page on successful registration
+          window.location.reload();  // This will refresh the current page
+        } else {
+          // Handle registration errors
+          setError(data.error || "Event Creation Failed. Please try again.");
+        }
+      } catch (err) {
+        setError("An error occurred. Please try again later.");
+      }
+  };
+
+  async function GETevent_data() {
+    try {
+      const response = await fetch("/api/events/event-data", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data_from_db = await response.json();
+
+      console.log(data_from_db.events);
+  
+      if (response.ok) {
+        // Directly set the events array from the response
+        setEvents(data_from_db.events);
+      } else {
+        console.log("Bad response");
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log the error for debugging
+    }
+
+  }
+
+  async function GETdata()
+  {
+    if(!eventID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/events/events-edit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({eventID}),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        
+        setEventName(data.event.eventName);
+        setUrgency(data.event.urgency);
+        setAddress(data.event.address);
+        setCity(data.event.city);
+        setState(data.event.state);
+        setZipCode(data.event.zipCode);
+        setDescription(data.event.description);
+        setSkills(data.event.skills);
+        setEventDate(data.event.eventDate);  // Fix here
+        setSelectedDay(data.event.selectedDay);  // Fix here
+        
+        
+      } else {
+        setEventName("");
+        setUrgency("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setDescription("");
+        setSkills([""]);
+        setEventDate("");
+        setSelectedDay([""]);
+        //router.push(`/`);
+      }
+    } catch (err) {
+        setEventName("");
+        setUrgency("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setDescription("");
+        setSkills([""]);
+        setEventDate("");
+        setSelectedDay([""]);
+      //router.push(`/`);
+    }
+  };
+
+  async function PATCHdata()
+  {
+    console.log(`this is the userID: ${eventID}`)
+    if(!eventID)return; //guard case for rendering
+    try {
+      // Call the login API
+
+      const response = await fetch("/api/events/events-edit", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventID,
+          eventName,
+          urgency,
+          address,
+          city,
+          state,
+          zipCode,
+          description,
+          skills,
+          eventDate,
+          selectedDay
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to user events page on successful login
+        window.location.reload();  // This will refresh the current page
+      } else {
+    
+      }
+    } catch (err) {
+ 
+      //router.push(`/`);
+    }
+  };
+
+  
+  //useEffect() empty dependency array
+  useEffect(() => {
+    if (eventID) {
+      console.log("Event ID for edit page:", eventID); // Debugging
+      GETdata();
+    }
+  }, [eventID]);
+  //GETdata(userID);
+  console.log("event name", eventName);
+
+  useEffect(() => {
+    GETevent_data();
+    console.log(events); // This will print the events state to check if it's being populated
+  }, []);
 
   useEffect(() => {
     // Check if the user is logged in and get the user role
@@ -49,27 +270,22 @@ export default function Events() {
     router.push("/login");
   };
 
-  const handlePageChangeOnClick = (page, eventNum) => {
+  const handlePageChangeOnClick = (page, eventID) => {
     if (page === "Events") {
       setCurrentPage("Events");
     } else if (page === "EditEvent") {
       setCurrentPage("EditEvent");
-      setSelectedEventNum(eventNum);
+      setSelectedEventNum(eventID);
+      setEventID(eventID);
     } else if (page === "CreateEvent") {
       setCurrentPage("CreateEvent");
-      setSelectedEventNum(eventNum);
+      setSelectedEventNum(eventID);
     }
   };
 
   const handleGoBackOnClick = () => {
+    window.location.reload();  // This will refresh the current p
     setCurrentPage("Events");
-  };
-
-  const handleSaveClick = () => {
-    setIsClicked(true);
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 1000);
   };
 
   const handleSkillSelect = (skill) => {
@@ -84,6 +300,45 @@ export default function Events() {
     setSkills(skills.filter((s) => s !== skill));
   };
 
+
+  const handleDateChanges = (e) => {
+    setEventDate(e.target.value);
+
+    const date = new Date(e.target.value);
+    const day = date.getDay();
+    let stringDay;
+    console.log(`this is the day: ${day}`);
+    switch(day) {
+      case 0:
+        stringDay = "Monday";
+        break;
+      case 1:
+        stringDay = "Tuesday";
+        break;
+      case 2:
+        stringDay = "Wednesday";
+        break;
+      case 3:
+        stringDay = "Thursday";
+        break;
+      case 4:
+        stringDay = "Friday";
+        break;
+      case 5:
+        stringDay = "Saturday";
+        break;
+      case 6:
+        stringDay = "Sunday";
+        break;
+      default:
+        stringDay = "error";
+        break;
+    }
+    setSelectedDay(stringDay);
+  };
+
+ 
+
   return (
     <div style={styles.container}>
       <AdminNavbar currentPage="Events" handleLogout={handleLogout} />
@@ -91,26 +346,21 @@ export default function Events() {
       <div style={styles.eventsContainer}>
         {currentPage === "Events" && (
           <>
-            <h1 style={styles.title}>Event Management</h1>
-            <div style={styles.eventsGrid}>
-              {EventsArray.map((event) => (
-                <div style={styles.eventWrapper} key={event.eventNum}>
-                  <div style={styles.eventBox}></div>
-                  <div style={styles.eventInfo}>
-                    <p>Event {event.eventNum}</p>
-                    <button
-                      style={styles.EditButton}
-                      onClick={() =>
-                        handlePageChangeOnClick("EditEvent", event.eventNum)
-                      }
-                    >
-                      Edit
-                    </button>
-                  </div>
+          <h1 style={styles.title}>Event Management</h1>
+          <div style={styles.eventsGrid}>
+            {events.map((event) => (
+              <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
+                <div style={styles.eventBox}></div>
+                <div style={styles.eventInfo}>
+                  <p>{event.eventName}</p>
+                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventID)}>
+                    Edit
+                  </button>
                 </div>
-              ))}
-            </div>
-            <div>
+              </div>
+            ))}
+          </div>
+          <div>
               <button
                 style={styles.createButton}
                 onClick={() =>
@@ -125,6 +375,8 @@ export default function Events() {
         {currentPage === "EditEvent" && (
           <>
             <h1 style={styles.title}>Edit Event {selectedEventNum}</h1>
+            <form onSubmit={handleAfter} style={styles.form}>
+            {error && <p style={styles.error}>{error}</p>}
             <div style={styles.rsvpContainer}>
               <div style={styles.rsvpBox}></div>
               <div style={styles.row}>
@@ -133,7 +385,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={eventName}
-                    onChange={(e) => setEventName(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      ); setEventName(e.target.value)}}
                     placeholder="Enter the event name"
                     required
                     style={styles.input}
@@ -179,7 +436,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setAddress(e.target.value)}}
                     placeholder="Enter the address"
                     required
                     style={styles.input}
@@ -193,7 +455,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setCity(e.target.value)}}
                     placeholder="Enter the city"
                     required
                     style={styles.input}
@@ -265,7 +532,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only numeric values
+                      const sanitizedValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );setZipCode(e.target.value)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}
@@ -279,15 +551,17 @@ export default function Events() {
                   <input
                     type="text"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only alphabetic characters and spaces
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );setDescription(e.target.value)}}
                     placeholder="Enter a description for the event"
                     required
                     style={styles.input}
                   />
                 </div>
-              </div>
-
-              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
@@ -342,6 +616,9 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Date:</label>{" "}
                   {/* Add this line */}
@@ -350,11 +627,15 @@ export default function Events() {
                       type="date"
                       placeholder="Event Date"
                       value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
+                      onChange={handleDateChanges}
                       required
                       style={styles.dateBox}
                     />
                   </div>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Day</label>
+                  <p style={styles.eventDay}>{selectedDay}</p>
                 </div>
               </div>
 
@@ -362,17 +643,20 @@ export default function Events() {
                 <button style={styles.goBack} onClick={handleGoBackOnClick}>
                   Cancel
                 </button>
-                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                <button type="submit" style={styles.goBack}>
                   Save Changes
                 </button>
               </div>
             </div>
+            </form>
           </>
         )}
 
         {currentPage === "CreateEvent" && (
           <>
             <h1 style={styles.title}>Create Event {selectedEventNum}</h1>
+            <form onSubmit={handleNext} style={styles.form}>
+            {error && <p style={styles.error}>{error}</p>}
             <div style={styles.rsvpContainer}>
               <div style={styles.rsvpBox}></div>
               <div style={styles.row}>
@@ -381,7 +665,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={eventName}
-                    onChange={(e) => setEventName(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setEventName(e.target.value)}}
                     placeholder="Enter the event name"
                     required
                     style={styles.input}
@@ -427,7 +715,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setAddress(e.target.value)}}
                     placeholder="Enter the address"
                     required
                     style={styles.input}
@@ -441,7 +733,11 @@ export default function Events() {
                   <input
                     type="text"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setCity(e.target.value)}}
                     placeholder="Enter the city"
                     required
                     style={styles.input}
@@ -513,7 +809,12 @@ export default function Events() {
                   <input
                     type="text"
                     value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => {
+                      // Allow only numeric values
+                      const sanitizedValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );setZipCode(e.target.value)}}
                     placeholder="Enter the zip code"
                     required
                     style={styles.input}
@@ -527,15 +828,16 @@ export default function Events() {
                   <input
                     type="text"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => {
+                      const sanitizedValue = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.-]/g,
+                        ""
+                      );setDescription(e.target.value)}}
                     placeholder="Enter a description for the event"
                     required
                     style={styles.input}
                   />
                 </div>
-              </div>
-
-              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Required Skills</label>
                   <div
@@ -590,6 +892,9 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div style={styles.row}>
                 <div style={styles.inputGroup}>
                   <label style={styles.label}>Date:</label>{" "}
                   {/* Add this line */}
@@ -598,11 +903,15 @@ export default function Events() {
                       type="date"
                       placeholder="Event Date"
                       value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
+                      onChange={handleDateChanges}
                       required
                       style={styles.dateBox}
                     />
                   </div>
+                </div>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Day</label>
+                  <p style={styles.eventDay}>{selectedDay}</p>
                 </div>
               </div>
 
@@ -610,11 +919,12 @@ export default function Events() {
                 <button style={styles.goBack} onClick={handleGoBackOnClick}>
                   Cancel
                 </button>
-                <button style={styles.goBack} onClick={handleGoBackOnClick}>
+                <button type="submit" style={styles.goBack}>
                   Create Event
                 </button>
               </div>
             </div>
+            </form>
           </>
         )}
       </div>
@@ -802,6 +1112,17 @@ const styles = {
     color: "#333",
     boxSizing: "border-box",
     fontSize: 20,
+  },
+  eventDay: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    padding: "10px",
+    backgroundColor: "#fff",
+    color: "#333",
+    boxSizing: "border-box",
+    fontSize: 30,
+    fontWeight: "bold",
   },
   eventsContainer: {
     marginTop: "10vh",
@@ -1104,5 +1425,13 @@ const styles = {
     border: "none", // Optional: Remove default border
     borderRadius: "8px",
     cursor: "pointer", // Optional: Change cursor to pointer on hover
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  error: {
+    color: "#d9534f",
+    marginBottom: "10px",
   },
 };
