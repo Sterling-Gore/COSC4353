@@ -10,7 +10,7 @@ export default function handler(req, res) {
       if (event) {
         // get the user data
         return res.status(200).json({ message: "Landing", event });
-      } else if (!user) {
+      } else if (!event) {
         return res.status(401).json({ error: "Event does not exist" });
       } else {
         return res.status(401).json({ error: "Event is not there" });
