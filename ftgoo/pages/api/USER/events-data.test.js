@@ -1,71 +1,75 @@
 import handler from './events-data'; // Adjust the path accordingly
-import { getEvents } from "../mockDatabase"; // Ensure this is the correct path
-import { createMocks } from "node-mocks-http";
-
+import { getEvents } from "../mockDatabase";
+// Mock the getEvents function
 jest.mock("../mockDatabase", () => ({
   getEvents: jest.fn(),
 }));
 
-describe("Events API Handler", () => {
-  it("should return events with a GET request", async () => {
+describe("API Handler - GET Events", () => {
+  let req, res;
+
+  // Set up a mock response object
+  beforeEach(() => {
+    req = { method: "GET" };
+    res = {
+      status: jest.fn(() => res),
+      json: jest.fn(),
+    };
+  });
+
+  it("should return 200 and events if events exist", () => {
+    // Mock data
     const mockEvents = [
       {
         eventID: 1,
-        eventName: "John's Food Shelter",
+        eventName: "Event 1",
         urgency: "High",
-        address: "123 Pine Avenue TX",
+        address: "Test Address",
         city: "Houston",
         state: "TX",
-        zipCode: "12345",
-        description: "Free food for the homeless, we urgently need volunteers to hand out the food.",
-        skills: ["Health"],
-        eventDate: "2024-10-18",
-        day: "Friday",
+        zipCode: "77001",
+        skills: ["Education"],
+        description: "Test event description",
+        eventDate: "2024-10-19",
+        day: "Saturday",
       },
     ];
 
-    // Mock the implementation of getEvents
+    // Mock getEvents to return events
     getEvents.mockReturnValue(mockEvents);
 
-    // Create a mock request and response
-    const { req, res } = createMocks({
-      method: "GET",
-    });
-
     // Call the handler
-    await handler(req, res);
+    handler(req, res);
 
-    // Check the response status and data
-    expect(res._getStatusCode()).toBe(200);
-    
-    // Parse the received data before comparing
-    const receivedData = JSON.parse(res._getData());
-    expect(receivedData).toEqual({ message: "Landing", events: mockEvents });
+    // Assert status and response
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Landing",
+      events: mockEvents,
+    });
   });
 
-  it("should return 401 if no events are found", async () => {
+  it("should return 401 if no events exist", () => {
     // Mock getEvents to return an empty array
     getEvents.mockReturnValue([]);
-  
-    const { req, res } = createMocks({
-      method: "GET",
-    });
-  
-    await handler(req, res);
-  
-    expect(res._getStatusCode()).toBe(401);
-    // Parse the response data to compare as an object
-    expect(JSON.parse(res._getData())).toEqual({ error: "volunteers do not exist" });
+
+    // Call the handler
+    handler(req, res);
+
+    // Assert status and error message
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ error: "volunteers do not exist" });
   });
-  
-  it("should return 405 for methods other than GET", async () => {
-    const { req, res } = createMocks({
-      method: "POST", // Example of a different method
-    });
 
-    await handler(req, res);
+  it("should return 405 if method is not GET", () => {
+    // Change the method to POST
+    req.method = "POST";
 
-    expect(res._getStatusCode()).toBe(405);
-    expect(JSON.parse(res._getData())).toEqual({ error: "Method Not Allowed" });
+    // Call the handler
+    handler(req, res);
+
+    // Assert status and error message
+    expect(res.status).toHaveBeenCalledWith(405);
+    expect(res.json).toHaveBeenCalledWith({ error: "Method Not Allowed" });
   });
 });
