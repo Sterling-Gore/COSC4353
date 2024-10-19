@@ -138,4 +138,34 @@ describe("addReminder", () => {
     // Check if no notifications were added
     expect(mockUser.notifications).toHaveLength(1); // Should remain the same
   });
+
+  it("should handle errors in addReminder", async () => {
+    addReminder.mockImplementation(() => {
+      throw new Error("Failed to add reminder");
+    });
+
+    const req = { method: "PATCH", body: { userID: "1" } };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: "Failed to add reminder" });
+  });
+
+  it("should return 405 for unsupported methods", async () => {
+    const req = { method: "GET", body: {} }; // Unsupported method
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(405);
+    expect(res.json).toHaveBeenCalledWith({ error: "Method Not Allowed" });
+  });
 });
