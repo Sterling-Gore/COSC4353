@@ -160,7 +160,7 @@ export default function Events() {
         setDescription(data.event.description);
         setSkills(data.event.skills);
         setEventDate(data.event.eventDate);  // Fix here
-        setSelectedDay(data.event.selectedDay);  // Fix here
+        setSelectedDay(data.event.day);  // Fix here
         
         
       } else {
