@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const { data, error } = await supabase
+      const registrationInfo = await supabase
         .from('users')
         .insert([
           {
@@ -51,7 +51,9 @@ export default async function handler(req, res) {
         ]);
 
       if (error) throw error;
-
+      
+      const { data, error } = await registrationInfo;
+      console.log(data);
       // Send the created user ID and email back as a response
       return res.status(200).json({ id: data[0].id, email: data[0].email });
     } catch (err) {
