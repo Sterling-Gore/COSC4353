@@ -22,7 +22,7 @@ export default function Login() {
     try {
       // Call the login API
       const response = await fetch("/api/auth/login", {
-        method: "POST",
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },

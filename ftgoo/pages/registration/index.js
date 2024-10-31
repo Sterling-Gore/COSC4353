@@ -2,11 +2,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { createClient } from '@supabase/supabase-js';
 
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL; // Your Supabase URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; // Your Supabase service role key
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 export default function Registration() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -30,7 +25,7 @@ export default function Registration() {
 
   const handleNext = async (e) => {
     e.preventDefault();
-    
+  
     if (step === 1) {
       if (!email || !password) {
         setError("Please fill in all fields");
@@ -54,49 +49,47 @@ export default function Registration() {
       }
   
       try {
-        // Insert user into Supabase directly
-        const { data, error } = await supabase
-          .from('users')
-          .insert([
-            {
-              firstname,
-              lastname,
-              email,
-              password, // Remember to hash passwords before storing!
-              address1,
-              address2,
-              city,
-              state,
-              zipcode,
-              preferences: preferences || null, // Default to null if preferences is not provided
-              role: "user",
-              skills: skills.length > 0 ? skills : [], // Default to an empty array if skills is empty
-              availability: availability || [], // Default to an empty array for availability
-              isloggedin: false,
-              rsvpevents: [],
-              oldevents: [],
-              notifications: [],
-            },
-          ]);
+        // Call the API endpoint
+        const response = await fetch("/api/auth/registration", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstname,
+            lastname,
+            email,
+            password, // Ensure hashing is done server-side if needed
+            address1,
+            address2,
+            city,
+            state,
+            zipcode,
+            preferences: preferences || null,
+            skills: skills.length > 0 ? skills : [],
+            availability: availability || [],
+          }),
+        });
   
-        if (error) {
-          throw error; // Handle error if insertion fails
+        const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.error);
         }
   
-        // Success
-        console.log('User registered successfully:', data);
-        // Save user details in local storage before redirecting
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userID", data[0].id); // Adjust based on your database schema
-        localStorage.setItem("userRole", "user"); // Example role
+        console.log('User registered successfully:', result);
   
-        // Redirect to user events page on successful registration
-        router.push(`/user/${data[0].id}/events`);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userID", result.id);
+        localStorage.setItem("userRole", "user");
+  
+        router.push(`/user/${result.id}/events`);
       } catch (err) {
-        setError("A user with this account has already been made!");
+        setError(err.message || "An unexpected error occured. Please try again.");
       }
     }
   };
+  
 
   const handleSkillSelect = (skill) => {
     setSkills((prevSkills) =>

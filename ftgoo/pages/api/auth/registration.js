@@ -1,95 +1,64 @@
-// pages/api/auth/registration.js
-import { getUsers, addUser, findUserByEmail } from "../mockDatabase";
+import { supabase } from '../../../supabaseClient';
+import bcrypt from 'bcrypt';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     const {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
-      password,
+      password, // Make sure this is hashed before storing
       address1,
       address2,
       city,
       state,
-      zipCode,
-      skills,
+      zipcode,
       preferences,
+      skills,
       availability,
     } = req.body;
 
-    // Check if user already exists before proceeding to step 2
-    const existingUser = findUserByEmail(email);
-    if (existingUser) {
-      console.log("User with this email already exists:", email);
-      return res.status(400).json({
-        error:
-          "User with this email already exists. Please use a different email.",
-      });
+    // Ensure required fields are present
+    if (!firstname || !lastname || !email || !password || !address1 || !city || !state || !zipcode) {
+      return res.status(400).json({ error: "Please fill in all required fields" });
     }
 
-    // Basic validation
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !password ||
-      !address1 ||
-      !city ||
-      !state ||
-      !zipCode ||
-      !skills ||
-      !preferences ||
-      !availability
-    ) {
-      console.log("Validation failed: Missing fields");
-      return res.status(400).json({ error: "All fields are required" });
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const { data, error } = await supabase
+        .from('users')
+        .insert([
+          {
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword, // hash before storing
+            address1,
+            address2,
+            city,
+            state,
+            zipcode,
+            preferences: preferences || null,
+            role: "user",
+            skills: skills.length > 0 ? skills : [],
+            availability: availability || [],
+            isloggedin: false,
+            rsvpevents: [],
+            oldevents: [],
+            notifications: [],
+          },
+        ]);
+
+      if (error) throw error;
+
+      // Send the created user ID and email back as a response
+      return res.status(200).json({ id: data[0].id, email: data[0].email });
+    } catch (err) {
+      return res.status(500).json({ error: "A user with this account has already been made!" });
     }
-
-    if (password.length < 6) {
-      console.log("Password validation failed");
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 6 characters" });
-    }
-
-    // Generate a unique userID
-    const users = getUsers();
-    const newUserID = users.length > 0 ? users[users.length - 1].userID + 1 : 1;
-
-    // Add new user with complete profile details, including role as 'user'
-    const newUser = {
-      userID: newUserID,
-      firstName,
-      lastName,
-      email,
-      password,
-      address1,
-      address2,
-      city,
-      state,
-      zipCode,
-      skills,
-      preferences,
-      availability,
-      role: "user", // Add the role as 'user'
-      isLoggedIn: false,
-      rsvpEvents: [],
-      oldEvents: [],
-      notifications: [],
-    };
-
-    console.log("Creating new user:", newUser);
-    addUser(newUser);
-
-    // Set isLoggedIn to true to indicate that the user has just registered
-    newUser.isLoggedIn = true;
-
-    return res
-      .status(201)
-      .json({ message: "Registration successful", user: newUser });
+  } else {
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
-  console.log("Method not allowed");
-  return res.status(405).json({ error: "Method Not Allowed" });
 }
