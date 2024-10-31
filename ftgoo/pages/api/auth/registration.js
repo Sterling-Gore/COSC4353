@@ -58,7 +58,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "A user with this account has already been made!" });
     }
   } else {
+    console.log(`Received ${req.method} request, expected POST.`);
     res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
 }
