@@ -366,5 +366,30 @@
         "status": "This event is occurring soon, make sure to arrive by the event's time!"
       }
     ]
+  },
+  {
+    "userID": 12,
+    "firstName": "testing",
+    "lastName": "testing",
+    "email": "jasontesting@gmail.com",
+    "password": "123456789",
+    "address1": "testing",
+    "address2": "testing",
+    "city": "testing",
+    "state": "AK",
+    "zipCode": "11111",
+    "skills": [
+      "Health",
+      "Education"
+    ],
+    "preferences": "blah!",
+    "availability": [
+      "Monday"
+    ],
+    "role": "user",
+    "isLoggedIn": false,
+    "rsvpEvents": [],
+    "oldEvents": [],
+    "notifications": []
   }
 ]

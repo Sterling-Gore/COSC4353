@@ -1,17 +1,23 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { createClient } from '@supabase/supabase-js';
+
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL; // Your Supabase URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; // Your Supabase service role key
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Registration() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState(""); 
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
+  const [zipcode, setZipCode] = useState("");
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
   const [availability, setAvailability] = useState([]);
@@ -24,7 +30,7 @@ export default function Registration() {
 
   const handleNext = async (e) => {
     e.preventDefault();
-
+    
     if (step === 1) {
       if (!email || !password) {
         setError("Please fill in all fields");
@@ -33,12 +39,12 @@ export default function Registration() {
       setStep(2);
     } else {
       if (
-        !firstName ||
-        !lastName ||
+        !firstname ||
+        !lastname ||
         !address1 ||
         !city ||
         !state ||
-        !zipCode ||
+        !zipcode ||
         !skills.length ||
         !preferences ||
         !availability.length
@@ -46,46 +52,48 @@ export default function Registration() {
         setError("Please fill in all fields");
         return;
       }
-
+  
       try {
-        // Call the registration API
-        const response = await fetch("/api/auth/registration", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            email,
-            password,
-            address1,
-            address2,
-            city,
-            state,
-            zipCode,
-            skills,
-            preferences,
-            availability,
-            role: "user",
-          }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          // Save user details in local storage before redirecting
-          localStorage.setItem("userEmail", email);
-          localStorage.setItem("userID", data.user.userID);
-          localStorage.setItem("userRole", data.user.role);
-
-          // Redirect to user events page on successful registration
-          router.push(`/user/${data.user.userID}/events`);
-        } else {
-          // Handle registration errors
-          setError(data.error || "Registration failed. Please try again.");
+        // Insert user into Supabase directly
+        const { data, error } = await supabase
+          .from('users')
+          .insert([
+            {
+              firstname,
+              lastname,
+              email,
+              password, // Remember to hash passwords before storing!
+              address1,
+              address2,
+              city,
+              state,
+              zipcode,
+              preferences: preferences || null, // Default to null if preferences is not provided
+              role: "user",
+              skills: skills.length > 0 ? skills : [], // Default to an empty array if skills is empty
+              availability: availability || [], // Default to an empty array for availability
+              isloggedin: false,
+              rsvpevents: [],
+              oldevents: [],
+              notifications: [],
+            },
+          ]);
+  
+        if (error) {
+          throw error; // Handle error if insertion fails
         }
+  
+        // Success
+        console.log('User registered successfully:', data);
+        // Save user details in local storage before redirecting
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userID", data[0].id); // Adjust based on your database schema
+        localStorage.setItem("userRole", "user"); // Example role
+  
+        // Redirect to user events page on successful registration
+        router.push(`/user/${data[0].id}/events`);
       } catch (err) {
-        setError("An error occurred. Please try again later.");
+        setError("A user with this account has already been made!");
       }
     }
   };
@@ -153,7 +161,7 @@ export default function Registration() {
                   <label style={styles.label}>First Name</label>
                   <input
                     type="text"
-                    value={firstName}
+                    value={firstname}
                     onChange={(e) => {
                       // Allow only alphabetic characters and spaces
                       const sanitizedValue = e.target.value.replace(
@@ -171,7 +179,7 @@ export default function Registration() {
                   <label style={styles.label}>Last Name</label>
                   <input
                     type="text"
-                    value={lastName}
+                    value={lastname}
                     onChange={(e) => {
                       const sanitizedValue = e.target.value.replace(
                         /[^a-zA-Z\s]/g,
@@ -304,7 +312,7 @@ export default function Registration() {
                   <label style={styles.label}>Zip Code</label>
                   <input
                     type="text"
-                    value={zipCode}
+                    value={zipcode}
                     onChange={(e) => {
                       // Allow only numeric values
                       const sanitizedValue = e.target.value.replace(
