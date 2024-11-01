@@ -46,6 +46,7 @@ export default function Events() {
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
+      console.log(userID);
 
       const response = await fetch("/api/USER/user-data", {
         method: "POST",
@@ -59,21 +60,21 @@ export default function Events() {
       if (response.ok) {
         // Redirect to user events page on successful login
         
-        setUserEmail(data.user.email);
-        setFirstName(data.user.firstName);
-        setLastName(data.user.lastName);
-        setAddress1(data.user.address1);
-        setAddress2(data.user.address2);
-        setCity(data.user.city);
-        setState(data.user.state);
-        setZipCode(data.user.zipCode);
-        setSkills(data.user.skills);
-        setAvailability(data.user.availability);
-        setPreferences(data.user.preferences);
+        setUserEmail(data.email);
+        setFirstName(data.firstname);
+        setLastName(data.lastname);
+        setAddress1(data.address1);
+        setAddress2(data.address2);
+        setCity(data.city);
+        setState(data.state);
+        setZipCode(data.zipcode);
+        setSkills(data.skills);
+        setAvailability(data.availability);
+        setPreferences(data.preferences);
         
         // Check if rsvpEvents and events are available
 
-        const editedMyEvents = data.user.rsvpEvents.map((eventID) => {
+        /*const editedMyEvents = data.rsvpevents.map((eventID) => {
           const matchedEvent = events.find(event => event.eventID === eventID);
           if (matchedEvent) {
             return {
@@ -117,7 +118,7 @@ export default function Events() {
     
         // Set the state with the filtered events
         setMyEvents([...filteredMyEvents]);
-        setAllEvents([...editedAllEvents]);
+        setAllEvents([...editedAllEvents]);*/
       } else {
         setUserEmail("");
         setFirstName("");

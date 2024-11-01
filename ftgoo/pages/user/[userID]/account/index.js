@@ -40,6 +40,7 @@ export default function Account() {
     try {
       // Call the login API
 
+      console.log(userID);
       const response = await fetch("/api/USER/user-data", {
         method: "POST",
         headers: {
@@ -51,19 +52,18 @@ export default function Account() {
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-        
-        setUserEmail(data.user.email);
-        setFirstName(data.user.firstName);
-        setLastName(data.user.lastName);
-        setAddress1(data.user.address1);
-        setAddress2(data.user.address2);
-        setCity(data.user.city);
-        setState(data.user.state);
-        setZipCode(data.user.zipCode);
-        setSkills(data.user.skills);
-        setAvailability(data.user.availability);
-        setPreferences(data.user.preferences);
-        
+        console.log(data);
+        setUserEmail(data.email);
+        setFirstName(data.firstname);
+        setLastName(data.lastname);
+        setAddress1(data.address1);
+        setAddress2(data.address2);
+        setCity(data.city);
+        setState(data.state);
+        setZipCode(data.zipcode);
+        setSkills(data.skills);
+        setAvailability(data.availability);
+        setPreferences(data.preferences);
         
       } else {
         setUserEmail("");
