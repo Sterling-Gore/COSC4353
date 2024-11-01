@@ -151,7 +151,7 @@ export default function Events() {
   
   async function GETevent_data() {
     try {
-      const response = await fetch("/api/USER/events-data", {
+      const response = await fetch("/api/events/event-data", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -162,6 +162,7 @@ export default function Events() {
   
       if (response.ok) {
         // Directly set the events array from the response
+        console.log(`EVENTS: ${data_from_db.events}`);
         setEvents(data_from_db.events);
       } else {
         console.log("Bad response");
@@ -318,7 +319,7 @@ export default function Events() {
         )}
         {currentPage === "allEvents" && (
           <div style={styles.eventsGrid}>
-            {allEvents.map((event) => (
+            {events.map((event) => (
               <div key={event.eventid} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
