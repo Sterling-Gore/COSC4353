@@ -148,18 +148,19 @@ export default function Events() {
       });
 
       const data = await response.json();
+      console.log(`here is the data ${data}`);
       if (response.ok) {
         // Redirect to user events page on successful login
         
-        setEventName(data.event.eventName);
+        setEventName(data.event.eventname);
         setUrgency(data.event.urgency);
         setAddress(data.event.address);
         setCity(data.event.city);
         setState(data.event.state);
-        setZipCode(data.event.zipCode);
+        setZipCode(data.event.zipcode);
         setDescription(data.event.description);
         setSkills(data.event.skills);
-        setEventDate(data.event.eventDate);  // Fix here
+        setEventDate(data.event.eventdate);  // Fix here
         setSelectedDay(data.event.day);  // Fix here
         
         

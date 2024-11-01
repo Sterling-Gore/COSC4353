@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Navbar from "@/components/navbar";
-import { createClient } from '@supabase/supabase-js';
+//import { createClient } from '@supabase/supabase-js';
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL; // Your Supabase URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; // Your Supabase service role key
-const supabase = createClient(supabaseUrl, supabaseKey);
+//const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Events() {
   const router = useRouter();
@@ -319,10 +319,10 @@ export default function Events() {
         {currentPage === "allEvents" && (
           <div style={styles.eventsGrid}>
             {allEvents.map((event) => (
-              <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
+              <div key={event.eventid} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
-                  <p>{event.eventName}</p>
+                  <p>{event.eventname}</p>
                   <button style={styles.rsvpButton} onClick={() => handleRSVPOnClick(event)}>
                     Click here to RSVP
                   </button>
