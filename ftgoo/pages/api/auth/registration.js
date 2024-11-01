@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const registrationInfo = await supabase
+      const { data, error } = await supabase
         .from('users')
         .insert([
           {
@@ -47,16 +47,19 @@ export default async function handler(req, res) {
             rsvpevents: [],
             oldevents: [],
             notifications: [],
-          },
-        ]);
-
+          }]).select()
+      
       if (error) throw error;
       
-      const { data, error } = await registrationInfo;
-      console.log(data);
+      // data = await supabase
+      //   .from('users')
+      //   .select()
+      //   .eq('email', 'john@gmail.com');
+
       // Send the created user ID and email back as a response
-      return res.status(200).json({ id: data[0].id, email: data[0].email });
+      return res.status(200).json({ id: data[0].userid, email: data[0].email });
     } catch (err) {
+      console.log("ERR", err)
       return res.status(500).json({ error: "A user with this account has already been made!" });
     }
   } else {

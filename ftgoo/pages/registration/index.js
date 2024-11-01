@@ -11,7 +11,7 @@ export default function Registration() {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("AL");
   const [zipcode, setZipCode] = useState("");
   const [skills, setSkills] = useState([]);
   const [preferences, setPreferences] = useState("");
@@ -72,6 +72,7 @@ export default function Registration() {
         });
   
         const result = await response.json();
+        console.log(result)
   
         if (!response.ok) {
           throw new Error(result.error);
