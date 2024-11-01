@@ -53,6 +53,42 @@ export default async function handler(req, res) {
         eventDate,
         selectedDay
        } = req.body;
+
+       try {
+        const {data, error} = await supabase
+        .from('events')
+        .update([
+          {
+          "eventname" : eventName,
+          "urgency" : urgency,
+          "address" : address,
+          "city" : city,
+          "state" : state,
+          "zipcode" : zipCode,
+          "description" : description,
+          "skills" : skills,
+          "eventdate" : eventDate,
+          "day" : selectedDay,
+            
+          }
+        ])
+        .eq("eventid", eventID)
+        .select()
+        .single()
+
+        if (error) throw error;
+
+        if (data) {
+          // get the user data
+          return res.status(200).json({ message: "Landing", event: data });
+        } else if (!data) {
+          return res.status(401).json({ error: "Event does not exist" });
+        } else {
+          return res.status(401).json({ error: "Event is not there" });
+        }
+      } catch(err) {
+        return res.status(500).json({ error: "Couldnt find event" });
+      }
       
       //console.log(`this is the body: ${JSON.stringify(req.body)} `);
       const event = findEventByID(eventID);
