@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { createClient } from '@supabase/supabase-js';
 
 export default function Registration() {
   const [step, setStep] = useState(1);
@@ -59,7 +58,7 @@ export default function Registration() {
             firstname,
             lastname,
             email,
-            password, // Ensure hashing is done server-side if needed
+            password,
             address1,
             address2,
             city,
