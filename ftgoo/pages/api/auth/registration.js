@@ -1,5 +1,4 @@
 import { supabase } from '../../../supabaseClient';
-import bcrypt from 'bcrypt';
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -7,7 +6,7 @@ export default async function handler(req, res) {
       firstname,
       lastname,
       email,
-      password, // Make sure this is hashed before storing
+      password,
       address1,
       address2,
       city,
@@ -24,8 +23,6 @@ export default async function handler(req, res) {
     }
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-
       const { data, error } = await supabase
         .from('users')
         .insert([
@@ -33,7 +30,7 @@ export default async function handler(req, res) {
             firstname,
             lastname,
             email,
-            password: hashedPassword, // hash before storing
+            password, // hash before storing
             address1,
             address2,
             city,
@@ -50,12 +47,7 @@ export default async function handler(req, res) {
           }]).select()
       
       if (error) throw error;
-      
-      // data = await supabase
-      //   .from('users')
-      //   .select()
-      //   .eq('email', 'john@gmail.com');
-        
+
       console.log(data);
       // Send the created user ID and email back as a response
       return res.status(200).json({ id: data[0].userid, email: data[0].email });

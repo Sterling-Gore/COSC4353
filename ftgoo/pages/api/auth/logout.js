@@ -1,20 +1,31 @@
 // pages/api/auth/logout.js
-import { findUserByEmail } from "../mockDatabase";
+import { supabase } from '../../../supabaseClient';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     const { email } = req.body;
 
-    // Find user by email and log them out
-    const user = findUserByEmail(email);
-    if (user && user.isLoggedIn) {
-      user.isLoggedIn = false;
-      return res.status(200).json({ message: "Logout successful" });
-    } else {
-      return res
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('isloggedin')
+        .eq('email', email)
+        .single();
+      
+      if (error) throw error;
+      
+      if (data && data.isloggedin) {
+        // Authentication successful
+        data.isloggedin = false;
+        return res.status(200).json({ message: "Logout successful" });
+      } else {
+        return res
         .status(400)
         .json({ error: "User not logged in or does not exist" });
+      }
+    }
+    catch{
+      return res.status(405).json({ error: "Method Not Allowed" });
     }
   }
-  return res.status(405).json({ error: "Method Not Allowed" });
 }

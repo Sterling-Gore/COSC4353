@@ -1,5 +1,4 @@
 import { supabase } from '../../../supabaseClient';
-import bcrypt from 'bcrypt';
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
       if (error) throw error;
       
       
-      if (data && await bcrypt.compare(password, data.password)) {
+      if (data && data.password == password) {
         // Authentication successful
         return res.status(200).json({ id: data.userid, email: data.email, usertype: data.role });
       } else {

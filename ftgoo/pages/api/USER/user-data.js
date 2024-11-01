@@ -1,64 +1,38 @@
+import { supabase } from '../../../supabaseClient';
+import bcrypt from 'bcrypt';
 
-import { findUserByID, updateUser } from "../mockDatabase";
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    const {
+      userid,
+    } = req.body;
 
-export default function handler(req, res) {
-  //console.log(`this is the method: ${req.method} `);
-    if (req.method === "POST") {
-      const { userID } = req.body;
-      // Mock user data for authentication
-      //console.log(`this is the userID: ${userID} `);
-      const user = findUserByID(userID);
-    
-  
-      if (user) {
-        // get the user data
-        return res.status(200).json({ message: "Landing", user });
-      } else if (!user) {
-        return res.status(401).json({ error: "User does not exist" });
+    // Ensure required fields are present
+    if (!userid) {
+      return res.status(400).json({ error: "No userID is found." });
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('email, firstname, lastname, role')
+        .eq('userid', userid)
+        .single();
+      
+      if (error) throw error;
+       
+      if (data){
+        return res.status(200).json({ id: data.userid, email: data.email, usertype: data.role });
       } else {
-        return res.status(401).json({ error: "User is not logged in" });
+        // Invalid email or password
+        return res.status(401).json({ error: "The userID does not exist." });
       }
+    } catch (err) {
+      return res.status(500).json({ error: "An error occurred getting user data." });
     }
-    else if(req.method === "PATCH")
-    {
-      const { 
-      userID,
-      firstName,
-      lastName,
-      address1,
-      address2,
-      city,
-      state,
-      zipCode,
-      skills,
-      availability,
-      preferences,
-       } = req.body;
-      
-      //console.log(`this is the body: ${JSON.stringify(req.body)} `);
-      const user = findUserByID(userID);
-
-      if(user)
-      {
-        user.firstName = firstName;
-        user.lastName = lastName;
-        user.address1 = address1;
-        user.address2 = address2;
-        user.city = city;
-        user.state = state;
-        user.zipCode = zipCode;
-        user.skills = skills;
-        user.availability = availability;
-        user.preferences = preferences;
-        console.log(user);
-
-        updateUser(user);
-        return res.status(200).json({ message: "Landing", user})
-      }
-      else{
-        return res.status(401).json({ error: "User does not exist" });
-      }
-      
-    }
-    return res.status(405).json({ error: "Method Not Allowed" });
+  } else {
+    console.log(`Received ${req.method} request, expected POST.`);
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
+}

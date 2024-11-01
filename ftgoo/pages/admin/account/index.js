@@ -42,16 +42,14 @@ export default function ProfileManagement() {
       });
 
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         // Redirect to user events page on successful login
-        
-        setEmail(data.user.email);
-        setFirstName(data.user.firstName);
-        setLastName(data.user.lastName);
-        
-        
+        setEmail(data.email);
+        setFirstName(data.firstname);
+        setLastName(data.lastname);
       } else {
-        setmail("");
+        setEmail("");
         setFirstName("");
         setLastName("");
       }
@@ -59,7 +57,6 @@ export default function ProfileManagement() {
       setEmail("");
       setFirstName("");
       setLastName("");
-      //router.push(`/`);
     }
   };
 

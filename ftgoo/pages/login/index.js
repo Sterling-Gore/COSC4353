@@ -36,11 +36,9 @@ export default function Login() {
         // Save user details in localStorage and redirect based on role
         localStorage.setItem("userEmail", data.email);
         localStorage.setItem("userID", data.id);
-        localStorage.setItem("userRole", data.role);
-
-        console.log(data);
-        console.log(data.id);
-        if (data.role === "admin") {
+        localStorage.setItem("userRole", data.usertype);
+        
+        if (data.usertype === "admin") {
           router.push(`/admin/account`);
         } else {
           router.push(`/user/${data.id}/events`);
