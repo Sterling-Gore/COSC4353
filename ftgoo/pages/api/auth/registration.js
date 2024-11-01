@@ -55,7 +55,8 @@ export default async function handler(req, res) {
       //   .from('users')
       //   .select()
       //   .eq('email', 'john@gmail.com');
-
+        
+      console.log(data);
       // Send the created user ID and email back as a response
       return res.status(200).json({ id: data[0].userid, email: data[0].email });
     } catch (err) {
