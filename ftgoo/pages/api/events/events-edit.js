@@ -1,11 +1,32 @@
 import { findEventByID, updateEvent, eventUpdateNotification } from "../mockDatabase";
+import { supabase } from '../../../supabaseClient';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   //console.log(`this is the method: ${req.method} `);
     if (req.method === "POST") {
       const { eventID } = req.body;
-      // Mock user data for authentication
-      //console.log(`this is the userID: ${userID} `);
+      
+      try {
+        const {data, error} = await supabase
+        .from('events')
+        .select()
+        .eq("eventid", eventID)
+        .single()
+
+        if (error) throw error;
+
+        if (data) {
+          // get the user data
+          return res.status(200).json({ message: "Landing", data });
+        } else if (!data) {
+          return res.status(401).json({ error: "Event does not exist" });
+        } else {
+          return res.status(401).json({ error: "Event is not there" });
+        }
+      } catch(err) {
+        return res.status(500).json({ error: "Couldnt find event" });
+      }
+      /*
       const event = findEventByID(eventID);
       if (event) {
         // get the user data
@@ -14,7 +35,7 @@ export default function handler(req, res) {
         return res.status(401).json({ error: "Event does not exist" });
       } else {
         return res.status(401).json({ error: "Event is not there" });
-      }
+      }*/
 
     }
     else if(req.method === "PATCH")

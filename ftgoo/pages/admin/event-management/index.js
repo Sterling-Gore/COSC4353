@@ -349,10 +349,10 @@ export default function Events() {
           <h1 style={styles.title}>Event Management</h1>
           <div style={styles.eventsGrid}>
             {events.map((event) => (
-              <div key={event.eventID} style={styles.eventWrapper}> {/* Add key prop here */}
+              <div key={event.eventid} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
-                  <p>{event.eventName}</p>
+                  <p>{event.eventname}</p>
                   <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventID)}>
                     Edit
                   </button>
