@@ -68,8 +68,51 @@ export default async function handler(req, res) {
           day,
         }
       ]).select()
+      .single()
 
       if (error) throw error;
+
+      const {data: volunteers, volunteerError} = await supabase
+      .from('users')
+      .select()
+      .eq("role", "user")
+
+      const eventid = data.eventid;
+      console.log(`This is the eventid ${eventid}`)
+      console.log(`This is the event data ${JSON.stringify(data)}`)
+      if (volunteerError) throw volunteerError;
+      console.log(`VOLUNTEERS ARE RIGHT HERE: ${volunteers}`)
+
+      for (let i = 0; i < volunteers.length; i++)
+        {
+          if( skills.every( skill => volunteers[i].skills.includes(skill)) && volunteers[i].availability.includes(day) )
+          {
+            const newNotification = {
+              eventID: eventid,
+              eventName: eventName,
+              eventDate: eventDate,
+              notificationDate: new Date().toISOString().split('T')[0],
+              day: day,
+              notificationType: "New Event",
+              status: "This event matches your skills and availability!"
+            }
+            volunteers[i].notifications.push(newNotification);
+
+            //updateUser(volunteers[i])
+            const {matchingError} = await supabase
+            .from('users')
+            .update({"notifications" : volunteers[i].notifications})
+            .eq("userid", volunteers[i].userid)
+
+            if (matchingError) throw matchingError;
+          }
+        }
+
+
+
+      
+
+
 
       return res
       .status(201)
