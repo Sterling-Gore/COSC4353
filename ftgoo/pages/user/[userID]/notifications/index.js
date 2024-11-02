@@ -35,8 +35,6 @@ export default function Notifications() {
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
-
-      console.log(userID);
       const response = await fetch("/api/USER/user-data", {
         method: "POST",
         headers: {
@@ -48,7 +46,6 @@ export default function Notifications() {
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-        console.log(data);
         setUserEmail(data.email);
         setFirstName(data.firstname);
         setLastName(data.lastname);
@@ -118,8 +115,8 @@ export default function Notifications() {
   }
 
   //useEffect() empty dependency array
-  useEffect(() => {PATCHreminder()}, [userID]);
   useEffect(() => {GETdata()}, [userID]);
+  useEffect(() => {PATCHreminder()}, [userID]);
   
   //useEffect(() => {GETnotification_data()}, []);
 
