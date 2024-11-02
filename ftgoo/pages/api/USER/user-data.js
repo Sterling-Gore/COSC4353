@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('email, firstname, lastname, address1, address2, city, state, zipcode, preferences, role, skills, availability, rsvpevents')
+        .select('email, firstname, lastname, address1, address2, city, state, zipcode, preferences, role, skills, availability, rsvpevents, oldevents, notifications')
         .eq('userid', userID)
         .single();
       
@@ -23,7 +23,8 @@ export default async function handler(req, res) {
       if (data){
         return res.status(200).json({ email: data.email, id: data.userid, firstname: data.firstname, lastname: data.lastname, 
           address1: data.address1, address2: data.address2, city: data.city, state: data.state, zipcode: data.zipcode, 
-          preferences: data.preferences, skills: data.skills, availability: data.availability, rsvpevents: data.rsvpevents, usertype: data.role });
+          preferences: data.preferences, skills: data.skills, availability: data.availability, rsvpevents: data.rsvpevents, 
+          oldevents: data.oldevents, notifications: data.notifications, usertype: data.role });
       } else {
         // Invalid email or password
         return res.status(401).json({ error: "The userID does not exist." });
