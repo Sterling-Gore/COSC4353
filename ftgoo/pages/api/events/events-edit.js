@@ -75,7 +75,7 @@ export default async function handler(req, res) {
         .eq("eventid", eventID)
         .select()
         .single()
-
+        
         if (error) throw error;
 
         if (data) {
