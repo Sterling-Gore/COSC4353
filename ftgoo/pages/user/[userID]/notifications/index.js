@@ -36,6 +36,7 @@ export default function Notifications() {
     try {
       // Call the login API
 
+      console.log(userID);
       const response = await fetch("/api/USER/user-data", {
         method: "POST",
         headers: {
@@ -47,20 +48,20 @@ export default function Notifications() {
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-        
-        setUserEmail(data.user.email);
-        setFirstName(data.user.firstName);
-        setLastName(data.user.lastName);
-        setAddress1(data.user.address1);
-        setAddress2(data.user.address2);
-        setCity(data.user.city);
-        setState(data.user.state);
-        setZipCode(data.user.zipCode);
-        setSkills(data.user.skills);
-        setAvailability(data.user.availability);
-        setPreferences(data.user.preferences);
-        setMyNotifications(data.user.notifications.toReversed());
-        
+        console.log(data);
+        setUserEmail(data.email);
+        setFirstName(data.firstname);
+        setLastName(data.lastname);
+        setAddress1(data.address1);
+        setAddress2(data.address2);
+        setCity(data.city);
+        setState(data.state);
+        setZipCode(data.zipcode);
+        setSkills(data.skills);
+        setAvailability(data.availability);
+        setPreferences(data.preferences);
+        console.log(data.notifications);
+        setMyNotifications(data.notifications);
       } else {
         setUserEmail("");
         setFirstName("");
@@ -92,46 +93,6 @@ export default function Notifications() {
       //router.push(`/`);
     }
   };
-
-  async function PATCHdata()
-  {
-    if(!userID)return; //guard case for rendering
-    try {
-      // Call the login API
-
-      const response = await fetch("/api/account-management/user-account", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userID,
-          firstName, 
-          lastName, 
-          address1,
-          address2,
-          city,
-          state,
-          zipCode,
-          skills,
-          availability,
-          preferences
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        // Redirect to user events page on successful login
-          
-      } else {
-    
-      }
-    } catch (err) {
- 
-      //router.push(`/`);
-    }
-  };
-
 
   async function PATCHreminder(){
     if(!userID)return; //guard case for rendering

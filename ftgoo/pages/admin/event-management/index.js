@@ -133,12 +133,13 @@ export default function Events() {
 
   }
 
-  async function GETdata()
+  async function GETdata(eventID)
   {
+    console.log(`TEEEST`);
     if(!eventID)return; //guard case for rendering
     try {
       // Call the login API
-
+      console.log(`TEEEST`)
       const response = await fetch("/api/events/events-edit", {
         method: "POST",
         headers: {
@@ -278,6 +279,8 @@ export default function Events() {
       setCurrentPage("EditEvent");
       setSelectedEventNum(eventID);
       setEventID(eventID);
+      console.log("HEEEEELP");
+      GETdata(eventID);
     } else if (page === "CreateEvent") {
       setCurrentPage("CreateEvent");
       setSelectedEventNum(eventID);
@@ -354,7 +357,7 @@ export default function Events() {
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
                   <p>{event.eventname}</p>
-                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventID)}>
+                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventid)}>
                     Edit
                   </button>
                 </div>
