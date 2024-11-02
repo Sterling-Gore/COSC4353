@@ -98,6 +98,7 @@ export default function Account() {
   async function PATCHdata()
   {
     console.log(`this is the userID: ${userID}`)
+    console.log(email)
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
@@ -109,23 +110,25 @@ export default function Account() {
         },
         body: JSON.stringify({
           userID,
-          firstName, 
-          lastName, 
+          email,
+          firstname,
+          lastname,
           address1,
           address2,
           city,
           state,
-          zipCode,
+          zipcode,
+          preferences,
+          role,
           skills,
           availability,
-          preferences
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-          
+        console.log(data);  
       } else {
     
       }
