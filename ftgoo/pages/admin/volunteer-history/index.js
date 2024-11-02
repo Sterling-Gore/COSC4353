@@ -24,16 +24,16 @@ export default function VolunteerHistory() {
         data_from_db.volunteers.map((volunteer) => (
           editedVolunteers.push(
             {
-              "events" : data_from_db.events.filter((event) => (volunteer.oldEvents.includes(event.eventID))),
-              "firstName": volunteer.firstName,
-              "lastName": volunteer.lastName,
-              "userID": volunteer.userID,
+              "events" : data_from_db.events.filter((event) => (volunteer.oldevents.includes(event.eventid))),
+              "firstname": volunteer.firstname,
+              "lastname": volunteer.lastname,
+              "userid": volunteer.userid,
               
             }
           )
         ));
         //console.log(`PLEASE FOR THE LOVE OF GOD WORK ${editedVolunteers}`)
-        setPeople(editedVolunteers[0].userID) //this could break code if no volunteers
+        setPeople(editedVolunteers[0].userid) //this could break code if no volunteers
         setVolunteers(editedVolunteers)
       }
       else{
@@ -112,7 +112,7 @@ export default function VolunteerHistory() {
   };
 
   // Determine which array of events to display based on the selected person
-  let selectedEvents = volunteers.find((volunteer) => volunteer.userID == people)?.events || [];
+  let selectedEvents = volunteers.find((volunteer) => volunteer.userid == people)?.events || [];
   
 
   return (
@@ -134,19 +134,19 @@ export default function VolunteerHistory() {
               style={styles.input}
             >
               {volunteers.map((volunteer) => (
-                <option key={volunteer.userID} value={volunteer.userID}>{"(" + volunteer.userID + ") " + volunteer.firstName + " " + volunteer.lastName}</option>
+                <option key={volunteer.userid} value={volunteer.userid}>{"(" + volunteer.userid + ") " + volunteer.firstname + " " + volunteer.lastname}</option>
               ))}
             </select>
           </div>
 
           {selectedEvents.map((event) => (
-            <div style={styles.eventContainer} key={event.eventName}>
+            <div style={styles.eventContainer} key={event.eventname}>
               <div style={styles.topLeftEventText}>
-                Event: {event.eventName}
+                Event: {event.eventname}
               </div>
-              <div style={styles.bottomLeftEventText}>{event.eventDate}</div>
+              <div style={styles.bottomLeftEventText}>{event.eventdate}</div>
               <div style={styles.rightEventText}>
-                {event.Description}
+                {event.description}
               </div>
             </div>
           ))}
