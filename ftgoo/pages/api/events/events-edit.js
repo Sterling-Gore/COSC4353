@@ -78,6 +78,39 @@ export default async function handler(req, res) {
         
         if (error) throw error;
 
+        const{ data: volunteers, volunteerError} = await supabase
+        .from('users')
+        .select()
+        .eq("role", "user")
+
+        if (volunteerError) throw volunteerError;
+
+        for (let i = 0; i < volunteers.length; i++)
+          {
+            //console.log(`${eventID}:  Name=${users[i].firstName}  Events=${users[i].rsvpEvents}`);
+            if( volunteers[i].rsvpevents.includes(eventID))
+            {
+              const newNotification = {
+                eventID: eventID,
+                eventName: eventName,
+                eventDate: eventDate,
+                notificationDate: new Date().toISOString().split('T')[0],
+                day: selectedDay,
+                notificationType: "Event Update",
+                status: "An RSVP'd event has been updated!"
+              }
+              volunteers[i].notifications.push(newNotification);
+              //updateUser(volunteers[i])
+
+              const {updateError} = await supabase
+            .from('users')
+            .update({"notifications" : volunteers[i].notifications})
+            .eq("userid", volunteers[i].userid)
+
+            if (updateError) throw matchingError;
+            }
+          }
+
         if (data) {
           // get the user data
           return res.status(200).json({ message: "Landing", event: data });

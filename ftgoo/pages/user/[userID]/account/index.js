@@ -101,7 +101,7 @@ export default function Account() {
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
-
+      console.log(userID)
       const response = await fetch("/api/USER/user-data", {
         method: "PATCH",
         headers: {
@@ -109,23 +109,24 @@ export default function Account() {
         },
         body: JSON.stringify({
           userID,
-          firstName, 
-          lastName, 
+          userEmail,
+          firstName,
+          lastName,
           address1,
           address2,
           city,
           state,
           zipCode,
+          preferences,
           skills,
           availability,
-          preferences
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
         // Redirect to user events page on successful login
-          
+        console.log(data);  
       } else {
     
       }
