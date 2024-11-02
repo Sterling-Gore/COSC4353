@@ -98,11 +98,10 @@ export default function Account() {
   async function PATCHdata()
   {
     console.log(`this is the userID: ${userID}`)
-    console.log(email)
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
-
+      console.log(userID)
       const response = await fetch("/api/USER/user-data", {
         method: "PATCH",
         headers: {
@@ -110,16 +109,15 @@ export default function Account() {
         },
         body: JSON.stringify({
           userID,
-          email,
-          firstname,
-          lastname,
+          userEmail,
+          firstName,
+          lastName,
           address1,
           address2,
           city,
           state,
-          zipcode,
+          zipCode,
           preferences,
-          role,
           skills,
           availability,
         }),

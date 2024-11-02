@@ -35,49 +35,47 @@ export default async function handler(req, res) {
   } else if (req.method === "PATCH"){
     // SOMEONE DO THIS LMAO
     const { 
-          userID,
-          email,
-          firstname,
-          lastname,
-          address1,
-          address2,
-          city,
-          state,
-          zipcode,
-          preferences,
-          role,
-          skills,
-          availability,
+        userID,
+        userEmail,
+        firstName,
+        lastName,
+        address1,
+        address2,
+        city,
+        state,
+        zipCode,
+        preferences,
+        skills,
+        availability,
     } = req.body;
 
     try {    
       console.log(userID);
       const {data, error} = await supabase
         .from('users')
-        .update({
-          'email': email,
-          'firstname': firstname,
-          'lastname' : lastname,
+        .update([{
+          'email': userEmail,
+          'firstname': firstName,
+          'lastname' : lastName,
           'address1' : address1,
           'address2' : address2,
           'city' : city,
           'state' : state,
-          'zipcode' : zipcode,
+          'zipcode' : zipCode,
           'preferences' : preferences,
-          'role' : role,
           'skills' : skills,
           'availability' : availability,
-        })
+        }])
         .eq('userid', userID)
+        .select()
+        .single()
         
         if (error) throw error;
 
-        if (data){
-          return res.status(200).json({ email: data.email, id: data.userid, firstname: data.firstname, lastname: data.lastname, 
-            address1: data.address1, address2: data.address2, city: data.city, state: data.state, zipcode: data.zipcode, 
-            preferences: data.preferences, skills: data.skills, availability: data.availability, rsvpevents: data.rsvpevents, usertype: data.role });
-        }
-        else if (!data){
+        if (data) {
+          // get the user data
+          return res.status(200).json({ message: "Landing", event: data });
+        } else if (!data){
           return res.status(401).json({ error: "An error occurred updating user data." });
         }
     } catch (error) {
