@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('email, firstname, lastname, address1, address2, city, state, zipcode, preferences, role, skills, availability')
+        .select('email, firstname, lastname, address1, address2, city, state, zipcode, preferences, role, skills, availability, rsvpevents')
         .eq('userid', userID)
         .single();
       

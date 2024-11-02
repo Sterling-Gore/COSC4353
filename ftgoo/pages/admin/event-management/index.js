@@ -130,16 +130,14 @@ export default function Events() {
     } catch (err) {
       console.log("Error:", err); // Log the error for debugging
     }
-
   }
 
-  async function GETdata(eventID)
+  async function GETdata()
   {
-    console.log(`TEEEST`);
     if(!eventID)return; //guard case for rendering
     try {
       // Call the login API
-      console.log(`TEEEST`)
+
       const response = await fetch("/api/events/events-edit", {
         method: "POST",
         headers: {
@@ -279,8 +277,7 @@ export default function Events() {
       setCurrentPage("EditEvent");
       setSelectedEventNum(eventID);
       setEventID(eventID);
-      console.log("HEEEEELP");
-      GETdata(eventID);
+      //how to call GETData in here
     } else if (page === "CreateEvent") {
       setCurrentPage("CreateEvent");
       setSelectedEventNum(eventID);
@@ -357,7 +354,7 @@ export default function Events() {
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
                   <p>{event.eventname}</p>
-                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventid)}>
+                  <button style={styles.EditButton} onClick={() => handlePageChangeOnClick("EditEvent", event.eventID)}>
                     Edit
                   </button>
                 </div>

@@ -46,7 +46,6 @@ export default function Events() {
     if(!userID)return; //guard case for rendering
     try {
       // Call the login API
-      console.log(userID);
 
       const response = await fetch("/api/USER/user-data", {
         method: "POST",
@@ -74,51 +73,48 @@ export default function Events() {
         
         // Check if rsvpEvents and events are available
 
-        /*const editedMyEvents = data.rsvpevents.map((eventID) => {
-          const matchedEvent = events.find(event => event.eventID === eventID);
+        const editedMyEvents = data.rsvpevents.map((eventID) => {
+          const matchedEvent = events.find(event => event.eventid === eventID);
           if (matchedEvent) {
             return {
-              eventID: matchedEvent.eventID,
-              eventName: matchedEvent.eventName,
+              eventid: matchedEvent.eventid,
+              eventname: matchedEvent.eventname,
               urgency: matchedEvent.urgency,
               address: matchedEvent.address,
               city: matchedEvent.city,
               state: matchedEvent.state,
-              zipCode: matchedEvent.zipCode,
+              zipcode: matchedEvent.zipcode,
               description: matchedEvent.description,
               skills: matchedEvent.skills,
-              eventDate: matchedEvent.eventDate,
+              eventdate: matchedEvent.eventdate,
               day: matchedEvent.day,
             };
           }
           return null; // Return null if no match is found
         });
 
-        const editedAllEvents = events.filter(event => 
-          !data.user.rsvpEvents.includes(event.eventID)
+        const editedAllEvents = events.filter(event => !data.rsvpevents.includes(event.eventid)
         ).map(unmatchedEvent => ({
-            eventID: unmatchedEvent.eventID,
-            eventName: unmatchedEvent.eventName,
+            eventid: unmatchedEvent.eventid,
+            eventname: unmatchedEvent.eventname,
             urgency: unmatchedEvent.urgency,
             address: unmatchedEvent.address,
             city: unmatchedEvent.city,
             state: unmatchedEvent.state,
-            zipCode: unmatchedEvent.zipCode,
+            zipcode: unmatchedEvent.zipcode,
             description: unmatchedEvent.description,
             skills: unmatchedEvent.skills,
-            eventDate: unmatchedEvent.eventDate,
+            eventdate: unmatchedEvent.eventdate,
             day: unmatchedEvent.day,
         }));
         
-
-      
         // Filter out any null values in case there were unmatched events
         const filteredMyEvents = editedMyEvents.filter(event => event !== null);
         // Log the filtered events for debugging
     
         // Set the state with the filtered events
         setMyEvents([...filteredMyEvents]);
-        setAllEvents([...editedAllEvents]);*/
+        setAllEvents([...editedAllEvents]);
       } else {
         setUserEmail("");
         setFirstName("");
@@ -159,10 +155,10 @@ export default function Events() {
       });
   
       const data_from_db = await response.json();
+
   
       if (response.ok) {
         // Directly set the events array from the response
-        console.log(`EVENTS: ${data_from_db.events}`);
         setEvents(data_from_db.events);
       } else {
         console.log("Bad response");
@@ -170,7 +166,6 @@ export default function Events() {
     } catch (err) {
       console.log("Error:", err); // Log the error for debugging
     }
-
   }
 
   //useEffect() empty dependency array
@@ -219,10 +214,10 @@ export default function Events() {
             eventID        // Event to RSVP to
           }),
         });
-        const data = await response.json();
+        const data = await response.json(); 
         if (response.ok) {
           // Redirect to user events page on successful login
-            
+          console.log(data);
         } else {}
         window.location.reload();
       }
@@ -291,10 +286,10 @@ export default function Events() {
         {currentPage === "myEvents" && (
           <div style={styles.eventsGrid}>
             {myEvents.map((event) => (
-              <div style={styles.eventWrapper} key={event.eventID}>
+              <div style={styles.eventWrapper} key={event.eventid}>
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
-                  <p>{event.eventName}</p>
+                  <p>{event.eventname}</p>
                     <button
                       style={styles.rsvpButton}
                       onClick={() => handleRSVPOnClick(event)}
@@ -319,7 +314,7 @@ export default function Events() {
         )}
         {currentPage === "allEvents" && (
           <div style={styles.eventsGrid}>
-            {events.map((event) => (
+            {allEvents.map((event) => (
               <div key={event.eventid} style={styles.eventWrapper}> {/* Add key prop here */}
                 <div style={styles.eventBox}></div>
                 <div style={styles.eventInfo}>
@@ -337,7 +332,7 @@ export default function Events() {
             <div style={styles.rsvpBox}></div>
             <div style={styles.eventInfoContainer}>
               <div>
-                <p style={styles.eventNameText}>{thisEvent.eventName}</p>
+                <p style={styles.eventNameText}>{thisEvent.eventname}</p>
               </div>
               <div style={styles.urgencyContainer}>
                 <p style={styles.urgencyText}>Urgency</p>
@@ -360,7 +355,7 @@ export default function Events() {
               </div>
               <div style={styles.zipContainer}>
                 <p style={styles.infoText}>Zip Code</p>
-                <input style={styles.zipInput} placeholder={thisEvent.zipCode} type="text" readOnly></input>
+                <input style={styles.zipInput} placeholder={thisEvent.zipcode} type="text" readOnly></input>
               </div>
             </div>
             <p style={styles.infoText}>Description</p>
@@ -379,7 +374,7 @@ export default function Events() {
                 <p style={styles.infoText}>Event Date</p>
                 <input
                   style={styles.availabilityInput}
-                  placeholder={thisEvent.eventDate}
+                  placeholder={thisEvent.eventdate}
                   type="text"
                   readOnly
                 ></input>
@@ -399,7 +394,7 @@ export default function Events() {
               </div>
               <button
                 style={isClicked ? styles.saveButtonClicked : styles.saveButton}
-                onClick={() => handleSaveClick(userID, thisEvent.eventID, isChecked)}
+                onClick={() => handleSaveClick(userID, thisEvent.eventid, isChecked)}
               >
                 Save Changes
               </button>
