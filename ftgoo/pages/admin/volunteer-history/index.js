@@ -111,6 +111,17 @@ export default function VolunteerHistory() {
     router.push("/login");
   };
 
+  const handlePDFDownload = async () => {
+    const response = await fetch('/api/ADMIN/generate-pdf');
+    const blob = await response.blob();
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'example.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Determine which array of events to display based on the selected person
   let selectedEvents = volunteers.find((volunteer) => volunteer.userid == people)?.events || [];
   
@@ -151,6 +162,11 @@ export default function VolunteerHistory() {
             </div>
           ))}
         </div>
+
+        <a href="/Ellipse.png" download="Test.png">
+          <button>Download PDF BROKEN</button>
+        </a>
+        <button onClick={handlePDFDownload}>Download PDF</button>;
       </div>
     </div>
   );
