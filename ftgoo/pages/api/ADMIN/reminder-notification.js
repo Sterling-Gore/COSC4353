@@ -25,27 +25,27 @@ export default async function handler(req, res) {
       if (eventserror) throw eventserror;
 
       const matchedEvents = eventsdata.filter(event => rsvpdata.rsvpevents.includes(event.eventid));
-  
+      
       const originalToday = new Date();
       const today = new Date(originalToday.getTime() - 5 * 60 * 60 * 1000);
       const oneDayInMs = 24 * 60 * 60 * 1000; // Milliseconds in one day
 
       for (const event of matchedEvents) {
         const eventDate = new Date(event.eventdate);
-
         if ((eventDate - today) <= oneDayInMs && (eventDate - today) > 0) {
           const reminderNotification = {
             eventID: event.eventid,
             eventName: event.eventname,
             eventDate: event.eventdate,
-            notificationDate: "2024-11-01",
+            notificationDate: today.toISOString().slice(0, 10),
             day: event.day,
             notificationType: "Reminder",
             status: "This event is coming up soon, please show up to the event on time!"
           };
 
           const notificationExists = notificationsdata.notifications.some(
-            notif => notif.eventID === reminderNotification.eventID
+            notif => notif.eventID === reminderNotification.eventID &&
+            notif.notificationType === "Reminder"
           );
 
           if (!notificationExists) {
