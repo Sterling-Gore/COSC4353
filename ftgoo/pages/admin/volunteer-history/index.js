@@ -116,11 +116,37 @@ export default function VolunteerHistory() {
     const blob = await response.blob();
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = 'example.pdf';
+    link.download = 'Reporting.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
+  const handleCSVDownload = async () => {
+    //const response = await fetch('/api/ADMIN/generate-csv-events');
+    const response = await fetch('/api/ADMIN/generate-csv-volunteerHistory');
+    console.log(response);
+    console.log(JSON.stringify(response));
+    const blob = await response.blob();
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'VolunteerHistoryReporting.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+
+    const response1 = await fetch('/api/ADMIN/generate-csv-events');
+    console.log(response1);
+    console.log(JSON.stringify(response1));
+    const blob1 = await response1.blob();
+    const link1 = document.createElement('a');
+    link1.href = window.URL.createObjectURL(blob1);
+    link1.download = 'EventsReporting.csv';
+    document.body.appendChild(link1);
+    link1.click();
+    document.body.removeChild(link1);
+  }
 
   // Determine which array of events to display based on the selected person
   let selectedEvents = volunteers.find((volunteer) => volunteer.userid == people)?.events || [];
@@ -163,10 +189,8 @@ export default function VolunteerHistory() {
           ))}
         </div>
 
-        <a href="/Ellipse.png" download="Test.png">
-          <button>Download PDF BROKEN</button>
-        </a>
         <button onClick={handlePDFDownload}>Download PDF</button>;
+        <button onClick={handleCSVDownload}>Download CSV</button>;
       </div>
     </div>
   );
